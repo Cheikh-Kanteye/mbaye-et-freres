@@ -8,12 +8,12 @@ import {
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
 import { Button } from "./ui/button";
-import { Category } from "@/constants/categories";
+import { CategoryParams } from "@/types";
 
 interface NavLinkProps {
   title: string;
   href: string;
-  items: Category[];
+  items: CategoryParams[];
 }
 
 const NavLink: React.FC<NavLinkProps> = ({ title, href, items }) => {
