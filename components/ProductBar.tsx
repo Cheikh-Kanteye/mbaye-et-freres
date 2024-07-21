@@ -1,12 +1,13 @@
 import CategorieBtn from "./CategorieBtn";
 import { RiMenuFill } from "react-icons/ri";
 import NavLink from "./NavLink";
-import { categories, Category } from "@/constants/categories";
+import { categories } from "@/constants/categories";
+import { CategoryParams } from "@/types";
 
 // Limiter les catégories affichées
-const nav_categories: Category[] = [
+const nav_categories: CategoryParams[] = [
   ...categories.slice(0, 5),
-  { name: "A propos de nous", href: "/apropos" },
+  { name: "À Propos de Nous", href: "/apropos" },
   { name: "Réalisations", href: "/realisations" },
 ];
 

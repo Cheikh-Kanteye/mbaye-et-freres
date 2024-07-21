@@ -3,17 +3,18 @@ import ProductBar from "./ProductBar";
 import SearchInput from "./SearchInput";
 import { RiSearch2Line, RiShoppingCart2Line } from "react-icons/ri";
 import { Input } from "./ui/input";
+import Link from "next/link";
 
 const Header = () => {
   return (
-    <header className="w-full bg-background shadow-sm">
+    <header className="sticky top-0 left-0 w-full bg-background shadow-sm">
       <div className="bg-primary p-2">
         <div className="container-fb">
           <div className="flex-1">
-            <a href="/" className="w-fit logo-container">
+            <Link href="/" className="w-fit logo-container">
               <span className="logo-section-1">Mbaye &</span>
               <span className="p-1">Frères</span>
-            </a>
+            </Link>
           </div>
 
           <SearchInput />

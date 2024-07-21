@@ -1,12 +1,7 @@
+import { CategoryParams } from "@/types";
 import { slugify } from "@/utils/slugify"; // Assurez-vous de créer ce fichier utilitaire
 
-export type Category = {
-  name: string;
-  href: string;
-  subcategories?: Category[];
-};
-
-export const categories: Category[] = [
+export const categories: CategoryParams[] = [
   {
     name: "aluminium",
     href: slugify("aluminium"),

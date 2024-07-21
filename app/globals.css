@@ -98,6 +98,22 @@
     @apply p-1 bg-background h-full flex-center text-primary;
   }
 
+  .logo-secondary {
+    @apply w-fit bg-primary overflow-hidden border border-primary logo-container;
+  }
+
+  .social-icons {
+    @apply w-8 h-8 rounded-full grid place-items-center bg-primary-foreground hover:bg-primary;
+  }
+
+  .icon-link {
+    @apply hover:underline hover:text-primary flex items-center gap-1;
+  }
+
+  .footer {
+    @apply max-w-screen-xl mx-auto flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 py-6;
+  }
+
   ::-webkit-scrollbar {
     width: 10px;
   }
@@ -116,4 +132,16 @@
     scrollbar-width: thin;
     scrollbar-color: hsl(0 72.2% 50.6%) hsl(0 85.7% 97.3%);
   }
+}
+
+.about {
+  background-image: linear-gradient(
+      to bottom,
+      transparent,
+      hsla(0, 83%, 5%, 0.659)
+    ),
+    url("/images/company.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
