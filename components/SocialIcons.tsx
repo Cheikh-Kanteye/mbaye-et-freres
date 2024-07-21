@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { SocialIconProps, SocialIconsProps } from "@/types";
 
 const socialLinks = [
   { href: "https://www.facebook.com", icon: "ri-facebook-line" },
