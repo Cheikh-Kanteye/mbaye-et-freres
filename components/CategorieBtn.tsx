@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/drawer";
 import SubCategories from "./SubCategories";
 import IconButton from "./IconButton";
+import { ScrollArea } from "./ui/scroll-area";
 
 const CategorieBtn = ({ children }: React.PropsWithChildren) => {
   return (
@@ -20,17 +21,20 @@ const CategorieBtn = ({ children }: React.PropsWithChildren) => {
           {children}
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="h-full w-[300px] rounded-none overflow-y-auto">
-        <DrawerHeader className="flex justify-between items-center">
-          <DrawerTitle>Tous les categories</DrawerTitle>
-          <DrawerClose asChild>
-            <IconButton
-              icon={AiOutlineClose}
-              className="bg-primary-foreground"
-            />
-          </DrawerClose>
-        </DrawerHeader>
-        <SubCategories />
+
+      <DrawerContent className="h-full w-[300px] rounded-none">
+        <ScrollArea className="h-screen">
+          <DrawerHeader className="flex justify-between items-center">
+            <DrawerTitle>Tous les categories</DrawerTitle>
+            <DrawerClose asChild>
+              <IconButton
+                icon={AiOutlineClose}
+                className="bg-primary-foreground"
+              />
+            </DrawerClose>
+          </DrawerHeader>
+          <SubCategories />{" "}
+        </ScrollArea>
       </DrawerContent>
     </Drawer>
   );
