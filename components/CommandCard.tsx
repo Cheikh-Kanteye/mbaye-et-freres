@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 const CommandCard = () => {
   return (
-    <Card className="max-w-[20rem] w-full">
+    <Card className="max-w-screen-sm mx-auto w-full">
       <CardHeader>
         <CardTitle>Commande</CardTitle>
         <CardDescription>
