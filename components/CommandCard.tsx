@@ -29,7 +29,7 @@ const CommandCard = () => {
                 id="name"
                 placeholder="Quantité a commandé"
               />
-              <Button>Ajouter au panier</Button>
+              <Button className="w-full sm:w-fit">Ajouter au panier</Button>
             </div>
           </div>
         </form>
