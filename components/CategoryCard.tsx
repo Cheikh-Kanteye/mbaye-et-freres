@@ -13,15 +13,18 @@ import {
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface CategoryCardProps {
   categoryName: string;
   subCategoryName?: string;
+  className?: string;
 }
 
 const CategoryCard: React.FC<CategoryCardProps> = ({
   categoryName,
   subCategoryName,
+  className,
 }) => {
   const router = useRouter();
   const handleClick = () => {
@@ -35,7 +38,12 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   };
 
   return (
-    <Card className="text-center min-w-[18rem] w-full aspect-square h-fit overflow-hidden">
+    <Card
+      className={cn(
+        "text-center min-w-[18rem] w-full aspect-square h-fit overflow-hidden",
+        className
+      )}
+    >
       <CardContent className="bg-slate-50 w-full h-full flex justify-items-center">
         <Image
           src={"/images/garde-corp.png"}

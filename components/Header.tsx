@@ -7,7 +7,10 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <header className="sticky top-0 left-0 w-full bg-background shadow-sm">
+    <header
+      style={{ zIndex: 1000 }}
+      className="sticky top-0 left-0 w-full bg-background shadow-sm"
+    >
       <div className="bg-primary p-2">
         <div className="container-fb">
           <div className="flex-1">
