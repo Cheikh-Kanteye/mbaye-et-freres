@@ -64,8 +64,8 @@ const CategorySubcategoryPage = ({ params }: Params) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="ml-2" />
+          <CarouselNext className="mr-2" />
         </Carousel>
 
         <div className="flex flex-col lg:flex-row mt-4 gap-4 px-6 md:px-4 lg:px-0 items-center">
