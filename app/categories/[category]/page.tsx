@@ -4,6 +4,13 @@ import { slugify } from "@/utils/slugify"; // Assurez-vous que slugify est bien 
 import CategoryCard from "@/components/CategoryCard";
 import { Badge } from "@/components/ui/badge";
 import CommandCard from "@/components/CommandCard";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 // Créer un objet pour un accès rapide aux catégories
 const categoryMap = categories.reduce((acc, cat) => {
@@ -34,21 +41,27 @@ const CategoryPage = ({ params }: Params) => {
   return (
     <main className="min-h-screen">
       <div className="max-w-screen-lg mx-auto py-6">
-        <div className="flex gap-2 items-center justify-center">
-          <CategoryCard
-            categoryName={selectedCategory.name}
-          />
-          <CategoryCard
-            categoryName={selectedCategory.name}
-          />
-          <CategoryCard
-            categoryName={selectedCategory.name}
-          />
-          <CategoryCard
-            categoryName={selectedCategory.name}
-          />
+        <div className="hidden lg:grid lg:grid-flow-col gap-4 p-4 justify-center">
+          {[1, 2, 3].map((i) => (
+            <CategoryCard key={i} categoryName={selectedCategory.name} />
+          ))}
         </div>
-        <div className="flex mt-4 gap-4 items-center">
+
+        <Carousel className="max-w-xs mx-auto lg:hidden">
+          <CarouselContent className="w-full mx-auto">
+            {[1, 2, 3].map((i) => (
+              <CarouselItem className="w-full basis-full m-0" key={i}>
+                <CategoryCard
+                  className="w-full m-0"
+                  categoryName={selectedCategory.name}
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="ml-2" />
+          <CarouselNext className="mr-2" />
+        </Carousel>
+        <div className="flex flex-col lg:flex-row mt-4 gap-4 px-6 md:px-4 lg:px-0 items-center">
           <div>
             <div className="flex flex-col gap-2">
               <h2 className="capitalize font-semibold text-2xl">
@@ -76,7 +89,7 @@ const CategoryPage = ({ params }: Params) => {
             </p>
           </div>
 
-          <div className="flex-1/3">
+          <div className="w-full md:flex-1/3">
             <CommandCard />
           </div>
         </div>
