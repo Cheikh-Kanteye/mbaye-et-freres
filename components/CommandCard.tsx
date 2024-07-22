@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 const CommandCard = () => {
   return (
-    <Card className="min-w-[400px] w-full">
+    <Card className="min-w-[20rem] w-full">
       <CardHeader>
         <CardTitle>Commande</CardTitle>
         <CardDescription>

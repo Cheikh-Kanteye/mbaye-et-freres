@@ -35,7 +35,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   };
 
   return (
-    <Card className="text-center max-w-[16rem] w-full aspect-square h-fit overflow-hidden">
+    <Card className="text-center min-w-[18rem] w-full aspect-square h-fit overflow-hidden">
       <CardContent className="bg-slate-50 w-full h-full flex justify-items-center">
         <Image
           src={"/images/garde-corp.png"}

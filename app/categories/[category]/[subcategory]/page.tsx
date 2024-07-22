@@ -35,7 +35,7 @@ const CategorySubcategoryPage = ({ params }: Params) => {
   return (
     <main className="min-h-screen">
       <div className="max-w-screen-lg mx-auto py-6">
-        <div className="flex gap-2 items-center justify-center flex-wrap lg:flex-nowrap">
+        <div className="grid md:grid-flow-col gap-4 p-4 justify-center">
           <CategoryCard
             categoryName={selectedCategory.name}
             subCategoryName={selectedSubcategory.name}
