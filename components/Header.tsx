@@ -4,6 +4,11 @@ import SearchInput from "./SearchInput";
 import { RiSearch2Line, RiShoppingCart2Line } from "react-icons/ri";
 import { Input } from "./ui/input";
 import Link from "next/link";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const Header = () => {
   return (
@@ -20,18 +25,20 @@ const Header = () => {
             </Link>
           </div>
 
-          <SearchInput />
+          <SearchInput className="hidden md:flex" />
           <div className="flex-1 gap-3 flex justify-end">
-            <div className="flex md:hidden search-input-container">
-              <Input
-                type="search"
-                placeholder="Qu'est-ce que vous recherchez aujourd'hui?"
-                className="hidden sm:block search-input"
-              />
-              <IconButton
-                icon={RiSearch2Line}
-                className="bg-primary-foreground"
-              />
+            <div className="block md:hidden">
+              <Popover>
+                <PopoverTrigger>
+                  <IconButton
+                    icon={RiSearch2Line}
+                    className="bg-primary-foreground"
+                  />
+                </PopoverTrigger>
+                <PopoverContent className="w-screen" style={{ zIndex: 10001 }}>
+                  <SearchInput className="w-full shadow-primary mx-auto border border-primary-foreground" />
+                </PopoverContent>
+              </Popover>
             </div>
             <IconButton
               icon={RiShoppingCart2Line}

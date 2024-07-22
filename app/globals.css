@@ -75,6 +75,10 @@
     @apply flex-1 !rounded-full !border-0 !outline-none  focus-visible:!ring-0 focus-visible:!ring-transparent;
   }
 
+  .search-input-container:has(.search-input:focus) {
+    @apply ring-1 ring-primary md:ring-primary-foreground;
+  }
+
   .search-button {
     @apply !bg-primary-foreground !rounded-full !text-primary hover:!bg-primary hover:!text-primary-foreground;
   }

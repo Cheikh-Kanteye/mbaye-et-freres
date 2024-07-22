@@ -1,21 +1,21 @@
-import React from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import IconButton from "./IconButton";
-import { RiSearch2Line } from "react-icons/ri";
+import { cn } from "@/lib/utils";
 
-const SearchInput = () => {
+const SearchInput = ({ className }: { className?: string }) => {
   return (
-    <div className="hidden md:flex search-input-container">
-      <Input
-        type="search"
-        placeholder="Qu'est-ce que vous recherchez aujourd'hui?"
-        className="search-input"
-      />
-      <Button className="search-button" type="submit">
-        Rechercher
-      </Button>
-    </div>
+    <>
+      <div className={cn("flex search-input-container", className)}>
+        <Input
+          type="search"
+          placeholder="Qu'est-ce que vous recherchez aujourd'hui?"
+          className="search-input"
+        />
+        <Button className="search-button" type="submit">
+          Rechercher
+        </Button>
+      </div>
+    </>
   );
 };
 
