@@ -23,7 +23,7 @@ const CommandCard = () => {
       <CardContent>
         <form>
           <div className="grid w-full items-center gap-4">
-            <div className="flex space-x-1.5">
+            <div className="flex flex-col sm:flex-row space-x-1.5">
               <Input
                 type="number"
                 id="name"
