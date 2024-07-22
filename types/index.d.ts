@@ -23,3 +23,10 @@ export type CategoryParams = {
   href: string;
   subcategories?: Category[];
 };
+
+export type InfoCardProps = {
+  iconSrc: string;
+  bgColor: string;
+  title: string;
+  description: string;
+};

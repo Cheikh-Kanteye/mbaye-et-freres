@@ -135,12 +135,18 @@
 }
 
 .about {
-  background-image: linear-gradient(
-      to bottom,
-      transparent,
-      hsla(0, 83%, 5%, 0.659)
-    ),
-    url("/images/company.jpg");
+  --img-url: url("/images/company.jpg");
+  --bg: linear-gradient(to bottom, transparent, hsla(0, 83%, 5%, 0.659));
+}
+
+.home-banner {
+  --img-url: url("/images/banner.jpg");
+  --bg: linear-gradient(to right, #fff 35%, #ffffffb0, #ffffff69);
+}
+
+.about,
+.home-banner {
+  background-image: var(--bg), var(--img-url);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
