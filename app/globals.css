@@ -152,6 +152,6 @@
 .home-banner {
   background-image: var(--bg), var(--img-url);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100dvw 100%;
   background-position: center;
 }
