@@ -1,21 +1,15 @@
 import React from "react";
 import Link from "next/link";
-import { SocialIconProps, SocialIconsProps } from "@/types";
-
+import { SocialIconsProps } from "@/types";
+import { FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import { FiInstagram } from "react-icons/fi";
+import { ImFacebook } from "react-icons/im";
 const socialLinks = [
-  { href: "https://www.facebook.com", icon: "ri-facebook-line" },
-  { href: "https://www.instagram.com", icon: "ri-instagram-line" },
-  { href: "https://www.linkedin.com", icon: "ri-linkedin-line" },
-  { href: "https://www.twitter.com", icon: "ri-twitter-x-line" },
+  { href: "https://www.facebook.com", icon: ImFacebook },
+  { href: "https://www.instagram.com", icon: FiInstagram },
+  { href: "https://www.linkedin.com", icon: FaXTwitter },
+  { href: "https://www.twitter.com", icon: FaLinkedinIn },
 ];
-
-const SocialIcon = ({ href, icon, className }: SocialIconProps) => (
-  <li className="flex items-center gap-2">
-    <a href={href} className={`text-white ${className}`}>
-      <i className={icon}></i>
-    </a>
-  </li>
-);
 
 const SocialIcons = ({ faq, separator, className }: SocialIconsProps) => {
   return (
@@ -25,9 +19,16 @@ const SocialIcons = ({ faq, separator, className }: SocialIconsProps) => {
           FAQ
         </Link>
       )}
-      {socialLinks.map((link, index) => (
+      {socialLinks.map(({ href, icon: Icon }, index) => (
         <React.Fragment key={index}>
-          <SocialIcon className={className} href={link.href} icon={link.icon} />
+          <Link className="icon-link" href={href}>
+            <Icon
+              style={{
+                height: "1.4cap",
+                width: "auto",
+              }}
+            />
+          </Link>{" "}
         </React.Fragment>
       ))}
     </ul>
