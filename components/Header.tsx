@@ -17,15 +17,13 @@ const Header = () => {
     >
       <div className="bg-primary p-2">
         <div className="container-fb">
-          <div className="flex-1">
-            <Link href="/" className="w-fit logo-container">
-              <span className="logo-section-1">Mbaye &</span>
-              <span className="p-1">Frères</span>
-            </Link>
-          </div>
+          <Link href="/" className="w-fit logo-container">
+            <span className="logo-section-1">Mbaye &</span>
+            <span className="p-1">Frères</span>
+          </Link>
 
-          <SearchInput className="hidden md:flex" />
-          <div className="flex-1 gap-3 flex justify-end items-center">
+          <div className="gap-3 flex justify-end items-center">
+            <SearchInput className="hidden w-fit md:flex" />
             <div className="block md:hidden">
               <Popover>
                 <PopoverTrigger>

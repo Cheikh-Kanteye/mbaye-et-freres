@@ -95,7 +95,7 @@
   }
 
   .logo-container {
-    @apply text-2xl leading-none h-10 flex-center font-bold text-background border border-accent rounded-sm;
+    @apply text-xl sm:text-2xl leading-none h-10 flex-center font-bold text-background border border-accent rounded-sm;
   }
 
   .logo-section-1 {

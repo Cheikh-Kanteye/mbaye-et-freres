@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import React from "react";
 import { IconType } from "react-icons";
 
@@ -17,9 +18,12 @@ const IconButton: React.FC<IconButtonProps> = ({
   return (
     <button
       onClick={onClick}
-      className={`flex items-center justify-center p-2 rounded-full focus:outline-none transition ${className} ${
-        disabled ? "cursor-not-allowed opacity-50" : "hover:bg-gray-200"
-      }`}
+      className={cn(
+        `flex items-center justify-center p-2 rounded-full focus:outline-none transition ${
+          disabled ? "cursor-not-allowed opacity-50" : "hover:bg-gray-200"
+        }`,
+        className
+      )}
       disabled={disabled}
     >
       <Icon className="w-5 h-5" />

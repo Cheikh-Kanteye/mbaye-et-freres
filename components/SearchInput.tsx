@@ -1,19 +1,22 @@
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import IconButton from "./IconButton";
+import { RiSearch2Fill, RiSearch2Line } from "react-icons/ri";
 
 const SearchInput = ({ className }: { className?: string }) => {
   return (
     <>
-      <div className={cn("flex search-input-container", className)}>
+      <div className={cn("flex search-input-container pr-1", className)}>
         <Input
           type="search"
-          placeholder="Qu'est-ce que vous recherchez aujourd'hui?"
+          placeholder="Rechercher un produit"
           className="search-input"
         />
-        <Button className="search-button" type="submit">
-          Rechercher
-        </Button>
+        <IconButton
+          icon={RiSearch2Line}
+          className="bg-primary-foreground hover:!bg-primary hover:!text-background"
+        />
       </div>
     </>
   );
