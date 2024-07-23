@@ -1,15 +1,38 @@
+"use client";
+
 import IconButton from "./IconButton";
 import ProductBar from "./ProductBar";
 import SearchInput from "./SearchInput";
-import { RiSearch2Line, RiShoppingCart2Line } from "react-icons/ri";
+import {
+  RiMenu4Line,
+  RiSearch2Line,
+  RiShoppingCart2Line,
+} from "react-icons/ri";
 import Link from "next/link";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@radix-ui/react-dropdown-menu";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+const menus = [
+  { name: "À Propos de Nous", href: "/apropos" },
+  { name: "Réalisations", href: "/realisations" },
+];
 
 const Header = () => {
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
   return (
     <header
       style={{ zIndex: 1000 }}
@@ -36,10 +59,43 @@ const Header = () => {
                 </PopoverContent>
               </Popover>
             </div>
+
             <IconButton
               icon={RiShoppingCart2Line}
               className="text-foreground bg-primary-foreground"
             />
+            <div className="block md:hidden">
+              <DropdownMenu open={open} onOpenChange={setOpen}>
+                <DropdownMenuTrigger className="bg-primary-foreground text-foreground p-2 aspect-square rounded-full">
+                  <RiMenu4Line />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-background p-3 rounded-sm shadow-xl mr-2 w-56">
+                  <DropdownMenuLabel></DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {menus.map((menu, i) => {
+                    return (
+                      <>
+                        <DropdownMenuItem
+                          className="p-1 hover:bg-slate-50"
+                          key={i}
+                          asChild
+                        >
+                          <div
+                            onClick={() => {
+                              setOpen(false);
+                              router.push(menu.href);
+                            }}
+                          >
+                            {menu.name}
+                          </div>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                      </>
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
       </div>

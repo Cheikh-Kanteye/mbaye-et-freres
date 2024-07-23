@@ -5,6 +5,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -22,10 +23,18 @@ const CategorieBtn = ({ children }: React.PropsWithChildren) => {
         </Button>
       </DrawerTrigger>
 
-      <DrawerContent className="h-full w-[300px] rounded-none">
+      <DrawerContent
+        style={{ zIndex: 100002 }}
+        className="h-full w-[300px] rounded-none"
+      >
         <ScrollArea className="h-screen">
           <DrawerHeader className="flex justify-between items-center">
-            <DrawerTitle>Tous les categories</DrawerTitle>
+            <div className="flex flex-col items-start">
+              <DrawerTitle>Categories</DrawerTitle>
+              <DrawerDescription className="text-left">
+                Parcourer nos differents categories
+              </DrawerDescription>
+            </div>
             <DrawerClose asChild>
               <IconButton
                 icon={AiOutlineClose}
@@ -33,7 +42,7 @@ const CategorieBtn = ({ children }: React.PropsWithChildren) => {
               />
             </DrawerClose>
           </DrawerHeader>
-          <SubCategories />{" "}
+          <SubCategories />
         </ScrollArea>
       </DrawerContent>
     </Drawer>

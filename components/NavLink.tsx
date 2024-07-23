@@ -13,7 +13,7 @@ import { CategoryParams } from "@/types";
 interface NavLinkProps {
   title: string;
   href: string;
-  items: CategoryParams[];
+  items?: CategoryParams[];
 }
 
 const NavLink: React.FC<NavLinkProps> = ({ title, href, items }) => {
@@ -21,7 +21,7 @@ const NavLink: React.FC<NavLinkProps> = ({ title, href, items }) => {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          {items.length > 0 ? (
+          {items && items.length > 0 ? (
             <>
               <NavigationMenuTrigger>{title}</NavigationMenuTrigger>
               <NavigationMenuContent className="flex flex-col gap-2 p-2">

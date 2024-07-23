@@ -26,7 +26,7 @@ const IconButton: React.FC<IconButtonProps> = ({
       )}
       disabled={disabled}
     >
-      <Icon className="w-5 h-5" />
+      <Icon />
     </button>
   );
 };
