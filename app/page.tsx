@@ -1,7 +1,25 @@
+"use client";
+
 import InfoCard from "@/components/InfoCard";
 import { infoCards } from "@/constants/contacts";
+import { Produit } from "@/types";
+import { useEffect, useState } from "react";
 
 const Page: React.FC = () => {
+  const [produits, setProduits] = useState<Produit[] | never[]>([]);
+
+  useEffect(() => {
+    async function fetchProduits() {
+      console.log("fetching...");
+
+      const res = await fetch("/api/produits");
+      const data = await res.json();
+      setProduits(data);
+      console.log(data);
+    }
+    fetchProduits();
+  }, []);
+
   return (
     <main className="min-h-screen bg-background">
       <section className="home-banner h-[50vh] flex items-center justify-center">
@@ -30,6 +48,28 @@ const Page: React.FC = () => {
               description={card.description}
             />
           ))}
+        </div>
+      </section>
+
+      <section className="container">
+        <div>
+          <h1>Liste des Produits</h1>
+          <ul>
+            {produits.map((produit) => (
+              <li key={produit.id}>
+                <h2>{produit.nom}</h2>
+                <p>{produit.description}</p>
+                <p>Prix: {produit.prix}</p>
+                <p>Specifications: {produit.specifications}</p>
+                <p>Categorie: {produit.categorie.nom}</p>
+                <div>
+                  {/* {produit.images.map((image) => (
+                  <img key={image.id} src={image.url} alt={produit.nom} />
+                ))} */}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
     </main>
