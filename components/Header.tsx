@@ -26,6 +26,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const menus = [
+  { name: "Accueil", href: "/" },
   { name: "À Propos de Nous", href: "/apropos" },
   { name: "Réalisations", href: "/realisations" },
 ];
