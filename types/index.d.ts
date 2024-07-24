@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import { IconType } from "react-icons";
 
 declare type SocialIconProps = {
@@ -52,3 +53,9 @@ export interface Produit {
   categorie: Categorie;
   images: Image[];
 }
+
+declare global {
+  var prisma: PrismaClient | undefined;
+}
+
+export {};
