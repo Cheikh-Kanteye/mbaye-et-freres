@@ -57,5 +57,3 @@ export interface Produit {
 declare global {
   var prisma: PrismaClient | undefined;
 }
-
-export {};
