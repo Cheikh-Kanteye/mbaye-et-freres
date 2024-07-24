@@ -64,7 +64,7 @@ const Home: React.FC = () => {
             {produits.map((produit, i) => (
               <li
                 key={produit.id || i}
-                className="border rounded-sm p-3 w-[18rem]"
+                className="border rounded-sm p-3 w-[18rem] hover:bg-gradient-to-t from-primary-foreground to-background"
               >
                 <h2>{produit.nom}</h2>
                 <p>{produit.description}</p>
