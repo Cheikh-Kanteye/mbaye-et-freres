@@ -13,6 +13,10 @@ declare type SocialIconsProps = {
   className?: string;
 };
 
+declare global {
+  var prisma: PrismaClient | undefined;
+}
+
 export type ContactParams = {
   href: string;
   icon: IconType;
@@ -52,8 +56,4 @@ export interface Produit {
   specifications: string;
   categorie: Categorie;
   images: Image[];
-}
-
-declare global {
-  var prisma: PrismaClient | undefined;
 }
