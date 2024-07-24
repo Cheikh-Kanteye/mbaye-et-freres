@@ -1,18 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-// pages/api/produits/postProduits.ts
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import prisma from "../../../lib/prisma";
-import { Produit } from "@prisma/client";
-
-type Payload = {
-  produit: {
-    nom: string;
-    description: string;
-    prix: number;
-    specifications: string;
-    categorieId: number;
-  };
-};
 
 // Fonction pour gérer les requêtes POST
 export async function postProduits(req: Request) {
