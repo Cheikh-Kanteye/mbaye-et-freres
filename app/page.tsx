@@ -1,21 +1,27 @@
 "use client";
-
 import InfoCard from "@/components/InfoCard";
 import { infoCards } from "@/constants/contacts";
-import { Produit } from "@/types";
 import { useEffect, useState } from "react";
+import { Produit } from "@/types";
+import Image from "next/image";
 
-const Page: React.FC = () => {
-  const [produits, setProduits] = useState<Produit[] | never[]>([]);
+const Home: React.FC = () => {
+  const [produits, setProduits] = useState<Produit[]>([]);
 
   useEffect(() => {
     async function fetchProduits() {
       console.log("fetching...");
-
-      const res = await fetch("/api/produits");
-      const data = await res.json();
-      setProduits(data);
-      console.log(data);
+      try {
+        const res = await fetch("/api/produits");
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        const data: Produit[] = await res.json();
+        setProduits(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching produits:", error);
+      }
     }
     fetchProduits();
   }, []);
@@ -55,17 +61,22 @@ const Page: React.FC = () => {
         <div>
           <h1>Liste des Produits</h1>
           <ul>
-            {produits.map((produit) => (
-              <li key={produit.id}>
+            {produits.map((produit, i) => (
+              <li key={produit.id || i}>
                 <h2>{produit.nom}</h2>
                 <p>{produit.description}</p>
-                <p>Prix: {produit.prix}</p>
+                <p>Prix: {produit.prix} €</p>
                 <p>Specifications: {produit.specifications}</p>
                 <p>Categorie: {produit.categorie.nom}</p>
                 <div>
-                  {/* {produit.images.map((image) => (
-                  <img key={image.id} src={image.url} alt={produit.nom} />
-                ))} */}
+                  {produit.images.map((image) => (
+                    <Image
+                      key={image.id}
+                      src={image.url}
+                      alt={produit.nom}
+                      width={100}
+                    />
+                  ))}
                 </div>
               </li>
             ))}
@@ -76,4 +87,4 @@ const Page: React.FC = () => {
   );
 };
 
-export default Page;
+export default Home;
