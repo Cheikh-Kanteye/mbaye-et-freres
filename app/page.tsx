@@ -57,12 +57,15 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="container">
+      <section className="container py-6">
         <div>
-          <h1>Liste des Produits</h1>
-          <ul>
+          <h1 className="mb-3 text-2xl">Liste des Produits (testing)</h1>
+          <ul className="gap-3 flex flex-wrap justify-center">
             {produits.map((produit, i) => (
-              <li key={produit.id || i}>
+              <li
+                key={produit.id || i}
+                className="border rounded-sm p-3 w-[18rem]"
+              >
                 <h2>{produit.nom}</h2>
                 <p>{produit.description}</p>
                 <p>Prix: {produit.prix} €</p>

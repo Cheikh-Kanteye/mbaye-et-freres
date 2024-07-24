@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const menus = [
@@ -75,10 +75,9 @@ const Header = () => {
                   <DropdownMenuSeparator />
                   {menus.map((menu, i) => {
                     return (
-                      <>
+                      <React.Fragment key={i}>
                         <DropdownMenuItem
                           className="p-1 hover:bg-slate-50"
-                          key={i}
                           asChild
                         >
                           <div
@@ -91,7 +90,7 @@ const Header = () => {
                           </div>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                      </>
+                      </React.Fragment>
                     );
                   })}
                 </DropdownMenuContent>
