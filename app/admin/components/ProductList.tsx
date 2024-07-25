@@ -24,6 +24,8 @@ import { columns } from "./product_colums";
 import SkeletonTable from "./SkeletonTable";
 import { Button } from "@/components/ui/button";
 import { FiPlus } from "react-icons/fi";
+import AddEntityBtn from "./AddEntityBtn";
+import AddProduitForm from "./AddProduitForm";
 
 const ProductList = ({
   data,
@@ -68,9 +70,9 @@ const ProductList = ({
           />
           <Button>Rechercher</Button>
         </div>
-        <Button className="flex items-center gap-0.5">
-          <FiPlus size={18} className="text-background" /> Ajouter produit
-        </Button>
+        <AddEntityBtn>
+          <AddProduitForm />
+        </AddEntityBtn>
       </div>
       {!pending ? (
         <Table className="w-full">
