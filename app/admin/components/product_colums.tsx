@@ -70,7 +70,7 @@ export const columns: ColumnDef<Produit>[] = [
         style: "currency",
         currency: "XOF",
       }).format(price);
-      return <div className="text-right">{formattedPrice}</div>;
+      return <div className="text-left">{formattedPrice}</div>;
     },
   },
   {

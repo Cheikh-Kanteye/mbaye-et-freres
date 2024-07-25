@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import {
   ColumnFiltersState,
@@ -20,7 +21,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Produit } from "@/types";
 import { columns } from "./product_colums";
-import { Skeleton } from "@/components/ui/skeleton";
+import SkeletonTable from "./SkeletonTable";
+import { Button } from "@/components/ui/button";
+import { FiPlus } from "react-icons/fi";
 
 const ProductList = ({
   data,
@@ -52,19 +55,25 @@ const ProductList = ({
   });
 
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filtrer les produits..."
-          value={(table.getColumn("nom")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("nom")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+    <section className="max-w-screen-lg mx-auto">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center py-4 gap-1">
+          <Input
+            placeholder="Filtrer les produits..."
+            value={(table.getColumn("nom")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("nom")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+          <Button>Rechercher</Button>
+        </div>
+        <Button className="flex items-center gap-0.5">
+          <FiPlus size={18} className="text-background" /> Ajouter produit
+        </Button>
       </div>
-      <div className="rounded-md">
-        <Table className="w-fit">
+      {!pending ? (
+        <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -90,7 +99,7 @@ const ProductList = ({
                   className="items-center"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell className="text-left" key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -99,7 +108,7 @@ const ProductList = ({
                   ))}
                 </TableRow>
               ))
-            ) : !pending ? (
+            ) : (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
@@ -108,19 +117,13 @@ const ProductList = ({
                   Aucun résultat.
                 </TableCell>
               </TableRow>
-            ) : (
-              <div className="flex items-center space-x-4">
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-[250px]" />
-                  <Skeleton className="h-4 w-[200px]" />
-                </div>
-              </div>
             )}
           </TableBody>
         </Table>
-      </div>
-    </div>
+      ) : (
+        <SkeletonTable />
+      )}
+    </section>
   );
 };
 
