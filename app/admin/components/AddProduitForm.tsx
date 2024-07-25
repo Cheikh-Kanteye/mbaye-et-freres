@@ -84,9 +84,13 @@ const AddProduitForm = () => {
                   recharger
                 </Button>
               </SelectItem>
+            ) : !categories && !categories.length ? (
+              <SelectItem value="null" disabled>
+                Aucune categorie a afficher
+              </SelectItem>
             ) : (
               categories.map((category: { id: string; nom: string }) => (
-                <SelectItem key={category.id} value={category.id}>
+                <SelectItem key={category.id} value={category.nom}>
                   {category.nom}
                 </SelectItem>
               ))
