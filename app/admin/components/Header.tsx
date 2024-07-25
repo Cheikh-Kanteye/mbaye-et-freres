@@ -7,6 +7,8 @@ import {
 import ProfileButton from "./ProfileButton";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
+import SearchInput from "@/components/SearchInput";
+import { usePathname } from "next/navigation";
 
 const menus = [
   {
@@ -28,15 +30,25 @@ const menus = [
 ];
 
 const Header = () => {
+  const pathname = usePathname();
   return (
-    <header className="p-4 flex w-full justify-between items-center border-b sticky top-0">
+    <header className="p-4 flex w-full justify-between text-foreground items-center  border-b sticky top-0">
+      <Link
+        href="/admin"
+        className="w-fit logo-container bg-primary border-primary"
+      >
+        <span className="logo-section-1">Mbaye &</span>
+        <span className="p-1">Frères</span>
+      </Link>
       <NavigationMenu>
         <NavigationMenuList>
           {menus.map((menu, i) => (
             <NavigationMenuItem key={i}>
               <Link
                 href={menu.href}
-                className="hover:bg-accent cursor-pointer p-2 rounded-sm hover:text-accent-foreground "
+                className={`hover:bg-accent cursor-pointer p-2 rounded-sm hover:text-accent-foreground ${
+                  pathname === menu.href ? "bg-accent" : null
+                }`}
               >
                 {menu.name}
               </Link>
@@ -45,7 +57,7 @@ const Header = () => {
         </NavigationMenuList>
       </NavigationMenu>
       <div className="flex gap-1">
-        <Input type="search" placeholder="Recherche..." />
+        <SearchInput className="border-accent" />
         <ProfileButton />
       </div>
     </header>

@@ -15,7 +15,7 @@ const DropInput = () => {
     <div>
       <Dropzone
         onDrop={handleDrop}
-        accept={{ "image/*": [".jpeg", ".jpg", ".png", ".gif"] }}
+        accept={{ "image/*": [".jpeg", ".jpg", ".png"] }}
         multiple
       >
         {({ getRootProps, getInputProps, isDragActive }) => {
