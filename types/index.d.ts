@@ -39,7 +39,6 @@ export type InfoCardProps = {
 export interface Categorie {
   id: number;
   nom: string;
-  description: string;
 }
 
 export interface Image {

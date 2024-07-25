@@ -27,8 +27,7 @@ model Produit {
 
 model Categorie {
   id          Int       @id @default(autoincrement())
-  nom         String
-  description String
+  nom         String 
   produits    Produit[]
 }
 
