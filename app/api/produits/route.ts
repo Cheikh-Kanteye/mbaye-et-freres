@@ -14,6 +14,10 @@ export async function GET(
   return getProduits(req, id);
 }
 
-export async function DELETE() {
-  return deleteProduit;
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+  return deleteProduit(req, id);
 }
