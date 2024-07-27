@@ -6,8 +6,12 @@ export async function POST(req: Request) {
   return postProduits(req);
 }
 
-export async function GET() {
-  return getProduits;
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+  return getProduits(req, id);
 }
 
 export async function DELETE() {
