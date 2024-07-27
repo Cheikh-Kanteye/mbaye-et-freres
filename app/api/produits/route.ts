@@ -2,8 +2,8 @@ import { deleteProduit } from "./deleteProduit";
 import { getProduits } from "./getProduits";
 import { postProduits } from "./postProduits";
 
-export async function POST() {
-  return postProduits;
+export async function POST(req: Request) {
+  return postProduits(req);
 }
 
 export async function GET() {
