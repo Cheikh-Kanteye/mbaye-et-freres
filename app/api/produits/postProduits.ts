@@ -32,7 +32,7 @@ async function uploadToCloudinary(filePath: string) {
   });
 }
 
-export async function POST(req: Request) {
+export async function postProduits(req: Request) {
   try {
     const { fields, files } = await parseForm(req);
     const {
