@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,64 +8,61 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")  
 }
 
-model Produit {
-  id              Int       @id @default(autoincrement())
-  nom             String
-  description     String
-  prix            Float
-  specifications  String
-  categorie       Categorie @relation(fields: [categorieId], references: [id])
-  categorieId     Int
-  images          Image[]
+model categorie {
+  idCategorie          Int         @id @default(autoincrement())
+  nomCategorie         String
+  descriptionCategorie String?
+  familles             famille[]
 }
 
-model Categorie {
-  id          Int       @id @default(autoincrement())
-  nom         String 
-  produits    Produit[]
+model famille {
+  idFamille            Int         @id @default(autoincrement())
+  nomFamille           String
+  descriptionFamille   String?
+  idCategorie          Int
+  idGuide              Int?
+  categorie            categorie   @relation(fields: [idCategorie], references: [idCategorie])
+  guideUrl             String?
+  produits             produit[]
 }
 
-model Service {
-  id          Int       @id @default(autoincrement())
-  nom         String
-  description String
-  image       String
+model produit {
+  idProduit            Int         @id @default(autoincrement())
+  nomProduit           String
+  descriptionProduit   String?
+  referenceProduit     String      @unique
+  idFamille            Int
+  typeProduit          String
+  famille              famille     @relation(fields: [idFamille], references: [idFamille])
+  images               imageProduit[]
 }
 
-model Contact {
-  id          Int       @id @default(autoincrement())
-  nom         String
-  email       String
-  telephone   String
-  message     String
-  dateEnvoi   DateTime  @default(now())
+model imageProduit {
+  idImage              Int         @id @default(autoincrement())
+  cheminImage          String
+  idProduit            Int
+  produit              produit     @relation(fields: [idProduit], references: [idProduit])
 }
 
-model Temoinage {
-  id              Int       @id @default(autoincrement())
-  nom             String
-  contenu         String
-  datePublication DateTime  @default(now())
+model service {
+  idService            Int         @id @default(autoincrement())
+  nomService           String
+  descriptionService   String?
 }
 
-model Utilisateur {
-  id          Int       @id @default(autoincrement())
-  nom         String
-  email       String    @unique
-  motDePasse  String 
+model messageContact {
+  idMessage            Int         @id @default(autoincrement())
+  nomClient            String
+  emailClient          String
+  message              String
+  dateEnvoi            DateTime
+  repondu              Boolean     @default(false)
+  telephone            String
 }
 
-model FAQ {
-  id       Int    @id @default(autoincrement())
-  question String
-  reponse  String
+model user {
+  id                  String      @id @default(uuid())
+  nom                 String
+  email               String      @unique
+  motDePasse          String
 }
-
-model Image {
-  id        Int       @id @default(autoincrement())
-  url       String
-  produit   Produit   @relation(fields: [produitId], references: [id])
-  produitId Int
-}
-
-

@@ -1,20 +1,28 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-// Fonction pour gérer les requêtes GET
-export async function getProduits() {
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    const produits = await prisma.produit.findMany({
-      include: {
-        categorie: true,
-        images: true,
-      },
+    const { id } = params;
+
+    const produit = await prisma.produit.findUnique({
+      where: { idProduit: parseInt(id) },
+      include: { images: true },
     });
-    return NextResponse.json(produits);
+
+    if (!produit) {
+      return NextResponse.json(
+        { error: "Produit non trouvé" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(produit);
   } catch (error) {
-    console.error("Error fetching produits:", error);
-    return NextResponse.json({
-      error: "Erreur lors de la récupération des produits",
-    });
+    console.error("Erreur lors de la récupération du produit :", error);
+    return NextResponse.error();
   }
 }

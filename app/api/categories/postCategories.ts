@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 // Fonction pour gérer les requêtes POST
 export async function postCategorie(req: Request) {
   try {
-    const { nom } = await req.json();
+    const { nomCategorie } = await req.json();
     const categorie = await prisma.categorie.create({
       data: {
-        nom,
+        nomCategorie,
       },
     });
 
