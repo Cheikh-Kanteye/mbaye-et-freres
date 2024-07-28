@@ -18,15 +18,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { Categorie } from "@/types";
 import SkeletonTable from "./SkeletonTable";
-import { Button } from "@/components/ui/button";
 import AddEntityBtn from "./AddEntityBtn";
 import { categorie_columns } from "./categorie_columns";
 import AddCategorieForm from "./AddCategorieForm";
-import { RiSearch2Line } from "react-icons/ri";
 import FilterSearch from "./FilterSearch";
+import { Input } from "@/components/ui/input";
 
 const CategorieList = ({
   data,
@@ -40,9 +38,25 @@ const CategorieList = ({
     []
   );
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+  const [searchTerm, setSearchTerm] = React.useState<string>("");
+  const filteredData = React.useMemo(() => {
+    let filtered = data;
+
+    if (searchTerm) {
+      filtered = filtered.filter((item) =>
+        item.nom.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    return filtered;
+  }, [data, searchTerm]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns: categorie_columns,
     state: {
       sorting,
@@ -60,9 +74,12 @@ const CategorieList = ({
   return (
     <section className="max-w-screen-lg mx-auto">
       <div className="flex justify-between items-center">
-        <FilterSearch<Categorie>
-          {...{ table }}
-          placeholder="Rechecher une categorie de produit..."
+        <Input
+          type="text"
+          placeholder="Rechercher une famille..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="w-fit"
         />
         <AddEntityBtn
           label="Ajouter categorie"

@@ -50,6 +50,14 @@ export const famille_columns: ColumnDef<Famille>[] = [
     ),
   },
   {
+    accessorKey: "categories",
+    header: "Catégories",
+    cell: ({ row }) => {
+      const categories = row.getValue("categories") as Famille["categories"];
+      return categories.nom;
+    },
+  },
+  {
     accessorKey: "nbProduits",
     header: "produits",
     cell: ({ row }) => {

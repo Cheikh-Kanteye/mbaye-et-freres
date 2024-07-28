@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
+import { cn } from "@/lib/utils";
 
 const fetchData = async (type: string) => {
   const res = await fetch(`/api/${type}`);
@@ -23,6 +24,7 @@ interface SelectDataProps {
   type: "categories" | "familles";
   placeholder?: string;
   label?: string;
+  className?: string;
   onChange: (value: string | undefined) => void; // Fonction pour gérer la sélection
   value: string | undefined; // ID de la valeur sélectionnée
 }
@@ -31,23 +33,27 @@ const SelectData = ({
   type,
   placeholder,
   label,
-  onChange,
   value,
+  className,
+  onChange,
 }: SelectDataProps) => {
   const { data, error, isPending, refetch } = useQuery({
     queryKey: [type],
     queryFn: () => fetchData(type),
   });
 
+  if (!data) return;
+
   // Trouver le nom correspondant à l'ID sélectionné
-  const selectedItem = data
-    ? data.find((item: { id: number }) => item.id === parseInt(value || ""))
-    : null;
+  const selectedItem = data.find(
+    (item: { id: number }) => item.id === parseInt(value || "")
+  );
+
   const displayValue = selectedItem?.nom || placeholder;
 
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-full">
+      <SelectTrigger className={cn("w-full", className)}>
         <SelectValue placeholder={placeholder || "Sélectionner une option"}>
           {displayValue}
         </SelectValue>
