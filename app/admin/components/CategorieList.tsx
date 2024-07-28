@@ -76,7 +76,7 @@ const CategorieList = ({
       <div className="flex justify-between items-center">
         <Input
           type="text"
-          placeholder="Rechercher une famille..."
+          placeholder="Rechercher une categorie..."
           value={searchTerm}
           onChange={handleSearchChange}
           className="w-fit"
