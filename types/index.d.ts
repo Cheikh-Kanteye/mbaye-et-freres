@@ -36,9 +36,20 @@ export type InfoCardProps = {
   description: string;
 };
 
+export interface Famille {
+  id: number;
+  nom: string;
+  categories: {
+    id: number;
+    nom: string;
+  };
+  produits: Produit[];
+}
+
 export interface Categorie {
   id: number;
   nom: string;
+  familles: Famille[];
 }
 
 export interface Image {
@@ -47,12 +58,10 @@ export interface Image {
   produitId: number;
 }
 
-export interface Produit {
-  id: number;
-  nom: string;
+interface Produit {
+  reference: string;
   description: string;
-  prix: number;
-  specifications: string;
-  categorie: Categorie;
-  images: Image[];
+  specifications: string[];
+  images: { id: int; url: string }[];
+  familles: Famille;
 }

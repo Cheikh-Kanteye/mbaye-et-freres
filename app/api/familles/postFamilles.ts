@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function postFamille(req: Request) {
   try {
     const { nom, idCategorie, description, guideUrl } = await req.json();
-    const famille = await prisma.famille.create({
+    const famille = await prisma.familles.create({
       data: {
         nom,
         idCategorie,

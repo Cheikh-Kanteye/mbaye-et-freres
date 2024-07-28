@@ -1,8 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import Image from "next/image";
-import { Produit } from "@/types";
+import { Categorie } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 
-export const product_colums: ColumnDef<Produit>[] = [
+export const categorie_columns: ColumnDef<Categorie>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -39,54 +38,36 @@ export const product_colums: ColumnDef<Produit>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "images",
-    header: "Images",
-    cell: ({ row }) => {
-      const images = row.getValue("images") as string[];
-      const firstImage =
-        images && images.length > 0 ? images[0] : "/images/fallback-image.jpg"; // URL de l'image de secours
-      return (
-        <Image
-          src={firstImage}
-          alt="Image du produit"
-          width={50}
-          height={50}
-          className="w-10 h-10 rounded-sm object-cover"
-        />
-      );
-    },
-  },
-  {
     accessorKey: "nom",
     header: "Nom",
     cell: ({ row }) => row.getValue("nom"),
   },
   {
-    accessorKey: "prix",
-    header: "Prix",
+    accessorKey: "description",
+    header: "description",
+    cell: ({ row }) => row.getValue("description"),
+  },
+  {
+    accessorKey: "nbFamilles",
+    header: "nombre de familles",
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue("prix"));
-      const formattedPrice = new Intl.NumberFormat("fr-FR", {
-        style: "currency",
-        currency: "XOF",
-      }).format(price);
-      return <div className="text-left">{formattedPrice}</div>;
+      const familles = row.original.familles;
+      return familles ? familles.length : 0;
     },
   },
   {
-    accessorKey: "familles",
-    header: "Familles",
+    accessorKey: "nbProduits",
+    header: "nombre de produits",
     cell: ({ row }) => {
-      const familles = row.getValue("familles") as Produit["familles"];
-      return familles.nom;
-    },
-  },
-  {
-    accessorKey: "categories",
-    header: "Catégories",
-    cell: ({ row }) => {
-      const famille = row.getValue("familles") as Produit["familles"];
-      return famille.categories.nom;
+      const familles = row.original.familles;
+      const nombreProduits = familles
+        ? familles.reduce(
+            (total, famille) =>
+              total + (famille.produits ? famille.produits.length : 0),
+            0
+          )
+        : 0;
+      return nombreProduits;
     },
   },
   {

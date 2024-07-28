@@ -7,6 +7,8 @@ import { Produit } from "@/types";
 
 const fetchProduits = async () => {
   const res = await fetch("/api/produits");
+  console.log(res);
+
   if (!res.ok) {
     throw new Error(`HTTP error! Status: ${res.status}`);
   }

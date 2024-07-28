@@ -19,18 +19,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Produit } from "@/types";
-import { product_colums } from "./product_colums";
+import { Categorie } from "@/types";
 import SkeletonTable from "./SkeletonTable";
 import { Button } from "@/components/ui/button";
 import AddEntityBtn from "./AddEntityBtn";
-import AddProduitForm from "./AddProduitForm";
+import { categorie_columns } from "./categorie_columns";
+import AddCategorieForm from "./AddCategorieForm";
 
-const ProductList = ({
+const CategorieList = ({
   data,
   pending,
 }: {
-  data: Produit[];
+  data: Categorie[];
   pending: Boolean;
 }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -41,7 +41,7 @@ const ProductList = ({
 
   const table = useReactTable({
     data,
-    columns: product_colums,
+    columns: categorie_columns,
     state: {
       sorting,
       columnFilters,
@@ -69,8 +69,11 @@ const ProductList = ({
           />
           <Button>Rechercher</Button>
         </div>
-        <AddEntityBtn label="Ajouter produit" desc="Ajouter un nouveau produit">
-          <AddProduitForm />
+        <AddEntityBtn
+          label="Ajouter categorie"
+          desc="Ajoute une nouvelle categorie"
+        >
+          <AddCategorieForm />
         </AddEntityBtn>
       </div>
       {!pending ? (
@@ -112,7 +115,7 @@ const ProductList = ({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={product_colums.length}
+                  colSpan={categorie_columns.length}
                   className="h-24 text-center"
                 >
                   Aucun résultat.
@@ -128,4 +131,4 @@ const ProductList = ({
   );
 };
 
-export default ProductList;
+export default CategorieList;

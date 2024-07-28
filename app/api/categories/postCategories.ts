@@ -3,10 +3,11 @@ import { NextResponse } from "next/server";
 
 export async function postCategorie(req: Request) {
   try {
-    const { nom } = await req.json();
-    const categorie = await prisma.categorie.create({
+    const { nom, description } = await req.json();
+    const categorie = await prisma.categories.create({
       data: {
         nom,
+        description,
       },
     });
 

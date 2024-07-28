@@ -7,11 +7,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { PropsWithChildren } from "react";
+import React from "react";
 
 import { FiPlus } from "react-icons/fi";
 
-const AddEntityBtn = ({ children }: PropsWithChildren) => {
+const AddEntityBtn = ({
+  children,
+  label,
+  desc,
+}: {
+  children: React.ReactNode;
+  label: string;
+  desc: string;
+}) => {
   return (
     <Dialog>
       <DialogTrigger
@@ -19,12 +27,12 @@ const AddEntityBtn = ({ children }: PropsWithChildren) => {
         asChild
       >
         <Button variant="outline">
-          <FiPlus size={18} /> Ajouter produit
+          <FiPlus size={18} /> {label}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Ajouter un nouveau produit</DialogTitle>
+          <DialogTitle>{desc}</DialogTitle>
           <DialogDescription>
             Remplissez les informations ci-dessous.
           </DialogDescription>

@@ -8,20 +8,20 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")  
 }
 
-model categorie {
+model categories {
   id          Int         @id @default(autoincrement())
   nom         String
   description String?
-  familles             famille[]
+  familles             familles[]
 }
 
-model famille {
+model familles {
   id            Int         @id @default(autoincrement())
   nom           String
   description   String?
   idCategorie          Int
   idGuide              Int?
-  categorie            categorie   @relation(fields: [idCategorie], references: [id])
+  categories            categories   @relation(fields: [idCategorie], references: [id])
   guideUrl             String?
   produits             produit[]
 }
@@ -33,7 +33,7 @@ model produit {
   idFamille     Int
   type          String
   specifications String[]    // Ajouter ce champ
-  famille       famille     @relation(fields: [idFamille], references: [id])
+  familles       familles     @relation(fields: [idFamille], references: [id])
   images        imageProduit[]
 }
 

@@ -3,20 +3,27 @@ import { NextResponse } from "next/server";
 
 export async function getProduits(req: Request) {
   try {
-    const produit = await prisma.produit.findMany({
-      include: { images: true },
+    const produits = await prisma.produit.findMany({
+      include: {
+        images: true,
+        familles: {
+          include: {
+            categories: true,
+          },
+        },
+      },
     });
 
-    if (!produit) {
+    if (produits.length === 0) {
       return NextResponse.json(
-        { error: "Produit non trouvé" },
-        { status: 404 }
+        { message: "Aucun produit trouvé" },
+        { status: 200 }
       );
     }
 
-    return NextResponse.json(produit);
+    return NextResponse.json(produits);
   } catch (error) {
-    console.error("Erreur lors de la récupération du produit :", error);
+    console.error("Erreur lors de la récupération des produits :", error);
     return NextResponse.error();
   }
 }

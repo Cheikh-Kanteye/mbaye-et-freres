@@ -4,7 +4,11 @@ import { NextResponse } from "next/server";
 // Fonction pour gérer les requêtes GET
 export async function getCategories() {
   try {
-    const categories = await prisma.categorie.findMany();
+    const categories = await prisma.categories.findMany({
+      include: {
+        familles: true,
+      },
+    });
     return NextResponse.json(categories);
   } catch (error) {
     console.error("Error fetching categories:", error);

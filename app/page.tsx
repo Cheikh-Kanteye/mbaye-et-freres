@@ -63,20 +63,19 @@ const Home: React.FC = () => {
           <ul className="gap-3 flex flex-wrap justify-center">
             {produits.map((produit, i) => (
               <li
-                key={produit.id || i}
+                key={produit.reference || i}
                 className="border rounded-sm p-3 w-[18rem] hover:bg-gradient-to-t from-primary-foreground to-background"
               >
-                <h2>{produit.nom}</h2>
+                <h2>{produit.reference}</h2>
                 <p>{produit.description}</p>
-                <p>Prix: {produit.prix} €</p>
                 <p>Specifications: {produit.specifications}</p>
-                <p>Categorie: {produit.categorie.nom}</p>
+                <p>Categorie: {produit.familles.categories.nom}</p>
                 <div>
                   {produit.images.map((image) => (
                     <Image
                       key={image.id}
                       src={image.url}
-                      alt={produit.nom}
+                      alt={"produit"}
                       width={100}
                     />
                   ))}
