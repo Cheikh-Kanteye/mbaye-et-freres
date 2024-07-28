@@ -1,16 +1,26 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useForm, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge"; // Assurez-vous d'avoir un composant Badge
+import { Badge } from "@/components/ui/badge";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import DropInput from "./DropInput";
-import SelectCategory from "./SelectCategory";
+import SelectData from "./SelectData";
+
+interface IFormInput {
+  reference: string;
+  description: string;
+  specifications: string[];
+  images: File[];
+}
 
 const AddProduitForm = () => {
+  const { register, handleSubmit, control, setValue, reset } =
+    useForm<IFormInput>();
   const [specifications, setSpecifications] = useState("");
   const [specsList, setSpecsList] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
 
   const handleSpecsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -18,22 +28,55 @@ const AddProduitForm = () => {
       const newSpecs = value.split(",").map((spec) => spec.trim());
       setSpecsList((prev) => [...prev, ...newSpecs.filter((spec) => spec)]);
       setSpecifications("");
+      setValue("specifications", [
+        ...specsList,
+        ...newSpecs.filter((spec) => spec),
+      ]);
     } else {
       setSpecifications(value);
     }
   };
 
   const removeSpec = (index: number) => {
-    setSpecsList((prev) => prev.filter((_, i) => i !== index));
+    const updatedSpecsList = specsList.filter((_, i) => i !== index);
+    setSpecsList(updatedSpecsList);
+    setValue("specifications", updatedSpecsList);
+  };
+
+  const handleDrop = (acceptedFiles: File[]) => {
+    setImages((prev) => [...prev, ...acceptedFiles]);
+    setValue("images", [...images, ...acceptedFiles]);
+  };
+
+  const onSubmit = async (data: IFormInput) => {
+    // Affiche les données du formulaire pour validation
+    console.log("Form data:", data);
+
+    reset();
+    setSpecifications("");
+    setSpecsList([]);
+    setImages([]);
   };
 
   return (
-    <form className="grid gap-4 py-4">
+    <form className="grid gap-4 py-4" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2">
-        <Input id="nom" defaultValue="" placeholder="Nom" />
+        <Input
+          id="reference"
+          {...register("reference", { required: true })}
+          placeholder="Référence (ex: 5102-AL)"
+        />
       </div>
-      <SelectCategory />
-      <SelectCategory />
+      <SelectData
+        type="categories"
+        placeholder="Sélectionner une catégorie"
+        label="Catégorie"
+      />
+      <SelectData
+        type="familles"
+        placeholder="Sélectionner une famille"
+        label="Famille"
+      />
       <div className="flex flex-col gap-2">
         <Input
           id="specification"
@@ -61,9 +104,26 @@ const AddProduitForm = () => {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <Textarea id="description" defaultValue="" placeholder="Description" />
+        <Textarea
+          id="description"
+          {...register("description")}
+          placeholder="Description"
+        />
       </div>
-      <DropInput />
+      <Controller
+        control={control}
+        name="images"
+        render={({ field }) => (
+          <DropInput
+            reset={false}
+            images={images}
+            handleDrop={(acceptedFiles: File[]) => {
+              handleDrop(acceptedFiles);
+              field.onChange(acceptedFiles);
+            }}
+          />
+        )}
+      />
       <DialogFooter>
         <Button type="submit">Ajouter</Button>
       </DialogFooter>

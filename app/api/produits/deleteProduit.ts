@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function deleteProduit(req: Request, id: string) {
   try {
     await prisma.produit.delete({
-      where: { idProduit: parseInt(id) },
+      where: { id: parseInt(id) },
     });
 
     return NextResponse.json({ message: "Produit supprimé" });

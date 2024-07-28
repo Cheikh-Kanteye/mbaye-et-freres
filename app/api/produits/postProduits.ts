@@ -35,13 +35,7 @@ async function uploadToCloudinary(filePath: string) {
 export async function postProduits(req: Request) {
   try {
     const { fields, files } = await parseForm(req);
-    const {
-      nomProduit,
-      descriptionProduit,
-      referenceProduit,
-      idFamille,
-      typeProduit,
-    } = fields;
+    const { description, reference, idFamille, type } = fields;
 
     // Traitez les fichiers
     const fileUploads = Object.values(files).map(async (file: any) => {
@@ -59,14 +53,13 @@ export async function postProduits(req: Request) {
     // Créer un produit dans la base de données
     const produit = await prisma.produit.create({
       data: {
-        nomProduit,
-        descriptionProduit,
-        referenceProduit,
+        description,
+        reference,
         idFamille,
-        typeProduit,
+        type,
         images: {
           create: imageUrls.map((url) => ({
-            cheminImage: url as string,
+            url: url as string,
           })),
         },
       },

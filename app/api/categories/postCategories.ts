@@ -1,17 +1,14 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-// Fonction pour gérer les requêtes POST
 export async function postCategorie(req: Request) {
   try {
-    const { nomCategorie } = await req.json();
+    const { nom } = await req.json();
     const categorie = await prisma.categorie.create({
       data: {
-        nomCategorie,
+        nom,
       },
     });
-
-    console.log("categorie:", categorie);
 
     return NextResponse.json(categorie);
   } catch (error) {

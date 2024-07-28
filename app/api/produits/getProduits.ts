@@ -1,10 +1,9 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function getProduits(req: Request, id: string) {
+export async function getProduits(req: Request) {
   try {
-    const produit = await prisma.produit.findUnique({
-      where: { idProduit: parseInt(id) },
+    const produit = await prisma.produit.findMany({
       include: { images: true },
     });
 

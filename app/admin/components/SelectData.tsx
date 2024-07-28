@@ -11,34 +11,34 @@ import {
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 
-// Fonction pour récupérer les catégories
-const fetchCategories = async () => {
-  const res = await fetch("/api/categories");
+const fetchData = async (type: string) => {
+  const res = await fetch(`/api/${type}`);
   if (!res.ok) {
-    throw new Error("Erreur lors de la récupération des catégories");
+    throw new Error(`Erreur lors de la récupération des ${type}`);
   }
   return res.json();
 };
 
-const SelectCategory = () => {
-  const {
-    data: categories,
-    error,
-    isPending,
-    refetch,
-  } = useQuery({
-    queryKey: ["categories"],
-    queryFn: fetchCategories,
+interface SelectDataProps {
+  type: "categories" | "familles";
+  placeholder?: string;
+  label?: string;
+}
+
+const SelectData = ({ type, placeholder, label }: SelectDataProps) => {
+  const { data, error, isPending, refetch } = useQuery({
+    queryKey: [type],
+    queryFn: () => fetchData(type),
   });
 
   return (
     <Select>
       <SelectTrigger className="w-full">
-        <SelectValue placeholder="Sélectionner une catégorie" />
+        <SelectValue placeholder={placeholder || "Sélectionner une option"} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Catégorie</SelectLabel>
+          <SelectLabel>{label || "Options"}</SelectLabel>
           {isPending ? (
             <SelectItem value="null" disabled>
               Chargement...
@@ -54,14 +54,14 @@ const SelectCategory = () => {
                 recharger
               </Button>
             </SelectItem>
-          ) : !categories && !categories.length ? (
+          ) : !data || !data.length ? (
             <SelectItem value="null" disabled>
-              Aucune categorie a afficher
+              Aucune donnée à afficher
             </SelectItem>
           ) : (
-            categories.map((category: { id: string; nom: string }) => (
-              <SelectItem key={category.id} value={category.nom}>
-                {category.nom}
+            data.map((item: { id: string; nom: string }) => (
+              <SelectItem key={item.id} value={item.nom}>
+                {item.nom}
               </SelectItem>
             ))
           )}
@@ -71,4 +71,4 @@ const SelectCategory = () => {
   );
 };
 
-export default SelectCategory;
+export default SelectData;

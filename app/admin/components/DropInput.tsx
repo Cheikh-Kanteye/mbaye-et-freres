@@ -1,15 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Upload } from "lucide-react";
 import Dropzone from "react-dropzone";
 import Image from "next/image";
 
-const DropInput = () => {
-  const [images, setImages] = useState<File[]>([]);
+interface DropInputProps {
+  reset: boolean;
+  images: File[];
+  handleDrop: (acceptedFiles: File[]) => void;
+}
 
-  const handleDrop = (acceptedFiles: File[]) => {
-    setImages((prevImages) => [...prevImages, ...acceptedFiles]);
-  };
+const DropInput: React.FC<DropInputProps> = ({ reset, images, handleDrop }) => {
+  useEffect(() => {
+    if (reset) {
+      handleDrop([]);
+    }
+  }, [reset, handleDrop]);
 
   return (
     <div>

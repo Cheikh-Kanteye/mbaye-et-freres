@@ -9,49 +9,50 @@ datasource db {
 }
 
 model categorie {
-  idCategorie          Int         @id @default(autoincrement())
-  nomCategorie         String
-  descriptionCategorie String?
+  id          Int         @id @default(autoincrement())
+  nom         String
+  description String?
   familles             famille[]
 }
 
 model famille {
-  idFamille            Int         @id @default(autoincrement())
-  nomFamille           String
-  descriptionFamille   String?
+  id            Int         @id @default(autoincrement())
+  nom           String
+  description   String?
   idCategorie          Int
   idGuide              Int?
-  categorie            categorie   @relation(fields: [idCategorie], references: [idCategorie])
+  categorie            categorie   @relation(fields: [idCategorie], references: [id])
   guideUrl             String?
   produits             produit[]
 }
 
 model produit {
-  idProduit            Int         @id @default(autoincrement())
-  nomProduit           String
-  descriptionProduit   String?
-  referenceProduit     String      @unique
-  idFamille            Int
-  typeProduit          String
-  famille              famille     @relation(fields: [idFamille], references: [idFamille])
-  images               imageProduit[]
+  id            Int         @id @default(autoincrement())
+  description   String?
+  reference     String      @unique
+  idFamille     Int
+  type          String
+  specifications String[]    // Ajouter ce champ
+  famille       famille     @relation(fields: [idFamille], references: [id])
+  images        imageProduit[]
 }
 
+
 model imageProduit {
-  idImage              Int         @id @default(autoincrement())
-  cheminImage          String
+  id              Int         @id @default(autoincrement())
+  url          String
   idProduit            Int
-  produit              produit     @relation(fields: [idProduit], references: [idProduit])
+  produit              produit     @relation(fields: [idProduit], references: [id])
 }
 
 model service {
-  idService            Int         @id @default(autoincrement())
-  nomService           String
-  descriptionService   String?
+  id            Int         @id @default(autoincrement())
+  nom           String
+  description   String?
 }
 
 model messageContact {
-  idMessage            Int         @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   nomClient            String
   emailClient          String
   message              String
