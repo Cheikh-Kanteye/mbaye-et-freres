@@ -23,7 +23,6 @@ import SkeletonTable from "./SkeletonTable";
 import AddEntityBtn from "./AddEntityBtn";
 import { categorie_columns } from "./categorie_columns";
 import AddCategorieForm from "./AddCategorieForm";
-import FilterSearch from "./FilterSearch";
 import { Input } from "@/components/ui/input";
 
 const CategorieList = ({

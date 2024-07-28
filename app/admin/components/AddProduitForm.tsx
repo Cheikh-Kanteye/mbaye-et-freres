@@ -13,6 +13,7 @@ interface IFormInput {
   description: string;
   specifications: string[];
   images: File[];
+  idFamille: number;
 }
 
 const AddProduitForm = () => {
@@ -21,6 +22,13 @@ const AddProduitForm = () => {
   const [specifications, setSpecifications] = useState("");
   const [specsList, setSpecsList] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
+  const [selectedFamille, setSelectedFamille] = React.useState<string>();
+
+  const handleFamilleChange = (value: string | undefined) => {
+    setSelectedFamille(value);
+    setValue("idFamille", parseInt(value!));
+    console.log(selectedFamille);
+  };
 
   const handleSpecsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -71,6 +79,8 @@ const AddProduitForm = () => {
         type="familles"
         placeholder="Sélectionner une famille"
         label="Famille"
+        value={selectedFamille}
+        onChange={handleFamilleChange}
       />
       <div className="flex flex-col gap-2">
         <Input
