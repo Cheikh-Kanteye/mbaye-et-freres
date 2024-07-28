@@ -6,26 +6,6 @@ import { Produit } from "@/types";
 import Image from "next/image";
 
 const Home: React.FC = () => {
-  const [produits, setProduits] = useState<Produit[]>([]);
-
-  useEffect(() => {
-    async function fetchProduits() {
-      console.log("fetching...");
-      try {
-        const res = await fetch("/api/produits");
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        const data: Produit[] = await res.json();
-        setProduits(data);
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching produits:", error);
-      }
-    }
-    fetchProduits();
-  }, []);
-
   return (
     <main className="min-h-screen bg-background">
       <section className="home-banner w-dvw h-[50vh] flex items-center justify-center">
@@ -54,35 +34,6 @@ const Home: React.FC = () => {
               description={card.description}
             />
           ))}
-        </div>
-      </section>
-
-      <section className="container py-6">
-        <div>
-          <h1 className="mb-3 text-2xl">Liste des Produits (testing)</h1>
-          <ul className="gap-3 flex flex-wrap justify-center">
-            {produits.map((produit, i) => (
-              <li
-                key={produit.reference || i}
-                className="border rounded-sm p-3 w-[18rem] hover:bg-gradient-to-t from-primary-foreground to-background"
-              >
-                <h2>{produit.reference}</h2>
-                <p>{produit.description}</p>
-                <p>Specifications: {produit.specifications}</p>
-                <p>Categorie: {produit.familles.categories.nom}</p>
-                <div>
-                  {produit.images.map((image) => (
-                    <Image
-                      key={image.id}
-                      src={image.url}
-                      alt={"produit"}
-                      width={100}
-                    />
-                  ))}
-                </div>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
     </main>
