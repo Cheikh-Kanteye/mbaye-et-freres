@@ -164,6 +164,13 @@
 .home-banner {
   background-image: var(--bg), var(--img-url);
   background-repeat: no-repeat;
-  background-size: 100dvw 100%;
+  background-size: cover;
   background-position: center;
+}
+
+@media screen and (max-width: 1024px) {
+  .home-banner,
+  .about {
+    background-size: 100dvw 100%;
+  }
 }
