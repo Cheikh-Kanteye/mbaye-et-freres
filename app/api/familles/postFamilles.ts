@@ -9,7 +9,7 @@ export async function postFamille(req: Request) {
         nom,
         idCategorie,
         description,
-        guideUrl,
+        // guideUrl,
       },
     });
 

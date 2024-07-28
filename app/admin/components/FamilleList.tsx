@@ -18,18 +18,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Produit } from "@/types";
-import { product_colums } from "./product_colums";
+import { Famille } from "@/types";
 import SkeletonTable from "./SkeletonTable";
 import AddEntityBtn from "./AddEntityBtn";
-import AddProduitForm from "./AddProduitForm";
-import SelectData from "./SelectData";
+import { famille_columns } from "./famille_columns";
+import AddFamilleForm from "./AddFamilleForm";
+import FilterSearch from "./FilterSearch";
 
-const ProductList = ({
+const FamilleList = ({
   data,
   pending,
 }: {
-  data: Produit[];
+  data: Famille[];
   pending: Boolean;
 }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -37,12 +37,10 @@ const ProductList = ({
     []
   );
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
-  const [selectedCategorie, setSelectedCategorie] = React.useState<string>();
-  const [selectedFamille, setSelectedFamille] = React.useState<string>();
 
   const table = useReactTable({
     data,
-    columns: product_colums,
+    columns: famille_columns,
     state: {
       sorting,
       columnFilters,
@@ -56,37 +54,18 @@ const ProductList = ({
     getSortedRowModel: getSortedRowModel(),
   });
 
-  const handleCategorieChange = (value: string | undefined) => {
-    setSelectedCategorie(value!);
-    table.getColumn("categorie")?.setFilterValue(value || "");
-  };
-
-  const handleFamilleChange = (value: string | undefined) => {
-    setSelectedFamille(value!);
-    table.getColumn("famille")?.setFilterValue(value || "");
-  };
-
   return (
     <section className="max-w-screen-lg mx-auto">
-      <div className="flex justify-between gap-2 items-center">
-        <div className="flex flex-1 items-center py-4 gap-2">
-          <SelectData
-            type="categories"
-            placeholder="Filtrer par catégorie"
-            label="Catégorie"
-            onChange={handleCategorieChange}
-            value={selectedCategorie}
-          />
-          <SelectData
-            type="familles"
-            placeholder="Filtrer par famille"
-            label="Famille"
-            onChange={handleFamilleChange}
-            value={selectedFamille}
-          />
-        </div>
-        <AddEntityBtn label="Ajouter produit" desc="Ajouter un nouveau produit">
-          <AddProduitForm />
+      <div className="flex justify-between items-center">
+        <FilterSearch<Famille>
+          {...{ table }}
+          placeholder="Rechecher une familles de produit..."
+        />
+        <AddEntityBtn
+          label="Ajouter famille"
+          desc="Ajoute une nouvelle famille"
+        >
+          <AddFamilleForm />
         </AddEntityBtn>
       </div>
       {!pending ? (
@@ -110,7 +89,11 @@ const ProductList = ({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="items-center">
+                <TableRow
+                  key={row.id}
+                  // data-state={row.getIsSelected() && "selected"}
+                  className="items-center"
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell className="text-left" key={cell.id}>
                       {flexRender(
@@ -124,7 +107,7 @@ const ProductList = ({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={product_colums.length}
+                  colSpan={famille_columns.length}
                   className="h-24 text-center"
                 >
                   Aucun résultat.
@@ -140,4 +123,4 @@ const ProductList = ({
   );
 };
 
-export default ProductList;
+export default FamilleList;

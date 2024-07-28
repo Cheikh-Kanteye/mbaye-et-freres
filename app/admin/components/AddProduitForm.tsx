@@ -68,11 +68,6 @@ const AddProduitForm = () => {
         />
       </div>
       <SelectData
-        type="categories"
-        placeholder="Sélectionner une catégorie"
-        label="Catégorie"
-      />
-      <SelectData
         type="familles"
         placeholder="Sélectionner une famille"
         label="Famille"

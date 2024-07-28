@@ -26,6 +26,7 @@ import AddEntityBtn from "./AddEntityBtn";
 import { categorie_columns } from "./categorie_columns";
 import AddCategorieForm from "./AddCategorieForm";
 import { RiSearch2Line } from "react-icons/ri";
+import FilterSearch from "./FilterSearch";
 
 const CategorieList = ({
   data,
@@ -59,20 +60,10 @@ const CategorieList = ({
   return (
     <section className="max-w-screen-lg mx-auto">
       <div className="flex justify-between items-center">
-        <div className="flex items-center py-4 gap-1">
-          <Input
-            placeholder="Filtrer les produits..."
-            value={(table.getColumn("nom")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("nom")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-          <Button>
-            <RiSearch2Line className="block sm:hidden" />{" "}
-            <p className="hidden sm:block">Rechercher</p>
-          </Button>
-        </div>
+        <FilterSearch<Categorie>
+          {...{ table }}
+          placeholder="Rechecher une categorie de produit..."
+        />
         <AddEntityBtn
           label="Ajouter categorie"
           desc="Ajoute une nouvelle categorie"

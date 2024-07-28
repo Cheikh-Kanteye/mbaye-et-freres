@@ -1,9 +1,4 @@
 "use client";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 import ProfileButton from "./ProfileButton";
 import Link from "next/link";
 import {
@@ -38,6 +33,10 @@ const menus = [
     href: "/admin/categories",
   },
   {
+    name: "Familles",
+    href: "/admin/familles",
+  },
+  {
     name: "Services",
     href: "/admin/services",
   },
@@ -56,10 +55,10 @@ const Header = () => {
         <span className="logo-section-1">Mbaye &</span>
         <span className="p-1">Frères</span>
       </Link>
-      <NavigationMenu className="hidden md:block">
-        <NavigationMenuList>
+      <nav className="hidden lg:block">
+        <ul className="flex gap-2 items-center">
           {menus.map((menu, i) => (
-            <NavigationMenuItem key={i}>
+            <li key={i}>
               <Link
                 href={menu.href}
                 className={`hover:bg-accent cursor-pointer p-2 rounded-sm hover:text-accent-foreground ${
@@ -68,13 +67,13 @@ const Header = () => {
               >
                 {menu.name}
               </Link>
-            </NavigationMenuItem>
+            </li>
           ))}
-        </NavigationMenuList>
-      </NavigationMenu>
+        </ul>
+      </nav>
       <div className="flex gap-2 items-center">
-        <SearchInput className="hidden w-fit md:flex" />
-        <div className="block md:hidden">
+        <SearchInput className="hidden w-fit lg:flex" />
+        <div className="block lg:hidden">
           <Popover>
             <PopoverTrigger>
               <div className="flex items-center justify-center p-2 rounded-full focus:outline-none transition bg-primary-foreground">
@@ -86,7 +85,7 @@ const Header = () => {
             </PopoverContent>
           </Popover>
         </div>
-        <div className="block md:hidden">
+        <div className="block lg:hidden">
           <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger className="bg-primary-foreground text-foreground p-2 aspect-square rounded-full">
               <RiMenu4Line />

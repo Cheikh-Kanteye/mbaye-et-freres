@@ -1,9 +1,6 @@
 "use client";
 import InfoCard from "@/components/InfoCard";
 import { infoCards } from "@/constants/contacts";
-import { useEffect, useState } from "react";
-import { Produit } from "@/types";
-import Image from "next/image";
 
 const Home: React.FC = () => {
   return (

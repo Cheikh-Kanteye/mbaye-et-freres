@@ -23,18 +23,34 @@ interface SelectDataProps {
   type: "categories" | "familles";
   placeholder?: string;
   label?: string;
+  onChange: (value: string | undefined) => void; // Fonction pour gérer la sélection
+  value: string | undefined; // ID de la valeur sélectionnée
 }
 
-const SelectData = ({ type, placeholder, label }: SelectDataProps) => {
+const SelectData = ({
+  type,
+  placeholder,
+  label,
+  onChange,
+  value,
+}: SelectDataProps) => {
   const { data, error, isPending, refetch } = useQuery({
     queryKey: [type],
     queryFn: () => fetchData(type),
   });
 
+  // Trouver le nom correspondant à l'ID sélectionné
+  const selectedItem = data
+    ? data.find((item: { id: number }) => item.id === parseInt(value || ""))
+    : null;
+  const displayValue = selectedItem?.nom || placeholder;
+
   return (
-    <Select>
+    <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-full">
-        <SelectValue placeholder={placeholder || "Sélectionner une option"} />
+        <SelectValue placeholder={placeholder || "Sélectionner une option"}>
+          {displayValue}
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
@@ -51,7 +67,7 @@ const SelectData = ({ type, placeholder, label }: SelectDataProps) => {
                 variant={"ghost"}
                 className="underline"
               >
-                recharger
+                Recharger
               </Button>
             </SelectItem>
           ) : !data || !data.length ? (
@@ -60,7 +76,7 @@ const SelectData = ({ type, placeholder, label }: SelectDataProps) => {
             </SelectItem>
           ) : (
             data.map((item: { id: string; nom: string }) => (
-              <SelectItem key={item.id} value={item.nom}>
+              <SelectItem key={item.id} value={item.id}>
                 {item.nom}
               </SelectItem>
             ))
