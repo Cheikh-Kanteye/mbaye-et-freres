@@ -25,6 +25,7 @@ import SkeletonTable from "./SkeletonTable";
 import { Button } from "@/components/ui/button";
 import AddEntityBtn from "./AddEntityBtn";
 import AddProduitForm from "./AddProduitForm";
+import { RiSearch2Line } from "react-icons/ri";
 
 const ProductList = ({
   data,
@@ -67,7 +68,10 @@ const ProductList = ({
             }
             className="max-w-sm"
           />
-          <Button>Rechercher</Button>
+          <Button>
+            <RiSearch2Line className="block sm:hidden" />{" "}
+            <p className="hidden sm:block">Rechercher</p>
+          </Button>
         </div>
         <AddEntityBtn label="Ajouter produit" desc="Ajouter un nouveau produit">
           <AddProduitForm />

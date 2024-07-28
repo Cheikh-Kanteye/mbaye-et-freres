@@ -45,11 +45,13 @@ export const categorie_columns: ColumnDef<Categorie>[] = [
   {
     accessorKey: "description",
     header: "description",
-    cell: ({ row }) => row.getValue("description"),
+    cell: ({ row }) => (
+      <p className="line-clamp-2">{row.getValue("description")}</p>
+    ),
   },
   {
     accessorKey: "nbFamilles",
-    header: "nombre de familles",
+    header: "familles",
     cell: ({ row }) => {
       const familles = row.original.familles;
       return familles ? familles.length : 0;
@@ -57,7 +59,7 @@ export const categorie_columns: ColumnDef<Categorie>[] = [
   },
   {
     accessorKey: "nbProduits",
-    header: "nombre de produits",
+    header: "produits",
     cell: ({ row }) => {
       const familles = row.original.familles;
       const nombreProduits = familles

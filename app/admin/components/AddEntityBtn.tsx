@@ -27,7 +27,7 @@ const AddEntityBtn = ({
         asChild
       >
         <Button variant="outline">
-          <FiPlus size={18} /> {label}
+          <FiPlus size={18} /> <p className="hidden sm:block">{label}</p>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
