@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
+import { Categorie, Famille } from "@/types";
 
 const fetchData = async (type: string) => {
   const res = await fetch(`/api/${type}`);
@@ -37,10 +38,12 @@ const SelectData = ({
   className,
   onChange,
 }: SelectDataProps) => {
-  const { data, error, isPending, refetch } = useQuery({
-    queryKey: [type],
-    queryFn: () => fetchData(type),
-  });
+  const { data, error, isPending, refetch } = useQuery<Categorie[] | Famille[]>(
+    {
+      queryKey: [type],
+      queryFn: () => fetchData(type),
+    }
+  );
 
   if (!data) return;
 
@@ -81,8 +84,8 @@ const SelectData = ({
               Aucune donnée à afficher
             </SelectItem>
           ) : (
-            data.map((item: { id: string; nom: string }) => (
-              <SelectItem key={item.id} value={item.id}>
+            data.map((item) => (
+              <SelectItem key={item.id} value={item.id.toString()}>
                 {item.nom}
               </SelectItem>
             ))
