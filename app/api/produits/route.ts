@@ -3,6 +3,8 @@ import { getProduits } from "./getProduits";
 import { postProduits } from "./postProduits";
 
 export async function POST(req: Request) {
+  console.log(req.body);
+
   return postProduits(req);
 }
 

@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
 import cloudinary from "@/lib/cloudinary";
 import fs from "fs";
+import path from "path";
 import { NextResponse } from "next/server";
-import parseForm from "./parseForm";
 
 export const config = {
   api: {
@@ -10,7 +10,7 @@ export const config = {
   },
 };
 
-async function uploadToCloudinary(filePath: string) {
+async function uploadToCloudinary(filePath: string): Promise<string> {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload(
       filePath,
@@ -23,9 +23,10 @@ async function uploadToCloudinary(filePath: string) {
       },
       (error, result) => {
         if (error) {
-          reject(error);
+          console.log("Cloudinary error:", error);
+          reject("Cloudinary error: " + error);
         } else {
-          resolve(result?.secure_url);
+          resolve(result?.secure_url as string);
         }
       }
     );
@@ -34,40 +35,71 @@ async function uploadToCloudinary(filePath: string) {
 
 export async function postProduits(req: Request) {
   try {
-    const { fields, files } = await parseForm(req);
-    const { description, reference, idFamille, type } = fields;
+    const formData = await req.formData();
+    const fields: any = {};
+    const files: any = [];
 
-    // Traitez les fichiers
-    const fileUploads = Object.values(files).map(async (file: any) => {
-      const filePath = file.filepath; // Chemin temporaire
-      const imageUrl = await uploadToCloudinary(filePath);
+    formData.forEach((value, key) => {
+      if (value instanceof File) {
+        files.push(value);
+      } else {
+        fields[key] = value;
+      }
+    });
 
-      // Supprimer le fichier temporaire après upload
-      fs.unlinkSync(filePath);
+    console.log("Fields:", fields);
+    console.log("Files:", files);
 
-      return imageUrl;
+    const { description, reference, idFamille, specifications } = fields;
+
+    const tempDir = path.join(__dirname, "tmp");
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+
+    const fileUploads = files.map(async (file: any) => {
+      try {
+        const filePath = path.join(tempDir, file.name);
+        await fs.promises.writeFile(
+          filePath,
+          Buffer.from(await file.arrayBuffer())
+        );
+        const imageUrl = await uploadToCloudinary(filePath);
+        await fs.promises.unlink(filePath);
+        return imageUrl;
+      } catch (error) {
+        console.error("File upload error:", error);
+        throw error;
+      }
     });
 
     const imageUrls = await Promise.all(fileUploads);
 
-    // Créer un produit dans la base de données
+    console.log("Image URLs:", imageUrls);
+
     const produit = await prisma.produit.create({
       data: {
         description,
         reference,
-        idFamille,
-        type,
+        idFamille: parseInt(idFamille, 10),
+        type: "produit",
+        specifications,
         images: {
-          create: imageUrls.map((url) => ({
-            url: url as string,
-          })),
+          create: imageUrls.map((url) => ({ url })),
         },
       },
     });
 
+    console.log("Produit créé:", produit);
+
     return NextResponse.json(produit);
-  } catch (error) {
-    console.error("Erreur lors de la création du produit :", error);
-    return NextResponse.error();
+  } catch (error: any) {
+    console.error("Erreur lors de la création du produit:", error);
+    return new Response(
+      JSON.stringify({ message: error.message || "Internal Server Error" }),
+      {
+        status: 500,
+      }
+    );
   }
 }

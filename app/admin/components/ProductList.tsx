@@ -76,6 +76,7 @@ const ProductList = ({
             label="Catégorie"
             onChange={handleCategorieChange}
             value={selectedCategorie}
+            className="w-fit"
           />
           <SelectData
             type="familles"
@@ -83,6 +84,7 @@ const ProductList = ({
             label="Famille"
             onChange={handleFamilleChange}
             value={selectedFamille}
+            className="w-fit"
           />
         </div>
         <AddEntityBtn label="Ajouter produit" desc="Ajouter un nouveau produit">

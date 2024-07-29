@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import DropInput from "./DropInput";
 import SelectData from "./SelectData";
+import Loader from "./Loader";
 
 interface IFormInput {
   reference: string;
@@ -22,12 +24,11 @@ const AddProduitForm = () => {
   const [specifications, setSpecifications] = useState("");
   const [specsList, setSpecsList] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
-  const [selectedFamille, setSelectedFamille] = React.useState<string>();
+  const [selectedFamille, setSelectedFamille] = useState<string>();
 
   const handleFamilleChange = (value: string | undefined) => {
     setSelectedFamille(value);
-    setValue("idFamille", parseInt(value!));
-    console.log(selectedFamille);
+    setValue("idFamille", parseInt(value!, 10));
   };
 
   const handleSpecsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,14 +57,43 @@ const AddProduitForm = () => {
     setValue("images", [...images, ...acceptedFiles]);
   };
 
-  const onSubmit = async (data: IFormInput) => {
-    // Affiche les données du formulaire pour validation
-    console.log("Form data:", data);
+  const mutation = useMutation({
+    mutationFn: async (data: FormData) => {
+      const response = await fetch("/api/produits", {
+        method: "POST",
+        body: data,
+      });
 
-    reset();
-    setSpecifications("");
-    setSpecsList([]);
-    setImages([]);
+      if (!response.ok) {
+        throw new Error("Failed to create product");
+      }
+
+      return response.json();
+    },
+  });
+
+  const onSubmit = async (data: IFormInput) => {
+    const formData = new FormData();
+    formData.append("description", data.description);
+    formData.append("reference", data.reference);
+    formData.append("idFamille", data.idFamille.toString());
+    formData.append("type", "produit");
+
+    data.images.forEach((image) => {
+      formData.append("images", image);
+    });
+
+    console.log({ data });
+
+    try {
+      await mutation.mutateAsync(formData);
+      reset();
+      setSpecifications("");
+      setSpecsList([]);
+      setImages([]);
+    } catch (error) {
+      console.error("Erreur lors de la création du produit :", error);
+    }
   };
 
   return (
@@ -130,7 +160,9 @@ const AddProduitForm = () => {
         )}
       />
       <DialogFooter>
-        <Button type="submit">Ajouter</Button>
+        <Button type="submit" disabled={mutation.isPending}>
+          {mutation.isPending ? <Loader /> : "Ajouter"}
+        </Button>
       </DialogFooter>
     </form>
   );

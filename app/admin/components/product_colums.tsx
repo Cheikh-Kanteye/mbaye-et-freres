@@ -44,11 +44,13 @@ export const product_colums: ColumnDef<Produit>[] = [
     cell: ({ row }) => {
       const images = row.getValue("images") as string[];
       const firstImage =
-        images && images.length > 0 ? images[0] : "/images/fallback-image.jpg"; // URL de l'image de secours
+        images && images.length > 0
+          ? images[0].url
+          : "/images/fallback-image.jpg"; // URL de l'image de secours
       return (
         <Image
           src={firstImage}
-          alt="Image du produit"
+          alt="Image"
           width={50}
           height={50}
           className="w-10 h-10 rounded-sm object-cover"
@@ -57,21 +59,9 @@ export const product_colums: ColumnDef<Produit>[] = [
     },
   },
   {
-    accessorKey: "nom",
-    header: "Nom",
-    cell: ({ row }) => row.getValue("nom"),
-  },
-  {
-    accessorKey: "prix",
-    header: "Prix",
-    cell: ({ row }) => {
-      const price = parseFloat(row.getValue("prix"));
-      const formattedPrice = new Intl.NumberFormat("fr-FR", {
-        style: "currency",
-        currency: "XOF",
-      }).format(price);
-      return <div className="text-left">{formattedPrice}</div>;
-    },
+    accessorKey: "reference",
+    header: "Reference",
+    cell: ({ row }) => row.getValue("reference"),
   },
   {
     accessorKey: "familles",
