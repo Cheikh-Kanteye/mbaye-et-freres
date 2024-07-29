@@ -42,7 +42,7 @@ export const product_colums: ColumnDef<Produit>[] = [
     accessorKey: "images",
     header: "Images",
     cell: ({ row }) => {
-      const images = row.getValue("images") as string[];
+      const images = row.getValue("images") as { url: string }[];
       const firstImage =
         images && images.length > 0
           ? images[0].url
