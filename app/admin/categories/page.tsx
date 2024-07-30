@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Categorie } from "@/types";
+import { Categorie, CategorieWFamille } from "@/types";
 import CategorieList from "../components/CategorieList";
 
 const fetchCategories = async () => {
@@ -18,7 +18,7 @@ const Categories = () => {
     data: categories,
     error,
     isPending,
-  } = useQuery<Categorie[], Error>({
+  } = useQuery<CategorieWFamille[], Error>({
     queryKey: ["categories"],
     queryFn: fetchCategories,
   });

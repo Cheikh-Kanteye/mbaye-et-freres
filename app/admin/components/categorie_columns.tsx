@@ -1,7 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Categorie } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
+import { CategorieWFamille } from "@/types";
 
-export const categorie_columns: ColumnDef<Categorie>[] = [
+export const categorie_columns: ColumnDef<CategorieWFamille>[] = [
   {
     id: "select",
     header: ({ table }) => (

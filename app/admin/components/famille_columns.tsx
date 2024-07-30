@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Famille } from "@/types";
+import { Famille, FamilleWCategorie } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 
-export const famille_columns: ColumnDef<Famille>[] = [
+export const famille_columns: ColumnDef<FamilleWCategorie>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -53,7 +53,9 @@ export const famille_columns: ColumnDef<Famille>[] = [
     accessorKey: "categories",
     header: "Catégories",
     cell: ({ row }) => {
-      const categories = row.getValue("categories") as Famille["categories"];
+      const categories = row.getValue(
+        "categories"
+      ) as FamilleWCategorie["categories"];
       return categories.nom;
     },
   },

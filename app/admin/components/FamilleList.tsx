@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Famille } from "@/types";
+import { Famille, FamilleWCategorie } from "@/types";
 import SkeletonTable from "./SkeletonTable";
 import AddEntityBtn from "./AddEntityBtn";
 import { famille_columns } from "./famille_columns";
@@ -30,7 +30,7 @@ const FamilleList = ({
   data,
   pending,
 }: {
-  data: Famille[];
+  data: FamilleWCategorie[];
   pending: Boolean;
 }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);

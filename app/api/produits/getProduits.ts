@@ -1,3 +1,4 @@
+import { familles } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -5,7 +6,7 @@ export async function getProduits(req: Request) {
   try {
     const produits = await prisma.produit.findMany({
       include: {
-        images: true,
+        images: true, 
         familles: {
           include: {
             categories: true,

@@ -3,15 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import { Produit } from "@/types";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
+import ActionMenu from "./ActionMenu";
 
 export const product_colums: ColumnDef<Produit>[] = [
   {
@@ -82,25 +74,6 @@ export const product_colums: ColumnDef<Produit>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => {
-      const product = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>Modifier</DropdownMenuItem>
-            <DropdownMenuItem>Supprimer</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Voir les details du produit</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({row}) => <ActionMenu row={row as never} type="produits"/>,
   },
 ];

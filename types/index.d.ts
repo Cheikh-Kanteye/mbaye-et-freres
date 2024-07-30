@@ -7,7 +7,7 @@ declare type SocialIconProps = {
   className?: string;
 };
 
-declare type SocialIconsProps = {
+export type SocialIconsProps = {
   faq?: bool;
   separator?: bool;
   className?: string;
@@ -36,32 +36,49 @@ export type InfoCardProps = {
   description: string;
 };
 
-export interface Famille {
+export type Categorie = {
   id: number;
   nom: string;
-  categories: {
-    id: number;
-    nom: string;
-  };
-  produits: Produit[];
-}
+  description: string | null;
+};
 
-export interface Categorie {
+export type Famille = {
   id: number;
   nom: string;
+  description: string | null;
+  idCategorie: number;
+  idGuide: number | null;
+  guideUrl: string | null;
+  produits?: Produit[];
+};
+
+interface CategorieWFamille extends Categorie {
   familles: Famille[];
 }
 
-export interface Image {
-  id: number;
-  url: string;
-  produitId: number;
+interface FamilleWCategorie extends Famille {
+  categories: Categorie;
 }
 
-interface Produit {
+export { CategorieWFamille, FamilleWCategorie };
+
+export type Image = {
+  id: number;
+  url: string;
+  idProduit: number;
+};
+
+export type Produit = {
+  id: number;
+  description: string | null;
   reference: string;
-  description: string;
+  idFamille: number;
+  type: string;
   specifications: string[];
-  images: { id: int; url: string }[];
-  familles: Famille;
-}
+  images: Image[];
+  _count: {
+    familles: number;
+    images: number;
+  };
+  familles: FamilleWCategorie;
+};

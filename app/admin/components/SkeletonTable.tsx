@@ -35,7 +35,7 @@ const SkeletonTable = () => {
 
             {/* Colonne Prix */}
             <TableCell>
-              <Skeleton className="h-4 w-[100px]" />
+              <Skeleton className="h-4 w-[130px]" />
             </TableCell>
 
             {/* Colonne Catégorie */}

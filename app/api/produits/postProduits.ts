@@ -52,6 +52,20 @@ export async function postProduits(req: Request) {
 
     const { description, reference, idFamille, specifications } = fields;
 
+    // Vérifier si la référence existe déjà
+    const existingProduit = await prisma.produit.findUnique({
+      where: { reference },
+    });
+
+    if (existingProduit) {
+      return new Response(
+        JSON.stringify({ message: "La référence existe déjà" }),
+        {
+          status: 400,
+        }
+      );
+    }
+
     const tempDir = path.join(__dirname, "tmp");
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });

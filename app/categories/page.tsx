@@ -1,4 +1,3 @@
-// pages/categories.tsx
 import { categories } from "@/constants/categories";
 import Image from "next/image";
 import Link from "next/link";

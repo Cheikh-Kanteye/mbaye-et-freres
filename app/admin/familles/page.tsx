@@ -3,7 +3,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import FamilleList from "../components/FamilleList";
-import { Famille } from "@/types";
+import { Famille, FamilleWCategorie } from "@/types";
 
 const fetchFamilles = async () => {
   const res = await fetch("/api/familles");
@@ -18,7 +18,7 @@ const Familles = () => {
     data: familles,
     error,
     isPending,
-  } = useQuery<Famille[], Error>({
+  } = useQuery<FamilleWCategorie[], Error>({
     queryKey: ["familles"],
     queryFn: fetchFamilles,
   });
