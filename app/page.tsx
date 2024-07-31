@@ -2,9 +2,10 @@ import InfoCard from "@/components/InfoCard";
 import ProductGridList from "@/components/ProductGridList";
 import { infoCards } from "@/constants/contacts";
 import prisma from "@/lib/prisma";
+import { Produit } from "@/types";
 
 const Home = async () => {
-  const produits = await prisma?.produit.findMany();
+  const produits = (await prisma?.produit.findMany()) as Produit[];
   return (
     <main className="min-h-screen bg-background">
       <section className="home-banner w-dvw h-[50vh] flex items-center justify-center">
