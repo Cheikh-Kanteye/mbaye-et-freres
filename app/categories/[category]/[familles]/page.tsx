@@ -1,10 +1,24 @@
 "use client";
 import { useEffect, useState } from "react";
 import { fetchProduits } from "../../_actions";
-import { produit as Produit } from "@prisma/client";
 import ProductGridList from "@/components/ProductGridList";
+import { Produit } from "@/types";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import Loader from "@/components/Loader";
 
-const FamillesPage = ({ params }: { params: { familles: string } }) => {
+const FamillesPage = ({
+  params,
+}: {
+  params: { category: string; familles: string };
+}) => {
+  const nomCategory = params.category.replace(/-/g, " ");
   const nomFamille = params.familles.replace(/-/g, " ");
   const [produits, setProduits] = useState<Produit[]>([]);
   const [pending, setPending] = useState(false);
@@ -15,23 +29,41 @@ const FamillesPage = ({ params }: { params: { familles: string } }) => {
       .then((result) => {
         console.log({ result });
 
-        setProduits(result);
+        setProduits(result as Produit[]);
       })
       .finally(() => {
         setPending(false);
       });
   }, [nomFamille]);
 
-  if (pending)
-    return (
-      <div className="min-h-screen max-w-screen-xl mx-auto p-4">Loading...</div>
-    );
-
   return (
     <main className="min-h-screen max-w-screen-xl mx-auto p-4">
-      <div className="grid grid-cols-4">
-        <ProductGridList produits={produits} />
+      <div>
+        <Breadcrumb>
+          <BreadcrumbList className="text-lg">
+            <BreadcrumbItem>
+              <Link href={"/categories"}>Categories</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <Link href={`/categories/${nomCategory}`}>{nomCategory}</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{nomFamille}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
+      {pending ? (
+        <div className="w-full h-[60dvh] grid place-content-center">
+          <Loader color="red" size={32} />
+        </div>
+      ) : (
+        <div className="grid grid-cols-4">
+          <ProductGridList produits={produits} />
+        </div>
+      )}
     </main>
   );
 };

@@ -15,7 +15,7 @@ export const fetchProduits = async (nomFamille: string) => {
     });
 
     if (!famille) {
-      throw new Error("Famille non trouvée");
+      throw new Error("Produits non trouvée");
     }
 
     // Trouver les produits associés à cette famille

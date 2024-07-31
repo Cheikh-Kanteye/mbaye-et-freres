@@ -75,7 +75,8 @@ export type Produit = {
   idFamille: number;
   type: string;
   specifications: string[];
-  images: Image[];
+  image_url: string;
+  public_id: string;
   _count: {
     familles: number;
     images: number;
