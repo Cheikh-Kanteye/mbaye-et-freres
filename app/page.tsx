@@ -1,8 +1,10 @@
-"use client";
 import InfoCard from "@/components/InfoCard";
+import ProductGridList from "@/components/ProductGridList";
 import { infoCards } from "@/constants/contacts";
+import prisma from "@/lib/prisma";
 
-const Home: React.FC = () => {
+const Home = async () => {
+  const produits = await prisma?.produit.findMany();
   return (
     <main className="min-h-screen bg-background">
       <section className="home-banner w-dvw h-[50vh] flex items-center justify-center">
@@ -34,9 +36,9 @@ const Home: React.FC = () => {
         </div>
       </section>
       <section>
-        <div className="container mt-8">
+        <div className="container flex-col mt-8">
           <h2 className="text-2xl font-bold mb-4">Nos produits</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+          <ProductGridList produits={produits} />
         </div>
       </section>
     </main>

@@ -31,22 +31,20 @@ export const product_colums: ColumnDef<produit>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "images",
-    header: "Images",
+    accessorKey: "image_url",
+    header: "Image",
     cell: ({ row }) => {
-      const images = row.getValue("images") as { url: string }[];
-      const firstImage =
-        images && images.length > 0
-          ? images[0].url
-          : "/images/fallback-image.jpg"; // URL de l'image de secours
+      const image_url = row.getValue("image_url") as string;
       return (
-        <Image
-          src={firstImage}
-          alt="Image"
-          width={50}
-          height={50}
-          className="w-10 h-10 rounded-sm object-cover"
-        />
+        <div className="w-[50px] aspect-square grid place-content-center bg-accent overflow-hidden rounded-sm">
+          <Image
+            src={image_url || "/images/fallback-img"}
+            alt="Image"
+            width={50}
+            height={50}
+            className="w-10 h-10 rounded-sm object-contain"
+          />
+        </div>
       );
     },
   },

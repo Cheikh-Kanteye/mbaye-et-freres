@@ -1,10 +1,8 @@
 "use client";
-
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { fetchProduits } from "../../_actions";
-import ProductCard from "@/app/admin/components/ProductCard";
 import { produit as Produit } from "@prisma/client";
+import ProductGridList from "@/components/ProductGridList";
 
 const FamillesPage = ({ params }: { params: { familles: string } }) => {
   const nomFamille = params.familles.replace(/-/g, " ");
@@ -32,9 +30,7 @@ const FamillesPage = ({ params }: { params: { familles: string } }) => {
   return (
     <main className="min-h-screen max-w-screen-xl mx-auto p-4">
       <div className="grid grid-cols-4">
-        {produits.map((produit) => (
-          <ProductCard produit={produit} key={produit.id} />
-        ))}
+        <ProductGridList produits={produits} />
       </div>
     </main>
   );

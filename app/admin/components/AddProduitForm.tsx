@@ -160,9 +160,6 @@ const AddProduitForm = () => {
             onChange={handleSpecsChange}
             placeholder="Spécifications (séparées par des virgules)"
           />
-          <Button type="button" onClick={addFinalSpecification}>
-            Ajouter Spécification
-          </Button>
           {errors.specifications && (
             <p className="text-red-500 text-sm">
               Les spécifications sont requises
