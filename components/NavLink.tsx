@@ -9,6 +9,7 @@ import {
 } from "./ui/navigation-menu";
 import { Button } from "./ui/button";
 import { CategoryParams } from "@/types";
+import Link from "next/link";
 
 interface NavLinkProps {
   title: string;
@@ -31,12 +32,12 @@ const NavLink: React.FC<NavLinkProps> = ({ title, href, items }) => {
                       key={index}
                       className="whitespace-nowrap p-1 border-b border-primary-foreground w-full"
                     >
-                      <NavigationMenuLink
+                      <Link
                         className="text-base hover:underline hover:text-primary"
                         href={`/categories/${href}/${item.href}`}
                       >
                         {item.name}
-                      </NavigationMenuLink>
+                      </Link>
                     </li>
                   ))}
                 </ul>

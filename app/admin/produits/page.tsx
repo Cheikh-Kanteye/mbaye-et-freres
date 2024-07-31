@@ -4,6 +4,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import ProductList from "../components/ProductList";
 import { Produit } from "@/types";
+import { produit } from "@prisma/client";
 
 const fetchProduits = async () => {
   const res = await fetch("/api/produits");
@@ -20,7 +21,7 @@ const Produits = () => {
     data: produits,
     error,
     isPending,
-  } = useQuery<Produit[], Error>({
+  } = useQuery<produit[], Error>({
     queryKey: ["produits"],
     queryFn: fetchProduits,
   });

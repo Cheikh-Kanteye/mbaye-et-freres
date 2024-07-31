@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { fetchProduits } from "../../_actions";
 import ProductCard from "@/app/admin/components/ProductCard";
-import { Produit } from "@/types";
+import { produit as Produit } from "@prisma/client";
 
 const FamillesPage = ({ params }: { params: { familles: string } }) => {
   const nomFamille = params.familles.replace(/-/g, " ");

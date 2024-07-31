@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import cloudinary from "@/lib/cloudinary";
 
 export async function deleteProduit(req: Request) {
   try {
@@ -23,10 +23,12 @@ export async function deleteProduit(req: Request) {
       return NextResponse.json({ error: "ID invalide" }, { status: 400 });
     }
 
-    // Supprimer les images associées
-    await prisma.imageProduit.deleteMany({
-      where: { idProduit: idNumber },
+    const produit = await prisma.produit.findUnique({
+      where: { id: idNumber },
     });
+
+    //supprimer l'image sur cloudinary
+    if (produit) await cloudinary.uploader.destroy(produit.public_id);
 
     // Supprimer le produit
     await prisma.produit.delete({

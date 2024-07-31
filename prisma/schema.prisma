@@ -3,67 +3,60 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL")  
-  directUrl = env("POSTGRES_URL_NON_POOLING")  
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model categories {
-  id          Int         @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   nom         String
   description String?
-  familles             familles[]
+  familles    familles[]
 }
 
 model familles {
-  id            Int         @id @default(autoincrement())
-  nom           String
-  description   String?
-  idCategorie          Int
-  idGuide              Int?
-  categories            categories   @relation(fields: [idCategorie], references: [id])
-  guideUrl             String?
-  produits             produit[]
+  id          Int        @id @default(autoincrement())
+  nom         String
+  description String?
+  idCategorie Int
+  idGuide     Int?
+  categories  categories @relation(fields: [idCategorie], references: [id])
+  guideUrl    String?
+  produits    produit[]
 }
 
 model produit {
-  id            Int         @id @default(autoincrement())
-  description   String?
-  reference     String      @unique
-  idFamille     Int
-  type          String
-  specifications String[]    // Ajouter ce champ
-  familles       familles     @relation(fields: [idFamille], references: [id])
-  images        imageProduit[]
-}
-
-
-model imageProduit {
-  id              Int         @id @default(autoincrement())
-  url          String
-  idProduit            Int
-  produit              produit     @relation(fields: [idProduit], references: [id])
+  id             Int      @id @default(autoincrement())
+  description    String?
+  reference      String   @unique
+  idFamille      Int
+  type           String
+  specifications String[]
+  familles       familles @relation(fields: [idFamille], references: [id])
+  public_id      String   @unique
+  image_url      String
 }
 
 model service {
-  id            Int         @id @default(autoincrement())
-  nom           String
-  description   String?
+  id          Int     @id @default(autoincrement())
+  nom         String
+  description String?
 }
 
 model messageContact {
-  id            Int         @id @default(autoincrement())
-  nomClient            String
-  emailClient          String
-  message              String
-  dateEnvoi            DateTime
-  repondu              Boolean     @default(false)
-  telephone            String
+  id          Int      @id @default(autoincrement())
+  nomClient   String
+  emailClient String
+  message     String
+  dateEnvoi   DateTime
+  repondu     Boolean  @default(false)
+  telephone   String
 }
 
 model user {
-  id                  String      @id @default(uuid())
-  nom                 String
-  email               String      @unique
-  motDePasse          String
+  id         String @id @default(uuid())
+  nom        String
+  email      String @unique
+  motDePasse String
 }

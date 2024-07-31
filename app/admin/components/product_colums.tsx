@@ -1,11 +1,11 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import { Produit } from "@/types";
 import ActionMenu from "./ActionMenu";
+import { produit } from "@prisma/client";
 
-export const product_colums: ColumnDef<Produit>[] = [
+export const product_colums: ColumnDef<produit>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -74,6 +74,6 @@ export const product_colums: ColumnDef<Produit>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({row}) => <ActionMenu row={row as never} type="produits"/>,
+    cell: ({ row }) => <ActionMenu row={row as never} type="produits" />,
   },
 ];

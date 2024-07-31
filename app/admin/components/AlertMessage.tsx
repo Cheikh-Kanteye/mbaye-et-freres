@@ -1,34 +1,43 @@
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-interface ErrorDialogProps {
+interface AlertMessageProps {
   open: boolean;
   onClose: () => void;
-  errorMessage: string;
+  message: string;
+  type?: "success" | "error";
 }
 
-const ErrorDialog: React.FC<ErrorDialogProps> = ({
+const AlertMessage: React.FC<AlertMessageProps> = ({
   open,
   onClose,
-  errorMessage,
+  message,
+  type = "success",
 }) => {
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Alert</AlertDialogTitle>
+          <AlertDialogTitle>
+            {type === "success" ? "Succès" : "Erreur"}
+          </AlertDialogTitle>
         </AlertDialogHeader>
-        <p className="text-destructive text-sm">{errorMessage}</p>
+        <p
+          className={
+            type === "success"
+              ? "text-success text-sm"
+              : "text-destructive text-sm"
+          }
+        >
+          {message}
+        </p>
         <AlertDialogFooter>
           <AlertDialogCancel asChild>
             <Button
@@ -44,4 +53,4 @@ const ErrorDialog: React.FC<ErrorDialogProps> = ({
   );
 };
 
-export default ErrorDialog;
+export default AlertMessage;

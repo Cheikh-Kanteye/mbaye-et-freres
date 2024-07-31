@@ -24,8 +24,6 @@ export const fetchProduits = async (nomFamille: string) => {
         idFamille: famille.id,
       },
       include: {
-        images: true,
-        _count: true,
         familles: {
           include: {
             categories: true,

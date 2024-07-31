@@ -11,7 +11,8 @@ import { useRouter } from "next/navigation";
 import { slugify } from "@/utils/slugify"; // Assurez-vous que slugify est bien importé
 import { DrawerClose } from "./ui/drawer";
 import { useQuery } from "@tanstack/react-query";
-import { Categorie, CategorieWFamille } from "@/types";
+import { CategorieWFamille } from "@/types";
+import Link from "next/link";
 
 const fetchCategories = async () => {
   const response = await fetch("/api/categories");
@@ -62,12 +63,12 @@ const SubCategories: React.FC = () => {
                   {category.familles.map((sub) => (
                     <li key={sub.id} className="capitalize">
                       <DrawerClose asChild>
-                        <a
+                        <Link
                           href={generateSubCategoryHref(category.nom, sub.nom)}
                           className="hover:text-primary py-1 capitalize hover:underline"
                         >
                           {sub.nom}
-                        </a>
+                        </Link>
                       </DrawerClose>
                     </li>
                   ))}

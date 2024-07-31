@@ -1,10 +1,6 @@
-import { Loader2 } from 'lucide-react'
-import React from 'react'
+import { SyncLoader } from "react-spinners";
+const Loader = ({ color = "white", size = 10 }) => {
+  return <SyncLoader color={color} size={size} />;
+};
 
-const Loader = () => {
-  return (
-    <Loader2 className='animate-spin' size={24}/>
-  )
-}
-
-export default Loader
+export default Loader;

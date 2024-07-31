@@ -10,7 +10,9 @@ export const config = {
   },
 };
 
-async function uploadToCloudinary(filePath: string): Promise<string> {
+async function uploadToCloudinary(
+  filePath: string
+): Promise<{ url: string; public_id: string }> {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload(
       filePath,
@@ -26,7 +28,10 @@ async function uploadToCloudinary(filePath: string): Promise<string> {
           console.log("Cloudinary error:", error);
           reject("Cloudinary error: " + error);
         } else {
-          resolve(result?.secure_url as string);
+          resolve({
+            url: result?.secure_url as string,
+            public_id: result?.public_id as string,
+          });
         }
       }
     );
@@ -78,9 +83,9 @@ export async function postProduits(req: Request) {
           filePath,
           Buffer.from(await file.arrayBuffer())
         );
-        const imageUrl = await uploadToCloudinary(filePath);
+        const { url, public_id } = await uploadToCloudinary(filePath);
         await fs.promises.unlink(filePath);
-        return imageUrl;
+        return { url, public_id };
       } catch (error) {
         console.error("File upload error:", error);
         throw error;
@@ -97,10 +102,13 @@ export async function postProduits(req: Request) {
         reference,
         idFamille: parseInt(idFamille, 10),
         type: "produit",
-        specifications,
-        images: {
-          create: imageUrls.map((url) => ({ url })),
-        },
+        specifications: Array.isArray(specifications)
+          ? specifications
+          : specifications
+          ? specifications.split(",")
+          : [],
+        public_id: imageUrls[0]?.public_id || "", // Assumons que chaque produit a une seule image principale
+        image_url: imageUrls[0]?.url || "", // Assumons que chaque produit a une seule image principale
       },
     });
 

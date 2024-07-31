@@ -18,19 +18,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Produit } from "@/types";
 import { product_colums } from "./product_colums";
 import SkeletonTable from "./SkeletonTable";
 import AddEntityBtn from "./AddEntityBtn";
 import AddProduitForm from "./AddProduitForm";
 import SelectData from "./SelectData";
+import { produit } from "@prisma/client";
 
 const ProductList = ({
   data,
   pending,
 }: {
-  data: Produit[];
-  pending: Boolean;
+  data: produit[];
+  pending: boolean;
 }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(

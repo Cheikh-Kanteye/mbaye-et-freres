@@ -1,6 +1,5 @@
 import * as React from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -17,10 +16,8 @@ import { ScrollArea } from "./ui/scroll-area";
 const CategorieBtn = ({ children }: React.PropsWithChildren) => {
   return (
     <Drawer direction="left">
-      <DrawerTrigger asChild>
-        <Button className="p-0" variant="ghost">
-          {children}
-        </Button>
+      <DrawerTrigger className="cursor-pointer" asChild>
+        {children}
       </DrawerTrigger>
 
       <DrawerContent

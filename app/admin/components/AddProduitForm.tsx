@@ -9,30 +9,37 @@ import { Button } from "@/components/ui/button";
 import DropInput from "./DropInput";
 import SelectData from "./SelectData";
 import Loader from "./Loader";
-import ErrorDialog from "./ErrorDialog";
+import AlertMessage from "./AlertMessage";
 
 interface IFormInput {
   reference: string;
-  description: string;
+  description?: string;
   specifications: string[];
   images: File[];
   idFamille: number;
 }
 
 const AddProduitForm = () => {
-  const { register, handleSubmit, control, setValue, reset } =
-    useForm<IFormInput>();
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<IFormInput>();
   const [specifications, setSpecifications] = useState("");
   const [specsList, setSpecsList] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
-  const [selectedFamille, setSelectedFamille] = useState<string>();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [selectedFamille, setSelectedFamille] = useState<string | undefined>();
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [alertType, setAlertType] = useState<"success" | "error">("error");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const handleFamilleChange = (value: string | undefined) => {
     setSelectedFamille(value);
-    setValue("idFamille", parseInt(value!, 10));
+    setValue("idFamille", parseInt(value || "0", 10), { shouldValidate: true });
   };
 
   const handleSpecsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,24 +48,34 @@ const AddProduitForm = () => {
       const newSpecs = value.split(",").map((spec) => spec.trim());
       setSpecsList((prev) => [...prev, ...newSpecs.filter((spec) => spec)]);
       setSpecifications("");
-      setValue("specifications", [
-        ...specsList,
-        ...newSpecs.filter((spec) => spec),
-      ]);
+      setValue(
+        "specifications",
+        [...specsList, ...newSpecs.filter((spec) => spec)],
+        { shouldValidate: true }
+      );
     } else {
       setSpecifications(value);
+    }
+  };
+
+  const addFinalSpecification = () => {
+    if (specifications.trim()) {
+      const newSpecsList = [...specsList, specifications.trim()];
+      setSpecsList(newSpecsList);
+      setValue("specifications", newSpecsList, { shouldValidate: true });
+      setSpecifications(""); // Clear the input field after adding
     }
   };
 
   const removeSpec = (index: number) => {
     const updatedSpecsList = specsList.filter((_, i) => i !== index);
     setSpecsList(updatedSpecsList);
-    setValue("specifications", updatedSpecsList);
+    setValue("specifications", updatedSpecsList, { shouldValidate: true });
   };
 
   const handleDrop = (acceptedFiles: File[]) => {
     setImages((prev) => [...prev, ...acceptedFiles]);
-    setValue("images", [...images, ...acceptedFiles]);
+    setValue("images", [...images, ...acceptedFiles], { shouldValidate: true });
   };
 
   const mutation = useMutation({
@@ -77,19 +94,30 @@ const AddProduitForm = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["produits"] });
+      setAlertType("success");
+      setAlertMessage("Produit créé avec succès");
+      setIsDialogOpen(true);
+      reset();
+      setSpecifications("");
+      setSpecsList([]);
+      setImages([]);
     },
     onError: (error: Error) => {
-      setErrorMessage(error.message);
+      setAlertType("error");
+      setAlertMessage(error.message);
       setIsDialogOpen(true);
     },
   });
 
   const onSubmit = async (data: IFormInput) => {
     const formData = new FormData();
-    formData.append("description", data.description);
+    formData.append("description", data.description || "");
     formData.append("reference", data.reference);
     formData.append("idFamille", data.idFamille.toString());
     formData.append("type", "produit");
+
+    // Ajouter les spécifications comme un JSON stringifié
+    formData.append("specifications", JSON.stringify(data.specifications));
 
     data.images.forEach((image) => {
       formData.append("images", image);
@@ -97,10 +125,6 @@ const AddProduitForm = () => {
 
     try {
       await mutation.mutateAsync(formData);
-      reset();
-      setSpecifications("");
-      setSpecsList([]);
-      setImages([]);
     } catch (error) {
       console.error("Erreur lors de la création du produit :", error);
     }
@@ -112,9 +136,12 @@ const AddProduitForm = () => {
         <div className="flex flex-col gap-2">
           <Input
             id="reference"
-            {...register("reference", { required: true })}
+            {...register("reference", { required: "La référence est requise" })}
             placeholder="Référence (ex: 5102-AL)"
           />
+          {errors.reference && (
+            <p className="text-red-500 text-sm">{errors.reference.message}</p>
+          )}
         </div>
         <SelectData
           type="familles"
@@ -123,6 +150,9 @@ const AddProduitForm = () => {
           value={selectedFamille}
           onChange={handleFamilleChange}
         />
+        {errors.idFamille && (
+          <p className="text-red-500 text-sm">La famille est requise</p>
+        )}
         <div className="flex flex-col gap-2">
           <Input
             id="specification"
@@ -130,6 +160,14 @@ const AddProduitForm = () => {
             onChange={handleSpecsChange}
             placeholder="Spécifications (séparées par des virgules)"
           />
+          <Button type="button" onClick={addFinalSpecification}>
+            Ajouter Spécification
+          </Button>
+          {errors.specifications && (
+            <p className="text-red-500 text-sm">
+              Les spécifications sont requises
+            </p>
+          )}
           <div className="flex flex-wrap gap-2">
             {specsList.map((spec, index) => (
               <Badge
@@ -159,6 +197,7 @@ const AddProduitForm = () => {
         <Controller
           control={control}
           name="images"
+          rules={{ required: "Au moins une image est requise" }}
           render={({ field }) => (
             <DropInput
               reset={false}
@@ -170,16 +209,20 @@ const AddProduitForm = () => {
             />
           )}
         />
+        {errors.images && (
+          <p className="text-red-500 text-sm">{errors.images.message}</p>
+        )}
         <DialogFooter>
           <Button type="submit" disabled={mutation.isPending}>
             {mutation.isPending ? <Loader /> : "Ajouter"}
           </Button>
         </DialogFooter>
       </form>
-      <ErrorDialog
+      <AlertMessage
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-        errorMessage={errorMessage || "Une erreur est survenue"}
+        message={alertMessage || "Une erreur est survenue"}
+        type={alertType}
       />
     </>
   );

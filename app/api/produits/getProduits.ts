@@ -6,7 +6,6 @@ export async function getProduits(req: Request) {
   try {
     const produits = await prisma.produit.findMany({
       include: {
-        images: true, 
         familles: {
           include: {
             categories: true,
