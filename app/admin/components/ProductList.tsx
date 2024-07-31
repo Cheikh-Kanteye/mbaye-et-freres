@@ -37,11 +37,34 @@ const ProductList = ({
     []
   );
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
-  const [selectedCategorie, setSelectedCategorie] = React.useState<string>();
-  const [selectedFamille, setSelectedFamille] = React.useState<string>();
+  const [selectedCategorie, setSelectedCategorie] = React.useState<
+    string | undefined
+  >("");
+  const [selectedFamille, setSelectedFamille] = React.useState<
+    string | undefined
+  >("");
+
+  // Filtrage des données par catégorie et famille
+  const filteredData = React.useMemo(() => {
+    let filtered = data;
+
+    if (selectedCategorie) {
+      filtered = filtered.filter(
+        (item) => item.id === parseInt(selectedCategorie)
+      );
+    }
+
+    if (selectedFamille) {
+      filtered = filtered.filter(
+        (item) => item.idFamille === parseInt(selectedFamille)
+      );
+    }
+
+    return filtered;
+  }, [data, selectedCategorie, selectedFamille]);
 
   const table = useReactTable({
-    data,
+    data: filteredData, // Utiliser les données filtrées
     columns: product_colums,
     state: {
       sorting,
@@ -57,13 +80,13 @@ const ProductList = ({
   });
 
   const handleCategorieChange = (value: string | undefined) => {
-    setSelectedCategorie(value!);
-    table.getColumn("categorie")?.setFilterValue(value || "");
+    setSelectedCategorie(value);
+    console.log({ selectedCategorie: value });
   };
 
   const handleFamilleChange = (value: string | undefined) => {
-    setSelectedFamille(value!);
-    table.getColumn("famille")?.setFilterValue(value || "");
+    setSelectedFamille(value);
+    console.log({ selectedFamille: value });
   };
 
   return (

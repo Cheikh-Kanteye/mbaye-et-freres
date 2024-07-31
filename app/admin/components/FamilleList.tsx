@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Famille, FamilleWCategorie } from "@/types";
+import { FamilleWCategorie } from "@/types";
 import SkeletonTable from "./SkeletonTable";
 import AddEntityBtn from "./AddEntityBtn";
 import { famille_columns } from "./famille_columns";

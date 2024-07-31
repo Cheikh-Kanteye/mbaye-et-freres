@@ -47,15 +47,21 @@ const SelectData = ({
 
   if (!data) return;
 
+  const options = [{ id: -1, nom: "Tout" }, ...data];
+
   // Trouver le nom correspondant à l'ID sélectionné
-  const selectedItem = data.find(
-    (item: { id: number }) => item.id === parseInt(value || "")
-  );
+  const selectedItem = options.find((item) => item.id.toString() === value);
 
   const displayValue = selectedItem?.nom || placeholder;
 
   return (
-    <Select value={value} onValueChange={onChange}>
+    <Select
+      value={value}
+      onValueChange={(newValue) => {
+        onChange(newValue === "-1" ? undefined : newValue);
+        console.log({ selectedItem });
+      }}
+    >
       <SelectTrigger className={cn("w-full", className)}>
         <SelectValue placeholder={placeholder || "Sélectionner une option"}>
           {displayValue}
@@ -79,12 +85,12 @@ const SelectData = ({
                 Recharger
               </Button>
             </SelectItem>
-          ) : !data || !data.length ? (
+          ) : !options || !options.length ? (
             <SelectItem value="null" disabled>
               Aucune donnée à afficher
             </SelectItem>
           ) : (
-            data.map((item) => (
+            options.map((item) => (
               <SelectItem key={item.id} value={item.id.toString()}>
                 {item.nom}
               </SelectItem>
