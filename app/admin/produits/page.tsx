@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import ProductList from "../components/ProductList";
+import ProductList from "../_components/ProductList";
 import { Produit } from "@/types";
 import { produit } from "@prisma/client";
 

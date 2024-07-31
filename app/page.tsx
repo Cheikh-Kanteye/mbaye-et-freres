@@ -5,7 +5,15 @@ import prisma from "@/lib/prisma";
 import { Produit } from "@/types";
 
 const Home = async () => {
-  const produits = (await prisma?.produit.findMany()) as Produit[];
+  const produits = (await prisma?.produit.findMany({
+    include: {
+      familles: {
+        include: {
+          categories: true,
+        },
+      },
+    },
+  })) as Produit[];
   return (
     <main className="min-h-screen bg-background">
       <section className="home-banner w-dvw h-[50vh] flex items-center justify-center">

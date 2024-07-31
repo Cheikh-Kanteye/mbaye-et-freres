@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import FamilleList from "../components/FamilleList";
+import FamilleList from "../_components/FamilleList";
 import { Famille, FamilleWCategorie } from "@/types";
 
 const fetchFamilles = async () => {

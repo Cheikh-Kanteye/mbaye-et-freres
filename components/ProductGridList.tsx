@@ -1,5 +1,4 @@
-import { produit } from "@prisma/client";
-import React from "react";
+import { useEffect } from "react";
 import ProductCard from "./ProductCard";
 import { Produit } from "@/types";
 
@@ -10,6 +9,9 @@ const ProductGridList = ({ produits }: { produits: Produit[] | undefined }) => {
         <p>Aucune produit a afficher</p>
       </section>
     );
+
+  console.log(produits[0]);
+
   return (
     <section className="py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {produits.map((produit) => (

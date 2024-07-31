@@ -1,13 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Produit } from "@/types";
+import Produits from "@/app/admin/produits/page";
 
 const ProductCard = ({ produit }: { produit: Produit }) => {
-  const [famille, setFamille] = useState<any>(null);
-
   return (
     <div className="w-[18rem] h-[20rem] bg-slate-50 rounded-lg overflow-hidden">
       <div className="w-full h-[60%]">
@@ -20,10 +18,12 @@ const ProductCard = ({ produit }: { produit: Produit }) => {
         />
       </div>
       <div className="p-4 h-[40%] flex flex-col gap-3 justify-items-center text-center">
-        <p className="text-lg">
-          <span className="text-sm">{produit.familles.categories.nom}: </span>
-          {produit.familles.nom}
-        </p>
+        {produit.familles && (
+          <p className="text-lg">
+            <span className="text-sm">{produit.familles.categories.nom}: </span>
+            {produit.familles.nom}
+          </p>
+        )}
         <Button className="hover:bg-primary hover:text-primary-foreground rounded-full self-center shadow-lg bg-background text-foreground">
           <Link href={`/produit/${produit.id}`}>BMB-{produit.reference}</Link>
         </Button>

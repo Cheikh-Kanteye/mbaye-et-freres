@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const CategoriesPage: React.FC = () => {
+const Categories = () => {
   return (
     <main className="min-h-screen">
       <div className="w-full h-[150px] grid place-content-center bg-primary-foreground">
@@ -49,4 +49,4 @@ const CategoriesPage: React.FC = () => {
   );
 };
 
-export default CategoriesPage;
+export default Categories;
