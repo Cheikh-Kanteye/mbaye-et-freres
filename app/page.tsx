@@ -1,19 +1,35 @@
+"use client";
+
 import InfoCard from "@/components/InfoCard";
+import Loader from "@/components/Loader";
 import ProductGridList from "@/components/ProductGridList";
 import { infoCards } from "@/constants/contacts";
-import prisma from "@/lib/prisma";
 import { Produit } from "@/types";
+import { useQuery } from "@tanstack/react-query";
 
-const Home = async () => {
-  const produits = (await prisma?.produit.findMany({
-    include: {
-      familles: {
-        include: {
-          categories: true,
-        },
-      },
-    },
-  })) as Produit[];
+export const fetchProduits = async () => {
+  const response = await fetch("/api/produits");
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
+const Home = () => {
+  const {
+    data: produits,
+    isPending,
+    isError,
+    error,
+  } = useQuery<Produit[]>({
+    queryKey: ["produits"],
+    queryFn: fetchProduits,
+  });
+
+  if (isError) return <div>Error: {error.message}</div>;
+
   return (
     <main className="min-h-screen bg-background">
       <section className="home-banner w-dvw h-[50vh] flex items-center justify-center">
@@ -47,7 +63,11 @@ const Home = async () => {
       <section>
         <div className="container flex-col mt-8">
           <h2 className="text-2xl font-bold mb-4">Nos produits</h2>
-          <ProductGridList produits={produits} />
+          {isPending ? (
+            <Loader size={28} color="red" />
+          ) : (
+            <ProductGridList produits={produits} />
+          )}
         </div>
       </section>
     </main>

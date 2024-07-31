@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Produit } from "@/types";
-import Produits from "@/app/admin/produits/page";
 
 const ProductCard = ({ produit }: { produit: Produit }) => {
   return (
