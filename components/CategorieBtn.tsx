@@ -1,4 +1,4 @@
-import * as React from "react";
+"use client";
 import { AiOutlineClose } from "react-icons/ai";
 import {
   Drawer,
@@ -12,12 +12,22 @@ import {
 import SubCategories from "./SubCategories";
 import IconButton from "./IconButton";
 import { ScrollArea } from "./ui/scroll-area";
+import { RiBox3Line, RiMenuFill } from "react-icons/ri";
+import { useState } from "react";
+import { Button } from "./ui/button";
 
-const CategorieBtn = ({ children }: React.PropsWithChildren) => {
+const CategorieBtn = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <Drawer direction="left">
-      <DrawerTrigger className="cursor-pointer" asChild>
-        {children}
+    <Drawer direction="left" open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <Button
+          className="flex items-center gap-1 text-lg text-foreground"
+          onClick={() => setOpen(true)}
+          variant={"ghost"}
+        >
+          <RiBox3Line size={22} /> Tous les categories
+        </Button>
       </DrawerTrigger>
 
       <DrawerContent

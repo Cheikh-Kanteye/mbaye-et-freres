@@ -1,7 +1,5 @@
 "use client";
-
 import IconButton from "./IconButton";
-import ProductBar from "./ProductBar";
 import SearchInput from "./SearchInput";
 import {
   RiMenu4Line,
@@ -23,7 +21,10 @@ import {
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import CategorieBtn from "./CategorieBtn";
+import { NavigationMenu, NavigationMenuItem } from "./ui/navigation-menu";
+import { NavigationMenuList } from "@radix-ui/react-navigation-menu";
 
 const menus = [
   { name: "Accueil", href: "/" },
@@ -34,6 +35,7 @@ const menus = [
 const Header = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   return (
     <header
       style={{ zIndex: 1000 }}
@@ -99,7 +101,25 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <ProductBar />
+      <div className="container-fb py-2">
+        <CategorieBtn />
+        <NavigationMenu className="hidden sm:block">
+          <NavigationMenuList className="flex gap-4">
+            {menus.map((menu, i) => (
+              <NavigationMenuItem key={i}>
+                <Link
+                  className={`hover:text-primary p-1 hover:border-b-2 border-b-primary text-foreground ${
+                    pathname === menu.href ? "border-b-2 text-primary" : ""
+                  }`}
+                  href={menu.href}
+                >
+                  {menu.name}
+                </Link>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
+      </div>
     </header>
   );
 };

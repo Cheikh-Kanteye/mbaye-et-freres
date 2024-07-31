@@ -8,8 +8,8 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import DropInput from "./DropInput";
 import SelectData from "./SelectData";
-import Loader from "./Loader";
 import AlertMessage from "./AlertMessage";
+import Loader from "@/components/Loader";
 
 interface IFormInput {
   reference: string;
