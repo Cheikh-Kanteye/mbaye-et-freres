@@ -36,7 +36,13 @@ const ActionMenu = ({
   });
 
   const handleDelete = () => {
-    if (confirm("Voulez-vous vraiment supprimer ce produit ?")) {
+    if (
+      confirm(
+        `Voulez-vous vraiment supprimer ${
+          type == "produits" ? "ce produit" : "cette " + type
+        } ?`
+      )
+    ) {
       mutation.mutate(produit.id);
     }
   };

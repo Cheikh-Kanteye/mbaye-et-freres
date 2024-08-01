@@ -29,7 +29,7 @@ const FamillesPage = ({
       .then((result) => {
         console.log({ result });
 
-        setProduits(result as Produit[]);
+        setProduits(result as never);
       })
       .finally(() => {
         setPending(false);
