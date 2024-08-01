@@ -3,6 +3,7 @@
 import InfoCard from "@/components/InfoCard";
 import Loader from "@/components/Loader";
 import ProductGridList from "@/components/ProductGridList";
+import Testimonials from "@/components/Testimonials";
 import { infoCards } from "@/constants/contacts";
 import { Produit } from "@/types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -70,6 +71,7 @@ const Home = () => {
           )}
         </div>
       </section>
+      <Testimonials />
     </main>
   );
 };
