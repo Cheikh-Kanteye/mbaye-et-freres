@@ -61,16 +61,18 @@ const Home = () => {
           ))}
         </div>
       </section>
-      <section>
-        <div className="container flex-col mt-8">
-          <h2 className="text-2xl font-bold mb-4">Nos produits</h2>
-          {isPending ? (
-            <Loader size={28} color="red" />
-          ) : (
-            <ProductGridList produits={produits} />
-          )}
-        </div>
-      </section>
+      {produits && produits?.length > 0 && (
+        <section>
+          <div className="container flex-col mt-8">
+            <h2 className="text-2xl font-bold mb-4">Nos produits</h2>
+            {isPending ? (
+              <Loader size={28} color="red" />
+            ) : (
+              <ProductGridList produits={produits} />
+            )}
+          </div>
+        </section>
+      )}
       <Testimonials />
     </main>
   );
