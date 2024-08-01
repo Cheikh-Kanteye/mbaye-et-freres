@@ -5,7 +5,7 @@ import Loader from "@/components/Loader";
 import ProductGridList from "@/components/ProductGridList";
 import { infoCards } from "@/constants/contacts";
 import { Produit } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const fetchProduits = async () => {
   const response = await fetch("/api/produits");

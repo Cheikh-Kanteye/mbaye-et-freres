@@ -18,6 +18,7 @@ const fetchData = async (type: string) => {
   if (!res.ok) {
     throw new Error(`Erreur lors de la récupération des ${type}`);
   }
+
   return res.json();
 };
 
@@ -47,7 +48,7 @@ const SelectData = ({
 
   if (!data) return;
 
-  const options = [{ id: -1, nom: "Tout" }, ...data];
+  const options = Array.isArray(data) ? [{ id: -1, nom: "Tout" }, ...data] : [];
 
   // Trouver le nom correspondant à l'ID sélectionné
   const selectedItem = options.find((item) => item.id.toString() === value);

@@ -58,15 +58,6 @@ const AddProduitForm = () => {
     }
   };
 
-  const addFinalSpecification = () => {
-    if (specifications.trim()) {
-      const newSpecsList = [...specsList, specifications.trim()];
-      setSpecsList(newSpecsList);
-      setValue("specifications", newSpecsList, { shouldValidate: true });
-      setSpecifications(""); // Clear the input field after adding
-    }
-  };
-
   const removeSpec = (index: number) => {
     const updatedSpecsList = specsList.filter((_, i) => i !== index);
     setSpecsList(updatedSpecsList);

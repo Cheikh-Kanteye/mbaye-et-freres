@@ -1,8 +1,6 @@
 "use client";
-
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Categorie, CategorieWFamille } from "@/types";
+import { CategorieWFamille } from "@/types";
 import CategorieList from "../_components/CategorieList";
 
 const fetchCategories = async () => {
