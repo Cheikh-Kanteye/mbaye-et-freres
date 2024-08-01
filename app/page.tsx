@@ -8,7 +8,7 @@ import { infoCards } from "@/constants/contacts";
 import { Produit } from "@/types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const fetchProduits = async () => {
+const fetchProduits = async () => {
   const response = await fetch("/api/produits");
 
   if (!response.ok) {
