@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import cloudinary from "@/lib/cloudinary";
 import fs from "fs";
 import path from "path";
+import tmp from "tmp";
 import { NextResponse } from "next/server";
 
 export const config = {
@@ -64,17 +65,34 @@ export async function postProduits(req: Request) {
 
     if (existingProduit) {
       return new Response(
-        JSON.stringify({ message: "La référence existe déjà" }),
+        JSON.stringify({
+          message:
+            "La référence du produit existe déjà. Veuillez vérifier la référence et réessayer.",
+        }),
         {
           status: 400,
         }
       );
     }
 
-    const tempDir = path.join(__dirname, "tmp");
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
+    // Vérifier si l'idFamille existe
+    const familleExists = await prisma.familles.findUnique({
+      where: { id: parseInt(idFamille, 10) },
+    });
+
+    if (!familleExists) {
+      return new Response(
+        JSON.stringify({
+          message:
+            "La famille spécifiée n'existe pas. Veuillez vérifier de la famille selectionner et réessayer.",
+        }),
+        {
+          status: 400,
+        }
+      );
     }
+
+    const tempDir = tmp.dirSync().name;
 
     const fileUploads = files.map(async (file: any) => {
       try {
@@ -118,7 +136,11 @@ export async function postProduits(req: Request) {
   } catch (error: any) {
     console.error("Erreur lors de la création du produit:", error);
     return new Response(
-      JSON.stringify({ message: error.message || "Internal Server Error" }),
+      JSON.stringify({
+        message:
+          error.message ||
+          "Une erreur interne est survenue lors de la création du produit. Veuillez réessayer plus tard.",
+      }),
       {
         status: 500,
       }

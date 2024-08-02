@@ -29,7 +29,6 @@ import { NavigationMenuList } from "@radix-ui/react-navigation-menu";
 const menus = [
   { name: "Accueil", href: "/" },
   { name: "À Propos de Nous", href: "/apropos" },
-  { name: "Réalisations", href: "/realisations" },
 ];
 
 const Header = () => {
@@ -101,7 +100,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="container-fb py-2">
+      <div className="container py-2">
         <CategorieBtn />
         <NavigationMenu className="hidden sm:block">
           <NavigationMenuList className="flex gap-4">
