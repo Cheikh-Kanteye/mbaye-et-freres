@@ -41,7 +41,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({
   return (
     <section>
       <div className="container flex-col mt-8">
-        <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
+        <h2 className="text-3xl font-['Rubik'] tracking-tighter md:text-4xl">
           Decouvrez nos produits
         </h2>
         <p className="mx-auto max-w-[700px] text-muted-foreground md:text-base/relaxed text-center">

@@ -3,7 +3,7 @@ const BannerSection = () => {
   return (
     <section className="home-banner w-dvw h-[50vh] flex items-center justify-center relative">
       <div className="relative z-10 container flex flex-col items-start justify-center h-full">
-        <h1 className="text-4xl lg:text-5xl text-foreground font-bold">
+        <h1 className="text-4xl font-['Rubik'] lg:text-5xl text-foreground font-bold">
           <span className="block text-xl font-medium text-primary">
             Bienvenue chez
           </span>

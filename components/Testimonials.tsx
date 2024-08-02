@@ -13,7 +13,7 @@ export default function Testimonials() {
       <div className="px-4 md:px-6">
         <div className="grid gap-6 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
+            <h2 className="text-3xl font-['Rubik'] tracking-tighter md:text-4xl">
               Ce Que Disent Nos Clients
             </h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-base/relaxed">

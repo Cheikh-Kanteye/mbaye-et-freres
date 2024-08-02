@@ -18,14 +18,16 @@ const ProductCard = ({ produit }: { produit: Produit }) => {
       </div>
       <div className="p-4 h-[40%] flex flex-col gap-3 justify-items-center text-center">
         {produit.familles && (
-          <p className="text-lg">
-            <span className="text-sm">{produit.familles.categories.nom}: </span>
-            {produit.familles.nom}
+          <p className="text-xl">
+            <span className="text-sm text-primary">
+              {produit.familles.categories.nom},{" "}
+            </span>
+            <span className="font-['Rubik']">{produit.familles.nom}</span>
           </p>
         )}
-        <Button className="hover:bg-primary hover:text-primary-foreground rounded-full self-center shadow-lg bg-background text-foreground">
+        <div className="hover:bg-primary px-4 py-3 hover:text-primary-foreground rounded-full self-center shadow-lg bg-background text-foreground">
           <Link href={`/produit/${produit.id}`}>BMB-{produit.reference}</Link>
-        </Button>
+        </div>
       </div>
     </div>
   );
