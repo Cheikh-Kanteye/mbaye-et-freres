@@ -34,18 +34,8 @@ const menus = [
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50); // Ajustez la valeur selon vos besoins
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <header style={{ zIndex: 1000 }} className="sticky top-0 shadow-xl">
@@ -111,32 +101,24 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div
-        className={`transition-all duration-300 ease-in-out ${
-          scrolled
-            ? "-translate-y-full h-0 opacity-0"
-            : "py-2 translate-y-0 h-auto opacity-100"
-        } bg-background`}
-      >
-        <div className="container">
-          <CategorieBtn />
-          <NavigationMenu className="hidden sm:block">
-            <NavigationMenuList className="flex gap-4">
-              {menus.map((menu, i) => (
-                <NavigationMenuItem key={i}>
-                  <Link
-                    className={`hover:text-primary p-1 hover:border-b-2 border-b-primary text-foreground ${
-                      pathname === menu.href ? "border-b-2 text-primary" : ""
-                    }`}
-                    href={menu.href}
-                  >
-                    {menu.name}
-                  </Link>
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
+      <div className="container">
+        <CategorieBtn />
+        <NavigationMenu className="hidden sm:block">
+          <NavigationMenuList className="flex gap-4">
+            {menus.map((menu, i) => (
+              <NavigationMenuItem key={i}>
+                <Link
+                  className={`hover:text-primary p-1 hover:border-b-2 border-b-primary text-foreground ${
+                    pathname === menu.href ? "border-b-2 text-primary" : ""
+                  }`}
+                  href={menu.href}
+                >
+                  {menu.name}
+                </Link>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
       </div>
     </header>
   );
