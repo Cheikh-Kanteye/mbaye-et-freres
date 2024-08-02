@@ -22,7 +22,7 @@ const Produit = async ({ params }: { params: { id: number } }) => {
   return (
     <main className="min-h-[500px]">
       <section className="max-w-screen-xl h-full mx-auto grid sm:grid-cols-2 py-6 gap-3">
-        <div className="bg-primary-foreground aspect-video grid place-items-center rounded-lg overflow-hidden">
+        <div className="bg-primary-foreground aspect-video rounded-lg overflow-hidden">
           <Image
             src={produit.image_url}
             alt="produit"
