@@ -38,7 +38,10 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <header style={{ zIndex: 1000 }} className="sticky top-0 shadow-xl">
+    <header
+      style={{ zIndex: 1000 }}
+      className="sticky top-0 shadow-xl bg-background"
+    >
       <div
         className={`w-full bg-primary p-2 transition-transform duration-300 ease-in-out`}
       >

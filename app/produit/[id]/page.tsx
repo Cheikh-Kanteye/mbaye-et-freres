@@ -29,7 +29,7 @@ const Produit = async ({ params }: { params: { id: number } }) => {
             width={400}
             height={400}
             objectFit="contain"
-            // className="w-full h-full object-contain"
+            className="w-full h-full object-contain"
           />
         </div>
 
