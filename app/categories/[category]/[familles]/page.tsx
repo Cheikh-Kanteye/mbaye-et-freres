@@ -60,9 +60,7 @@ const FamillesPage = ({
           <Loader color="red" size={32} />
         </div>
       ) : (
-        <div className="grid grid-cols-4">
-          <ProductGridList produits={produits} />
-        </div>
+        <ProductGridList produits={produits} />
       )}
     </main>
   );
