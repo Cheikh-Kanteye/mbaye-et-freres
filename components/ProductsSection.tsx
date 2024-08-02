@@ -39,8 +39,8 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({
     );
 
   return (
-    <section>
-      <div className="container flex-col mt-8">
+    <section className="py-6 md:py-10 lg:py-14">
+      <div className="container flex-col">
         <h2 className="text-3xl font-['Rubik'] tracking-tighter md:text-4xl">
           Decouvrez nos produits
         </h2>

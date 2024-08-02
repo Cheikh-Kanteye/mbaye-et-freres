@@ -7,6 +7,7 @@ import { Produit } from "@/types";
 import { infoCards } from "@/constants/contacts";
 import { Button } from "@/components/ui/button";
 import BannerSection from "@/components/BannerSection";
+import ContactSection from "@/components/ContactSection";
 
 // Chargement dynamique des composants
 const InfoCard = dynamic(() => import("@/components/InfoCard"));
@@ -67,6 +68,8 @@ const Home = () => {
       />
 
       <Testimonials />
+
+      <ContactSection />
     </main>
   );
 };

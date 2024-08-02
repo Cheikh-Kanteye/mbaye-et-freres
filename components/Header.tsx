@@ -20,7 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import CategorieBtn from "./CategorieBtn";
 import { NavigationMenu, NavigationMenuItem } from "./ui/navigation-menu";
@@ -29,18 +29,29 @@ import { NavigationMenuList } from "@radix-ui/react-navigation-menu";
 const menus = [
   { name: "Accueil", href: "/" },
   { name: "À Propos de Nous", href: "/apropos" },
+  { name: "Services", href: "/services" },
 ];
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50); // Ajustez la valeur selon vos besoins
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header
-      style={{ zIndex: 1000 }}
-      className="sticky top-0 left-0 w-full bg-background shadow-sm"
-    >
-      <div className="bg-primary p-2">
+    <header style={{ zIndex: 1000 }} className="sticky top-0 shadow-xl">
+      <div
+        className={`w-full bg-primary p-2 transition-transform duration-300 ease-in-out`}
+      >
         <div className="container-fb">
           <Link href="/" className="w-fit logo-container">
             <span className="logo-section-1">Mbaye &</span>
@@ -100,24 +111,32 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="container py-2">
-        <CategorieBtn />
-        <NavigationMenu className="hidden sm:block">
-          <NavigationMenuList className="flex gap-4">
-            {menus.map((menu, i) => (
-              <NavigationMenuItem key={i}>
-                <Link
-                  className={`hover:text-primary p-1 hover:border-b-2 border-b-primary text-foreground ${
-                    pathname === menu.href ? "border-b-2 text-primary" : ""
-                  }`}
-                  href={menu.href}
-                >
-                  {menu.name}
-                </Link>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
+      <div
+        className={`transition-all duration-300 ease-in-out ${
+          scrolled
+            ? "-translate-y-full h-0 opacity-0"
+            : "py-2 translate-y-0 h-auto opacity-100"
+        } bg-background`}
+      >
+        <div className="container">
+          <CategorieBtn />
+          <NavigationMenu className="hidden sm:block">
+            <NavigationMenuList className="flex gap-4">
+              {menus.map((menu, i) => (
+                <NavigationMenuItem key={i}>
+                  <Link
+                    className={`hover:text-primary p-1 hover:border-b-2 border-b-primary text-foreground ${
+                      pathname === menu.href ? "border-b-2 text-primary" : ""
+                    }`}
+                    href={menu.href}
+                  >
+                    {menu.name}
+                  </Link>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
       </div>
     </header>
   );
