@@ -16,7 +16,7 @@ export default function Testimonials() {
             <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
               Ce Que Disent Nos Clients
             </h2>
-            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed">
+            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-base/relaxed">
               Découvrez les avis des leaders de l&apos;industrie qui font
               confiance à BMB pour faire fonctionner leurs opérations.
             </p>

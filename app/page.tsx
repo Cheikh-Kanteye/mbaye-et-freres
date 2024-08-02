@@ -1,20 +1,25 @@
 "use client";
 
-import InfoCard from "@/components/InfoCard";
-import Loader from "@/components/Loader";
-import ProductGridList from "@/components/ProductGridList";
-import Testimonials from "@/components/Testimonials";
-import { infoCards } from "@/constants/contacts";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 import { Produit } from "@/types";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { infoCards } from "@/constants/contacts";
+import { Button } from "@/components/ui/button";
+import BannerSection from "@/components/BannerSection";
+
+// Chargement dynamique des composants
+const InfoCard = dynamic(() => import("@/components/InfoCard"));
+const Loader = dynamic(() => import("@/components/Loader"));
+const ProductGridList = dynamic(() => import("@/components/ProductGridList"));
+const Testimonials = dynamic(() => import("@/components/Testimonials"));
+const ProductsSection = dynamic(() => import("@/components/ProductsSection"));
 
 const fetchProduits = async () => {
   const response = await fetch("/api/produits");
-
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
-
   return response.json();
 };
 
@@ -29,24 +34,16 @@ const Home = () => {
     queryFn: fetchProduits,
   });
 
-  if (isError) return <div>Error: {error.message}</div>;
+  if (isError)
+    return (
+      <div className="text-red-600">
+        Erreur de chargement des produits : {error.message}
+      </div>
+    );
 
   return (
     <main className="min-h-screen bg-background">
-      <section className="home-banner w-dvw h-[50vh] flex items-center justify-center">
-        <div className="container flex flex-col items-start justify-center h-full">
-          <h1 className="text-4xl lg:text-5xl text-foreground font-bold">
-            <span className="block text-xl font-medium text-primary">
-              Etablissement
-            </span>
-            Mbaye & Frères
-          </h1>
-          <p className="max-w-md text-slate-700 mt-4">
-            Transformons vos espaces avec expertise, qualité et passion.
-            Réalisons ensemble vos rêves les plus ambitieux.
-          </p>
-        </div>
-      </section>
+      <BannerSection />
 
       <section className="bg-background py-8">
         <div className="container grid md:grid-flow-col gap-4 p-4 justify-center">
@@ -61,18 +58,14 @@ const Home = () => {
           ))}
         </div>
       </section>
-      {produits && produits?.length > 0 && (
-        <section>
-          <div className="container flex-col mt-8">
-            <h2 className="text-2xl font-bold mb-4">Nos produits</h2>
-            {isPending ? (
-              <Loader size={28} color="red" />
-            ) : (
-              <ProductGridList produits={produits} />
-            )}
-          </div>
-        </section>
-      )}
+
+      <ProductsSection
+        produits={produits || []}
+        isPending={isPending}
+        isError={isError}
+        error={error}
+      />
+
       <Testimonials />
     </main>
   );

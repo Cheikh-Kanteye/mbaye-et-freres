@@ -82,4 +82,6 @@ export type Produit = {
     images: number;
   };
   familles: FamilleWCategorie;
+  createdAt?: Date | undefined;
+  updatedAt?: Date | undefined;
 };
