@@ -24,7 +24,7 @@ const ProductGridList = ({ produits, className }: ProductGridListProps) => {
       )}
     >
       {produits.map((produit) => (
-        <ProductCard key={produit.id} produit={produit} />
+        <ProductCard className="w-full" key={produit.id} produit={produit} />
       ))}
     </section>
   );

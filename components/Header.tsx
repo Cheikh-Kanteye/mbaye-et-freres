@@ -25,6 +25,7 @@ import { usePathname, useRouter } from "next/navigation";
 import CategorieBtn from "./CategorieBtn";
 import { NavigationMenu, NavigationMenuItem } from "./ui/navigation-menu";
 import { NavigationMenuList } from "@radix-ui/react-navigation-menu";
+import Image from "next/image";
 
 const menus = [
   { name: "Accueil", href: "/" },
@@ -46,9 +47,12 @@ const Header = () => {
         className={`w-full bg-primary p-2 transition-transform duration-300 ease-in-out`}
       >
         <div className="container-fb">
-          <Link href="/" className="w-fit logo-container">
-            <span className="logo-section-1">Mbaye &</span>
-            <span className="p-1">Frères</span>
+          <Link
+            href="/"
+            className="w-fit logo-container text-3xl font-semibold border-0"
+          >
+            <Image src="/logo.png" alt="logo" width={60} height={60} />
+            <span className="hidden sm:block">Ets Mbaye&Freres</span>
           </Link>
 
           <div className="gap-3 flex justify-end items-center">

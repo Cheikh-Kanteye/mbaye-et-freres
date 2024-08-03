@@ -2,10 +2,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Produit } from "@/types";
+import { cn } from "@/lib/utils";
 
-const ProductCard = ({ produit }: { produit: Produit }) => {
+const ProductCard = ({
+  produit,
+  className,
+}: {
+  produit: Produit;
+  className?: string;
+}) => {
   return (
-    <div className="w-[18rem] h-[20rem] bg-slate-50 rounded-lg overflow-hidden">
+    <div
+      className={cn(
+        "w-[16rem] h-[18rem] bg-slate-50 rounded-lg overflow-hidden",
+        className
+      )}
+    >
       <div className="w-full h-[60%]">
         <Image
           src={produit.image_url}
