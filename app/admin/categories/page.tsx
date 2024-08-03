@@ -25,9 +25,9 @@ const Categories = () => {
     return <p>Erreur lors du chargement des categories: {error.message}</p>;
 
   return (
-    <main className="p-4">
+    <section className="p-4">
       <CategorieList pending={isPending} data={categories || []} />
-    </main>
+    </section>
   );
 };
 

@@ -1,4 +1,4 @@
-import { LogOut, Settings, User, ChevronsUpDown } from "lucide-react";
+import { Settings, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Label } from "@/components/ui/label";
+import LogoutBtn from "./LogoutBtn";
 
 const ProfileButton = () => {
   return (
@@ -35,10 +35,7 @@ const ProfileButton = () => {
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
-        </DropdownMenuItem>
+        <LogoutBtn />
       </DropdownMenuContent>
     </DropdownMenu>
   );

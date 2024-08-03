@@ -27,9 +27,9 @@ const Familles = () => {
     return <p>Erreur lors du chargement des familles: {error.message}</p>;
 
   return (
-    <main className="p-4">
+    <section className="p-4">
       <FamilleList pending={isPending} data={familles || []} />
-    </main>
+    </section>
   );
 };
 

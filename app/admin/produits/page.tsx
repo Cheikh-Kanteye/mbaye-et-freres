@@ -29,9 +29,9 @@ const Produits = () => {
     return <p>Erreur lors du chargement des produits: {error.message}</p>;
 
   return (
-    <main className="p-4">
+    <section className="p-4">
       <ProductList pending={isPending} data={produits || []} />
-    </main>
+    </section>
   );
 };
 
