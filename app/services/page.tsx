@@ -1,7 +1,7 @@
 import React from "react";
 
 const Services = () => {
-  return <div>Services</div>;
+  return <main className="min-h-screen">Services</main>;
 };
 
 export default Services;

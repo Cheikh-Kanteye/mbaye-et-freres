@@ -57,8 +57,17 @@ model messageContact {
 }
 
 model user {
-  id         String @id @default(uuid())
+  id         String    @id @default(uuid())
   nom        String
-  email      String @unique
+  email      String    @unique
   motDePasse String
+  sessions   session[]
+}
+
+model session {
+  id      Int      @id @default(autoincrement())
+  userId  String
+  token   String   @unique
+  expires DateTime
+  user    user     @relation(fields: [userId], references: [id])
 }

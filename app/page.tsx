@@ -43,11 +43,11 @@ const Home = () => {
     );
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen overflow-x-hidden bg-background">
       <BannerSection />
 
       <section className="bg-background py-8">
-        <div className="container grid md:grid-flow-col gap-4 p-4 justify-center">
+        <div className="container grid md:grid-flow-col gap-4 py-6 md:py-10 lg:py-14 justify-center">
           {infoCards.map((card, index) => (
             <InfoCard
               key={index}

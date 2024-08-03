@@ -41,7 +41,7 @@ const Header = () => {
   return (
     <header
       style={{ zIndex: 1000 }}
-      className="sticky top-0 shadow-xl bg-background"
+      className="sticky top-0 shadow-lg shadow-primary-foreground bg-background"
     >
       <div
         className={`w-full bg-primary p-2 transition-transform duration-300 ease-in-out`}
