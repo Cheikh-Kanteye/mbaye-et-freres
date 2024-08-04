@@ -19,7 +19,7 @@ const ProductGridList = ({ produits, className }: ProductGridListProps) => {
   return (
     <section
       className={cn(
-        "py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4",
+        "py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4",
         className
       )}
     >

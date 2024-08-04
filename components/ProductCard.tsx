@@ -14,11 +14,11 @@ const ProductCard = ({
   return (
     <div
       className={cn(
-        "w-[16rem] h-[18rem] bg-slate-50 rounded-lg overflow-hidden",
+        "w-[16rem] h-auto bg-slate-50 rounded-lg overflow-hidden",
         className
       )}
     >
-      <div className="w-full h-[60%]">
+      <div className="w-full aspect-video">
         <Image
           src={produit.image_url}
           alt={produit.type}
@@ -29,7 +29,7 @@ const ProductCard = ({
       </div>
       <div className="p-4 h-[40%] flex flex-col gap-3 justify-items-center text-center">
         {produit.familles && (
-          <p className="text-xl">
+          <p className="text-lg sm:text-xl">
             <span className="text-sm text-primary">
               {produit.familles.categories.nom},{" "}
             </span>
