@@ -10,18 +10,21 @@ async function createDefaultUsers() {
 
   // Créer des utilisateurs par défaut
   const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash("defaultpassword", saltRounds);
+  const hashedPassword = await bcrypt.hash(
+    process.env.DEFAULT_USER_PWD || "",
+    saltRounds
+  );
 
   await prisma.user.createMany({
     data: [
       {
-        nom: "admin",
-        email: "admin@example.com",
+        nom: process.env.DEFAULT_USER_1_NAME!,
+        email: process.env.DEFAULT_USER_1_EMAIL!,
         motDePasse: hashedPassword,
       },
       {
-        nom: "user",
-        email: "user@example.com",
+        nom: process.env.DEFAULT_USER_2_NAME!,
+        email: process.env.DEFAULT_USER_2_EMAIL!,
         motDePasse: hashedPassword,
       },
     ],
