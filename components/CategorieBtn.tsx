@@ -22,7 +22,7 @@ const CategorieBtn = () => {
     <Drawer direction="left" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button
-          className="flex items-center gap-1 text-lg text-foreground"
+          className="flex px-0 items-center gap-1 text-lg text-foreground hover:bg-transparent hover:text-primary"
           onClick={() => setOpen(true)}
           variant={"ghost"}
         >
