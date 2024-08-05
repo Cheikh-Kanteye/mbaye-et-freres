@@ -1,11 +1,8 @@
 "use client";
-
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { Produit } from "@/types";
 import { infoCards } from "@/constants/contacts";
-import { Button } from "@/components/ui/button";
 import BannerSection from "@/components/BannerSection";
 import ContactSection from "@/components/ContactSection";
 

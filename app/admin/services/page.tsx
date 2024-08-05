@@ -21,6 +21,8 @@ const Services = () => {
     queryFn: fetchServices,
   });
 
+  console.log({ services });
+
   if (error)
     return <p>Erreur lors du chargement des services: {error.message}</p>;
 

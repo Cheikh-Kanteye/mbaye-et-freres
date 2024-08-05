@@ -1,49 +1,47 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
-import { categories } from "@/constants/categories";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+"use client";
+
+import CategoryList from "@/components/CategoryList";
+import Loader from "@/components/Loader";
+import ProductGridList from "@/components/ProductGridList";
+import { Produit } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchProduits = async () => {
+  const response = await fetch("/api/produits");
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+};
 
 const Categories = () => {
+  const {
+    data: produits,
+    isPending,
+    isError,
+  } = useQuery<Produit[]>({
+    queryKey: ["produits"],
+    queryFn: fetchProduits,
+  });
+
+  const filteredProduits = produits || [];
+
   return (
     <main className="min-h-screen">
-      <div className="w-full h-[150px] grid place-content-center bg-primary-foreground">
-        <h1 className="text-3xl sm:text-4xl font-semibold text-foreground">
-          Tous les categories
-        </h1>
-      </div>
       <div className="max-w-[1200px] mx-auto px-4 py-6">
-        <Breadcrumb>
-          <BreadcrumbList className="text-lg">
-            <BreadcrumbItem>
-              <BreadcrumbPage>Categories</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        <div className="grid-cols-2 grid md:grid-cols-3 mt-6 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-          {categories.map((category, i) => (
-            <Link
-              href={`/categories/${category.href}`}
-              className="categorie-card border"
-              key={i}
-            >
-              <Image
-                src={"/images/fallback-image.jpg"}
-                alt="categorie image"
-                layout="fill"
-                className="w-full h-full object-cover"
-              />
-              <div className="categorie-title">
-                <h3>{category.name}</h3>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <CategoryList />
+        {!isError && !isPending && filteredProduits.length > 0 ? (
+          <ProductGridList produits={filteredProduits} />
+        ) : null}
+        {(isPending || isError) && (
+          <div className="text-center">
+            {isError ? (
+              "Une erreur s'est produite lors de la recuperation"
+            ) : (
+              <Loader color="red" />
+            )}
+          </div>
+        )}
       </div>
     </main>
   );

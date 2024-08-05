@@ -41,15 +41,8 @@ export const service_columns: ColumnDef<service>[] = [
     ),
   },
   {
-    accessorKey: "nbServices",
-    header: "services",
-    cell: ({ row }) => {
-      return 0;
-    },
-  },
-  {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => <ActionMenu row={row as never} type="familles" />,
+    cell: ({ row }) => <ActionMenu row={row as never} type="services" />,
   },
 ];

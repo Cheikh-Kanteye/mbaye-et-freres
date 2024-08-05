@@ -108,7 +108,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="container">
+      <div className="container gap-4">
         <CategorieBtn />
         <NavigationMenu className="hidden sm:block">
           <NavigationMenuList className="flex gap-4">
