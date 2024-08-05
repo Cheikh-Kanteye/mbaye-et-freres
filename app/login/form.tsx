@@ -1,8 +1,6 @@
 "use client";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -12,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 import { signIn } from "next-auth/react";
 import { LoginFormInputs, loginSchema } from "@/lib/validation";
+import React from "react";
 
 async function loginUser(data: LoginFormInputs) {
   const response = await signIn("credentials", {
@@ -37,20 +36,28 @@ const Form = () => {
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
   });
+  const [serverError, setServerError] = React.useState<string | null>(null);
+  const [redirecting, setRedirecting] = React.useState<boolean>(false);
   const router = useRouter();
 
   const mutation = useMutation({
     mutationFn: loginUser,
     onSuccess: () => {
-      router.push("/admin");
-      router.refresh();
+      setRedirecting(true);
+      setTimeout(() => {
+        router.push("/admin");
+        router.refresh();
+      }, 1000); // Délai pour afficher le message de redirection
     },
     onError: (error: Error) => {
-      console.error("Error during login:", error.message);
+      setServerError("Email ou mot de passe incorrect");
+      console.log(error);
     },
   });
 
   const onSubmit = (data: LoginFormInputs) => {
+    setServerError(null);
+    setRedirecting(false); // Réinitialise l'état de redirection avant la soumission
     mutation.mutate(data);
   };
 
@@ -102,7 +109,15 @@ const Form = () => {
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
           </div>
-          <div className="flex items-center justify-between">
+          {serverError && (
+            <div className="text-red-500 text-sm">{serverError}</div>
+          )}
+          {redirecting && (
+            <div className="text-green-500 text-sm">
+              Connexion réussie. Vous allez être redirigé...
+            </div>
+          )}
+          <div className="flex items-center justify-end">
             <div className="text-sm">
               <Link
                 href="#"
@@ -117,7 +132,7 @@ const Form = () => {
             <Button
               type="submit"
               className="w-full"
-              disabled={mutation.isPending}
+              disabled={mutation.isPending || redirecting}
             >
               {mutation.isPending ? (
                 <Loader size={18} color="white" />
