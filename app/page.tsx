@@ -8,8 +8,6 @@ import ContactSection from "@/components/ContactSection";
 
 // Chargement dynamique des composants
 const InfoCard = dynamic(() => import("@/components/InfoCard"));
-const Loader = dynamic(() => import("@/components/Loader"));
-const ProductGridList = dynamic(() => import("@/components/ProductGridList"));
 const Testimonials = dynamic(() => import("@/components/Testimonials"));
 const ProductsSection = dynamic(() => import("@/components/ProductsSection"));
 
