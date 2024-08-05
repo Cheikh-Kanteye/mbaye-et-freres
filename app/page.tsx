@@ -16,7 +16,7 @@ const ProductsSection = dynamic(() => import("@/components/ProductsSection"));
 const fetchProduits = async () => {
   const response = await fetch("/api/produits");
   if (!response.ok) {
-    throw new Error("Network response was not ok");
+    throw new Error("Une erreur s'est produite");
   }
   return response.json();
 };
