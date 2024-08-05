@@ -44,9 +44,7 @@ const CategoryList = ({ onChange, activeCategory }: CategoryListProps) => {
           avons tout ce qu&apos;il vous faut !
         </p>
       </div>
-      {isPending ? (
-        <Loader color="red" size={28} />
-      ) : (
+      {!isPending && (
         <div className="flex flex-wrap gap-2 items-center justify-center">
           <Button
             variant={"outline"}
@@ -57,20 +55,21 @@ const CategoryList = ({ onChange, activeCategory }: CategoryListProps) => {
           >
             <span className="text-sm capitalize">Tout</span>
           </Button>
-          {categories.map((category, i) => (
-            <Button
-              variant={"outline"}
-              onClick={() => onChange(category.id)}
-              className={`hover:text-primary hover:border-primary hover:bg-transparent rounded-full ${
-                activeCategory === category.id
-                  ? "border-primary text-primary"
-                  : ""
-              }`} // Actif
-              key={i}
-            >
-              <span className="text-sm  capitalize">{category.nom}</span>
-            </Button>
-          ))}
+          {categories &&
+            categories.map((category, i) => (
+              <Button
+                variant={"outline"}
+                onClick={() => onChange(category.id)}
+                className={`hover:text-primary hover:border-primary hover:bg-transparent rounded-full ${
+                  activeCategory === category.id
+                    ? "border-primary text-primary"
+                    : ""
+                }`} // Actif
+                key={i}
+              >
+                <span className="text-sm  capitalize">{category.nom}</span>
+              </Button>
+            ))}
         </div>
       )}
     </div>

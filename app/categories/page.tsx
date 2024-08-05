@@ -55,17 +55,13 @@ const Categories = () => {
         />
         {!isError && !isPending && filteredProduits.length > 0 ? (
           <ProductGridList produits={filteredProduits} />
-        ) : (
-          <div className="text-center text-muted-foreground">
-            Aucun produit pour cette categorie
-          </div>
-        )}
+        ) : null}
         {(isPending || isError) && (
-          <div className="text-center">
+          <div className="text-center grid w-full place-items-center">
             {isError ? (
               "Une erreur s'est produite lors de la récupération"
             ) : (
-              <Loader color="red" />
+              <Loader color="red" size={32} />
             )}
           </div>
         )}
