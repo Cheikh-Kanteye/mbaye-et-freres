@@ -1,10 +1,8 @@
 "use client";
-import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
 import Loader from "./Loader";
-import { categories } from "@prisma/client";
 import { Button } from "./ui/button";
+import { categories } from "@prisma/client";
 
 const fetchCategories = async () => {
   const response = await fetch("/api/categories");
@@ -14,7 +12,12 @@ const fetchCategories = async () => {
   return response.json();
 };
 
-const CategoryList = () => {
+interface CategoryListProps {
+  onChange: (id: number | null) => void;
+  activeCategory: number | null; // Ajouter la prop pour la catégorie active
+}
+
+const CategoryList = ({ onChange, activeCategory }: CategoryListProps) => {
   const {
     data: categories,
     isPending,
@@ -45,13 +48,27 @@ const CategoryList = () => {
         <Loader color="red" size={28} />
       ) : (
         <div className="flex flex-wrap gap-2 items-center justify-center">
+          <Button
+            variant={"outline"}
+            onClick={() => onChange(null)}
+            className={`hover:text-primary hover:border-primary hover:bg-transparent rounded-full ${
+              activeCategory === null ? "border-primary text-primary" : ""
+            }`} // Actif
+          >
+            <span className="text-sm capitalize">Tout</span>
+          </Button>
           {categories.map((category, i) => (
             <Button
               variant={"outline"}
-              className="hover:text-primary hover:border-primary hover:bg-transparent rounded-full"
+              onClick={() => onChange(category.id)}
+              className={`hover:text-primary hover:border-primary hover:bg-transparent rounded-full ${
+                activeCategory === category.id
+                  ? "border-primary text-primary"
+                  : ""
+              }`} // Actif
               key={i}
             >
-              <span className="text-sm capitalize">{category.nom}</span>
+              <span className="text-sm  capitalize">{category.nom}</span>
             </Button>
           ))}
         </div>
