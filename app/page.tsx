@@ -6,7 +6,6 @@ import { infoCards } from "@/constants/contacts";
 import BannerSection from "@/components/BannerSection";
 import ContactSection from "@/components/ContactSection";
 
-// Chargement dynamique des composants
 const InfoCard = dynamic(() => import("@/components/InfoCard"));
 const Testimonials = dynamic(() => import("@/components/Testimonials"));
 const ProductsSection = dynamic(() => import("@/components/ProductsSection"));

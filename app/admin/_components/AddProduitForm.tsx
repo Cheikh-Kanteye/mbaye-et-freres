@@ -10,6 +10,7 @@ import DropInput from "./DropInput";
 import SelectData from "./SelectData";
 import AlertMessage from "./AlertMessage";
 import Loader from "@/components/Loader";
+import { useSpecifications } from "@/hooks/useSpecifications";
 
 interface IFormInput {
   reference: string;
@@ -28,8 +29,6 @@ const AddProduitForm = () => {
     reset,
     formState: { errors },
   } = useForm<IFormInput>();
-  const [specifications, setSpecifications] = useState("");
-  const [specsList, setSpecsList] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
   const [selectedFamille, setSelectedFamille] = useState<string | undefined>();
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
@@ -37,31 +36,18 @@ const AddProduitForm = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const queryClient = useQueryClient();
 
+  const {
+    specifications,
+    specsList,
+    handleSpecsChange,
+    addSpecification,
+    removeSpec,
+    resetSpecifications,
+  } = useSpecifications(setValue);
+
   const handleFamilleChange = (value: string | undefined) => {
     setSelectedFamille(value);
     setValue("idFamille", parseInt(value || "0", 10), { shouldValidate: true });
-  };
-
-  const handleSpecsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    if (value.includes(",")) {
-      const newSpecs = value.split(",").map((spec) => spec.trim());
-      setSpecsList((prev) => [...prev, ...newSpecs.filter((spec) => spec)]);
-      setSpecifications("");
-      setValue(
-        "specifications",
-        [...specsList, ...newSpecs.filter((spec) => spec)],
-        { shouldValidate: true }
-      );
-    } else {
-      setSpecifications(value);
-    }
-  };
-
-  const removeSpec = (index: number) => {
-    const updatedSpecsList = specsList.filter((_, i) => i !== index);
-    setSpecsList(updatedSpecsList);
-    setValue("specifications", updatedSpecsList, { shouldValidate: true });
   };
 
   const handleDrop = (acceptedFiles: File[]) => {
@@ -89,8 +75,7 @@ const AddProduitForm = () => {
       setAlertMessage("Produit créé avec succès");
       setIsDialogOpen(true);
       reset();
-      setSpecifications("");
-      setSpecsList([]);
+      resetSpecifications(); // Reset specifications here
       setImages([]);
     },
     onError: (error: Error) => {
@@ -150,6 +135,7 @@ const AddProduitForm = () => {
             value={specifications}
             onChange={handleSpecsChange}
             placeholder="Spécifications (séparées par des virgules)"
+            onBlur={addSpecification} // Trigger add on blur
           />
           {errors.specifications && (
             <p className="text-red-500 text-sm">

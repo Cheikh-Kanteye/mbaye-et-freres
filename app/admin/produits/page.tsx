@@ -5,7 +5,6 @@ import { produit } from "@prisma/client";
 
 const fetchProduits = async () => {
   const res = await fetch("/api/produits");
-  console.log(res);
 
   if (!res.ok) {
     throw new Error(`HTTP error! Status: ${res.status}`);
@@ -22,8 +21,6 @@ const Produits = () => {
     queryKey: ["produits"],
     queryFn: fetchProduits,
   });
-
-  if (produits) console.log(produits[0]);
 
   if (error)
     return <p>Erreur lors du chargement des produits: {error.message}</p>;

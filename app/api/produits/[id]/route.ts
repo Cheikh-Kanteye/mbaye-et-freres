@@ -1,9 +1,11 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
-  const { id } = await req.json();
-  console.log("Received data:", { id });
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
 
   if (!id) {
     return NextResponse.json({ error: "ID est requise" }, { status: 400 });
@@ -37,7 +39,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(produit);
   } catch (error) {
-    console.error("Erreur lors de la récupération des produit :", error);
+    console.error("Erreur lors de la récupération du produit :", error);
     return NextResponse.error();
   }
 }

@@ -81,12 +81,10 @@ const ProductList = ({
 
   const handleCategorieChange = (value: string | undefined) => {
     setSelectedCategorie(value);
-    console.log({ selectedCategorie: value });
   };
 
   const handleFamilleChange = (value: string | undefined) => {
     setSelectedFamille(value);
-    console.log({ selectedFamille: value });
   };
 
   return (
