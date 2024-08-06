@@ -72,6 +72,12 @@ export const product_colums: ColumnDef<produit>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => <ActionMenu row={row as never} type="produits" />,
+    cell: ({ row }) => (
+      <ActionMenu
+        row={row as never}
+        type="produits"
+        link={`/admin/produits/${row.original.id}`}
+      />
+    ),
   },
 ];

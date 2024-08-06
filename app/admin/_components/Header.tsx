@@ -51,7 +51,7 @@ const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
   return (
-    <header className="w-full  border-b sticky top-0">
+    <header className="w-full  border-b sticky top-0 bg-background">
       <div className="flex p-4 w-full max-w-screen-xl mx-auto justify-between text-foreground items-center">
         <Link
           href="/admin"

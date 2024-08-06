@@ -12,15 +12,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Row } from "@tanstack/react-table";
 import { Famille, Produit } from "@/types";
+import { useRouter } from "next/navigation";
 
 const ActionMenu = ({
   row,
   type,
+  link,
 }: {
   row: Row<Produit | Famille>;
   type: string;
+  link?: string;
 }) => {
   const produit = row.original;
+  const router = useRouter();
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -60,7 +64,9 @@ const ActionMenu = ({
         <DropdownMenuItem>Modifier</DropdownMenuItem>
         <DropdownMenuItem onClick={handleDelete}>Supprimer</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Voir les détails du produit</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => link && router.push(link)}>
+          Voir les détails du produit
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
