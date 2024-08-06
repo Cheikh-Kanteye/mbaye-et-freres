@@ -29,11 +29,12 @@ const ProductCard = ({
       </div>
       <div className="p-4 h-[40%] flex flex-col gap-3 justify-items-center text-center">
         {produit.familles && (
-          <p className="text-lg sm:text-xl">
+          <p className="text-lg leading-none sm:text-xl">
             <span className="text-sm text-primary">
-              {produit.familles.categories.nom},{" "}
+              {produit.familles.categories.nom}
+              <br />
             </span>
-            <span className="font-['Rubik']">{produit.familles.nom}</span>
+            <span className="font-['Rubik'] ">{produit.familles.nom}</span>
           </p>
         )}
         <div className="hover:bg-primary px-4 py-3 hover:text-primary-foreground rounded-full self-center shadow-lg bg-background text-foreground">

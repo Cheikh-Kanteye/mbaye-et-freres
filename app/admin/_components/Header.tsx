@@ -21,6 +21,10 @@ import React, { useState } from "react";
 
 const menus = [
   {
+    name: "Voir la boutique",
+    href: "/",
+  },
+  {
     name: "Dashboard",
     href: "/admin/",
   },
