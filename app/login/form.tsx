@@ -100,26 +100,29 @@ const Form = () => {
             <Label htmlFor="password" className="sr-only">
               Mot de passe
             </Label>
-            <Input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Mot de passe"
-              className="form-input"
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="absolute right-1 top-1/2 -translate-y-1/2"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <EyeOffIcon className="h-5 w-5" />
-              ) : (
-                <EyeIcon className="h-5 w-5" />
-              )}
-              <span className="sr-only">Toggle password visibility</span>
-            </Button>
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Mot de passe"
+                className="form-input"
+                {...register("password")}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-1 top-1/2 -translate-y-1/2"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOffIcon className="h-5 w-5" />
+                ) : (
+                  <EyeIcon className="h-5 w-5" />
+                )}
+                <span className="sr-only">Toggle password visibility</span>
+              </Button>
+            </div>
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
