@@ -1,4 +1,6 @@
 "use client";
+
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -10,7 +12,7 @@ import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 import { signIn } from "next-auth/react";
 import { LoginFormInputs, loginSchema } from "@/lib/validation";
-import React from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 async function loginUser(data: LoginFormInputs) {
   const response = await signIn("credentials", {
@@ -36,8 +38,9 @@ const Form = () => {
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
   });
-  const [serverError, setServerError] = React.useState<string | null>(null);
-  const [redirecting, setRedirecting] = React.useState<boolean>(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [redirecting, setRedirecting] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
 
   const mutation = useMutation({
@@ -87,24 +90,36 @@ const Form = () => {
               type="email"
               autoComplete="email"
               placeholder="Adresse e-mail"
-              className="relative block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-primary placeholder-muted-foreground focus:z-10 focus:border-primary focus:outline-none focus:ring-primary sm:text-sm"
+              className="form-input"
             />
             {errors.email && (
               <p className="text-red-500 text-sm">{errors.email.message}</p>
             )}
           </div>
-          <div>
+          <div className="relative">
             <Label htmlFor="password" className="sr-only">
               Mot de passe
             </Label>
             <Input
               id="password"
-              {...register("password")}
-              type="password"
-              autoComplete="current-password"
+              type={showPassword ? "text" : "password"}
               placeholder="Mot de passe"
-              className="relative block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-primary placeholder-muted-foreground focus:z-10 focus:border-primary focus:outline-none focus:ring-primary sm:text-sm"
+              className="form-input"
             />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="absolute right-1 top-1/2 -translate-y-1/2"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeOffIcon className="h-5 w-5" />
+              ) : (
+                <EyeIcon className="h-5 w-5" />
+              )}
+              <span className="sr-only">Toggle password visibility</span>
+            </Button>
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
