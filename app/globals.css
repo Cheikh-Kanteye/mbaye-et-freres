@@ -134,6 +134,10 @@
     @apply relative block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 text-primary placeholder-muted-foreground focus:z-10 focus:border-primary focus:outline-none focus:ring-primary sm:text-sm;
   }
 
+  .hover-animate {
+    @apply cursor-pointer transition-all duration-300 hover:bg-gradient-to-t from-primary-foreground to-background overflow-hidden hover:-translate-y-2;
+  }
+
   ::-webkit-scrollbar {
     width: 10px;
   }
@@ -177,4 +181,8 @@
   .about {
     background-size: 100dvw 100%;
   }
+}
+
+html {
+  scroll-behavior: smooth !important;
 }

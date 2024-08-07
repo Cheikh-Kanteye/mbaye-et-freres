@@ -17,7 +17,10 @@ const IconButton: React.FC<IconButtonProps> = ({
 }) => {
   return (
     <button
-      onClick={onClick}
+      onClick={(e) => {
+        e.preventDefault();
+        if (onClick) onClick();
+      }}
       className={cn(
         `flex items-center justify-center p-2 rounded-full focus:outline-none transition ${
           disabled ? "cursor-not-allowed opacity-50" : "hover:bg-gray-200"

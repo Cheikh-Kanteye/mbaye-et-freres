@@ -1,11 +1,6 @@
 "use client";
-import IconButton from "./IconButton";
 import SearchInput from "./SearchInput";
-import {
-  RiMenu4Line,
-  RiSearch2Line,
-  RiShoppingCart2Line,
-} from "react-icons/ri";
+import { RiMenu4Line, RiSearch2Line } from "react-icons/ri";
 import Link from "next/link";
 import {
   Popover,
@@ -20,17 +15,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import CategorieBtn from "./CategorieBtn";
 import { NavigationMenu, NavigationMenuItem } from "./ui/navigation-menu";
 import { NavigationMenuList } from "@radix-ui/react-navigation-menu";
 import Image from "next/image";
+import ShoppingCart from "./ShoppingCart";
 
 const menus = [
   { name: "Accueil", href: "/" },
   { name: "À Propos de Nous", href: "/apropos" },
-  { name: "Services", href: "/services" },
+  { name: "Nos services", href: "#services" },
+  { name: "Temoignages", href: "#testimonials" },
+  { name: "Contact", href: "#contact" },
 ];
 
 const Header = () => {
@@ -41,7 +39,7 @@ const Header = () => {
   return (
     <header
       style={{ zIndex: 1000 }}
-      className="sticky top-0 shadow-lg shadow-primary-foreground bg-background"
+      className="sticky top-0 shadow-sm bg-background"
     >
       <div
         className={`w-full bg-primary p-2 transition-transform duration-300 ease-in-out`}
@@ -56,8 +54,8 @@ const Header = () => {
           </Link>
 
           <div className="gap-3 flex justify-end items-center">
-            <SearchInput className="hidden w-fit md:flex" />
-            <div className="block md:hidden">
+            <SearchInput className="hidden w-fit lg:flex" />
+            <div className="block lg:hidden">
               <Popover>
                 <PopoverTrigger>
                   <div className="flex items-center justify-center p-2 rounded-full focus:outline-none transition bg-primary-foreground">
@@ -70,11 +68,8 @@ const Header = () => {
               </Popover>
             </div>
 
-            <IconButton
-              icon={RiShoppingCart2Line}
-              className="text-foreground bg-primary-foreground"
-            />
-            <div className="block md:hidden">
+            <ShoppingCart />
+            <div className="block lg:hidden">
               <DropdownMenu open={open} onOpenChange={setOpen}>
                 <DropdownMenuTrigger className="bg-primary-foreground text-foreground p-2 aspect-square rounded-full">
                   <RiMenu4Line />
@@ -110,7 +105,7 @@ const Header = () => {
       </div>
       <div className="container gap-4">
         <CategorieBtn />
-        <NavigationMenu className="hidden sm:block">
+        <NavigationMenu className="hidden lg:block">
           <NavigationMenuList className="flex gap-4">
             {menus.map((menu, i) => (
               <NavigationMenuItem key={i}>

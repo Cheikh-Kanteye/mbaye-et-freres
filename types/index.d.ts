@@ -30,7 +30,7 @@ export type CategoryParams = {
 };
 
 export type InfoCardProps = {
-  iconSrc: string;
+  iconSrc?: string;
   bgColor: string;
   title: string;
   description: string;

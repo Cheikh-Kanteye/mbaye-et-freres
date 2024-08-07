@@ -4,11 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import { Produit } from "@/types";
 import { infoCards } from "@/constants/contacts";
 import BannerSection from "@/components/BannerSection";
-import ContactSection from "@/components/ContactSection";
+import ServicesSection from "@/components/ServicesSection";
 
 const InfoCard = dynamic(() => import("@/components/InfoCard"));
 const Testimonials = dynamic(() => import("@/components/Testimonials"));
 const ProductsSection = dynamic(() => import("@/components/ProductsSection"));
+const ContactSection = dynamic(() => import("@/components/ContactSection"));
 
 const fetchProduits = async () => {
   const response = await fetch("/api/produits");
@@ -27,14 +28,8 @@ const Home = () => {
   } = useQuery<Produit[]>({
     queryKey: ["produits"],
     queryFn: fetchProduits,
+    staleTime: 5 * 60 * 1000,
   });
-
-  if (isError)
-    return (
-      <div className="text-red-600">
-        Erreur de chargement des produits : {error.message}
-      </div>
-    );
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background">
@@ -55,15 +50,18 @@ const Home = () => {
       </section>
 
       <ProductsSection
+        id="produits"
         produits={produits || []}
         isPending={isPending}
         isError={isError}
         error={error}
       />
 
-      <Testimonials />
+      <ServicesSection id="services" />
 
-      <ContactSection />
+      <Testimonials id="testimonials" />
+
+      <ContactSection id="contact" />
     </main>
   );
 };

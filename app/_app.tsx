@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { CartProvider } from "@/context/CartContext";
 
 const noHeaderFooterRoutes = ["/login", "/register"];
 
@@ -15,9 +16,11 @@ export default function App({ children }: PropsWithChildren) {
     !noHeaderFooterRoutes.includes(pathname) && !pathname.startsWith("/admin");
   return (
     <QueryClientProvider client={queryClient}>
-      {showHeaderFooter && <Header />}
-      {children}
-      {showHeaderFooter && <Footer />}
+      <CartProvider>
+        {showHeaderFooter && <Header />}
+        {children}
+        {showHeaderFooter && <Footer />}
+      </CartProvider>
     </QueryClientProvider>
   );
 }

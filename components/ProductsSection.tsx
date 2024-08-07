@@ -9,6 +9,7 @@ interface ProductsSectionProps {
   isPending: boolean;
   isError: boolean;
   error: Error | null;
+  id: string;
 }
 
 const ProductsSection: React.FC<ProductsSectionProps> = ({
@@ -16,6 +17,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({
   isPending,
   isError,
   error,
+  id,
 }) => {
   function ProductList() {
     return (
@@ -33,13 +35,14 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({
 
   if (isError)
     return (
-      <div className="text-red-600">
-        Erreur de chargement des produits : {error?.message}
+      <div className="text-red-600 py-12 text-center">
+        Erreur de chargement des produits : {error?.message}. Verifier votre
+        connextion internet.
       </div>
     );
 
   return (
-    <section className="py-6 md:py-10 lg:py-14">
+    <section id={id} className="py-6 md:py-10 lg:py-14">
       <div className="container flex-col">
         <h2 className="text-3xl font-['Rubik'] tracking-tighter md:text-4xl">
           Decouvrez nos produits

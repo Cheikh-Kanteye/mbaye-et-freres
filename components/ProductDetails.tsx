@@ -1,31 +1,37 @@
 "use client";
 
-import React from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Produit as Ptype } from "@/types";
 import { Badge } from "./ui/badge";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 interface ProductDetailsProps {
   produit: Ptype;
+  error?: Error | null;
 }
 
-const ProductDetails: React.FC<ProductDetailsProps> = ({ produit }) => {
+const ProductDetails: React.FC<ProductDetailsProps> = ({ produit, error }) => {
   const { familles, specifications } = produit;
   const familleNom = familles?.nom || "";
   const categorieNom = familles?.categories?.nom || "";
+  const [expanded, setExpanded] = useState(true);
+  const { addToCart } = useCart();
 
-  // Nettoyer et formater les spécifications
-  const cleanedSpecifications = specifications
-    .map(
-      (spec) =>
-        // Supprimer les crochets et les guillemets
-        spec
-          .replace(/[\[\]"]+/g, "") // Retirer les crochets et les guillemets
-          .trim() // Enlever les espaces inutiles
-    )
-    .filter((spec, index, self) => spec && self.indexOf(spec) === index); // Éviter les doublons
+  const cleanedSpecifications = useMemo(
+    () =>
+      specifications
+        .map(
+          (spec) =>
+            spec
+              .replace(/[\[\]"]+/g, "") // Retirer les crochets et les guillemets
+              .trim() // Enlever les espaces inutiles
+        )
+        .filter((spec, index, self) => spec && self.indexOf(spec) === index), // Éviter les doublons
+    [specifications]
+  );
 
   return (
     <main className="min-h-[500px] p-4">
@@ -37,22 +43,45 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ produit }) => {
             width={400}
             height={400}
             className="w-full aspect-video object-contain"
+            loading="lazy"
           />
         </div>
 
         <div className="flex flex-col justify-center">
-          <h2 className="text-[#001530] text-4xl sm:text-5xl font-normal font-['Rubik'] leading-[100%]">
+          <h2 className="text-foreground text-3xl md:text-4xl sm:text-5xl font-normal font-['Rubik'] leading-[100%]">
             {familleNom} / {categorieNom}
           </h2>
           <p className="text-lg text-primary mt-3">
             Ref.: {produit.reference || ""}
           </p>
           <div>
-            <p className={`text-base text-muted-foreground my-2`}>
-              {produit.description}
-            </p>
+            {produit.description && (
+              <p className={`text-base text-muted-foreground my-2`}>
+                {produit.description}
+              </p>
+            )}
+
+            {produit.familles.description && (
+              <>
+                <p
+                  className={`text-base text-muted-foreground mt-2 ${
+                    expanded ? "line-clamp-3" : ""
+                  }`}
+                >
+                  {produit.familles.description}
+                </p>
+                <Button
+                  onClick={() => setExpanded((prev) => !prev)}
+                  variant={"ghost"}
+                  className="flex gap-1 p-0 py-0 hover:bg-transparent hover:text-foreground text-muted-foreground"
+                >
+                  <p>{expanded ? "Voir moins" : "Voir plus"}</p>
+                  {expanded ? <ChevronUp /> : <ChevronDown />}
+                </Button>
+              </>
+            )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 mt-2 mb-4">
             {cleanedSpecifications.length > 0 &&
               cleanedSpecifications.map((item, i) => (
                 <Badge
@@ -64,10 +93,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ produit }) => {
                 </Badge>
               ))}
           </div>
-          <div className="flex flex-col gap-2 mt-4">
-            <Input type="number" placeholder="Quantité" />
-            <Button>Ajouter au panier</Button>
-          </div>
+
+          <Button onClick={() => addToCart(produit)}>Ajouter au panier</Button>
+
+          {error && (
+            <p className="text-sm text-primary text-center">
+              Erreur lors de la récupération du produit
+            </p>
+          )}
         </div>
       </section>
     </main>

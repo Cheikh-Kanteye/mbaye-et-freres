@@ -34,9 +34,12 @@ const testimonials = [
   },
 ];
 
-export default function Testimonials() {
+export default function Testimonials({ id }: { id: string }) {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-[#fff7f7] to-background">
+    <section
+      id={id}
+      className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-[#fff7f7] to-background"
+    >
       <div className="px-4 md:px-6">
         <div className="grid gap-6 text-center">
           <div className="space-y-2">
@@ -49,7 +52,7 @@ export default function Testimonials() {
             </p>
           </div>
           <Carousel className="md:w-full w-[80dvw] max-w-screen-lg mx-auto">
-            <CarouselContent className="w-full gap-2 justify-start pl-8 lg:pl-10">
+            <CarouselContent className="w-full gap-2 justify-start py-4 pl-8 lg:pl-10">
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={index}>
                   <Card className="h-full flex flex-col items-center justify-center gap-6 p-8 text-center bg-gradient-to-br to-[#fff7f7]from-background border-[#ffd2d2]">
