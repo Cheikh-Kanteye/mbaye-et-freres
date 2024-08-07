@@ -17,35 +17,41 @@ import { ShoppingCart as ShoppingCartIcon, TrashIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useCart } from "@/context/CartContext";
 
+// Assurez-vous que le numéro de téléphone est défini dans .env
+const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER;
+
 export default function ShoppingCart() {
   const { cartItems, removeFromCart } = useCart();
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const { register, handleSubmit } = useForm();
+  const { handleSubmit } = useForm();
 
   const handleWhatsApp = () => {
-    if (phoneNumber) {
-      let message = `Voici ma commande :\n\n`;
-      cartItems.forEach(({ produit }) => {
-        message += `${produit.reference} - ${produit.description}\nFamille: ${
-          produit.familles?.nom || ""
-        }\nCatégorie: ${produit.familles?.categories?.nom || ""}\n\n`;
-      });
-      message += `\nTotal: ${cartItems.length} article(s)`;
-
-      // Utilisation du protocole WhatsApp pour l'application mobile
-      const mobileURL = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(
-        message
-      )}`;
-
-      // Utilisation de WhatsApp Web pour les environnements desktop
-      const webURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-        message
-      )}`;
-
-      // Vérifier si l'application WhatsApp est installée
-      window.open(mobileURL, "_blank") || window.open(webURL, "_blank");
-      setPhoneNumber(""); // Réinitialiser le numéro de téléphone
+    if (!phoneNumber) {
+      console.error(
+        "Le numéro de téléphone n'est pas défini dans les variables d'environnement."
+      );
+      return;
     }
+
+    let message = `Voici ma commande :\n\n`;
+    cartItems.forEach(({ produit }) => {
+      message += `${produit.reference} - ${produit.description}\nFamille: ${
+        produit.familles?.nom || ""
+      }\nCatégorie: ${produit.familles?.categories?.nom || ""}\n\n`;
+    });
+    message += `\nTotal: ${cartItems.length} article(s)`;
+
+    // Utilisation du protocole WhatsApp pour l'application mobile
+    const mobileURL = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(
+      message
+    )}`;
+
+    // Utilisation de WhatsApp Web pour les environnements desktop
+    const webURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    // Vérifier si l'application WhatsApp est installée
+    window.open(mobileURL, "_blank") || window.open(webURL, "_blank");
   };
 
   const handleEmail = () => {
@@ -122,14 +128,6 @@ export default function ShoppingCart() {
             onSubmit={handleSubmit(handleWhatsApp)}
             className="w-full flex flex-col gap-4"
           >
-            <input
-              type="text"
-              placeholder="Entrez votre numéro de téléphone"
-              {...register("phoneNumber", { required: true })}
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className="border p-2 rounded"
-            />
             <Button
               type="submit"
               className="w-full rounded-sm bg-green-500 text-white"
