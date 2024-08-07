@@ -185,4 +185,5 @@
 
 html {
   scroll-behavior: smooth !important;
+  overflow-x: hidden !important;
 }
