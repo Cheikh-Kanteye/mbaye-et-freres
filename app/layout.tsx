@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "overflow-x-hidden")}>
+      <body className={`${inter.className} !overflow-x-hidden`}>
         <App>{children}</App>
       </body>
     </html>
