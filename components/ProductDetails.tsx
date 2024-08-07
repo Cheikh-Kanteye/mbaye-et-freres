@@ -33,6 +33,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ produit, error }) => {
     [specifications]
   );
 
+  if (error) {
+    return (
+      <p className="text-sm text-primary text-center">
+        Erreur lors de la récupération du produit
+      </p>
+    );
+  }
+
   return (
     <main className="min-h-[500px] p-4">
       <section className="max-w-screen-xl h-full mx-auto grid md:grid-cols-2 py-6 gap-3">
@@ -95,12 +103,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ produit, error }) => {
           </div>
 
           <Button onClick={() => addToCart(produit)}>Ajouter au panier</Button>
-
-          {error && (
-            <p className="text-sm text-primary text-center">
-              Erreur lors de la récupération du produit
-            </p>
-          )}
         </div>
       </section>
     </main>

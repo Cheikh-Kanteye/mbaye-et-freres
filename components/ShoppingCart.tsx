@@ -13,11 +13,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { ShoppingCart, TrashIcon } from "lucide-react";
+import { ShoppingCart as ShoppingCartIcon, TrashIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useCart } from "@/context/CartContext";
 
-export default function ShoppinCart() {
+export default function ShoppingCart() {
   const { cartItems, removeFromCart } = useCart();
   const [phoneNumber, setPhoneNumber] = useState("");
   const { register, handleSubmit } = useForm();
@@ -31,11 +31,36 @@ export default function ShoppinCart() {
         }\nCatégorie: ${produit.familles?.categories?.nom || ""}\n\n`;
       });
       message += `\nTotal: ${cartItems.length} article(s)`;
-      window.open(
-        `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
-      );
+
+      // Utilisation du protocole WhatsApp pour l'application mobile
+      const mobileURL = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(
+        message
+      )}`;
+
+      // Utilisation de WhatsApp Web pour les environnements desktop
+      const webURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+        message
+      )}`;
+
+      // Vérifier si l'application WhatsApp est installée
+      window.open(mobileURL, "_blank") || window.open(webURL, "_blank");
       setPhoneNumber(""); // Réinitialiser le numéro de téléphone
     }
+  };
+
+  const handleEmail = () => {
+    let message = `Voici ma commande :\n\n`;
+    cartItems.forEach(({ produit }) => {
+      message += `${produit.reference} - ${produit.description}\nFamille: ${
+        produit.familles?.nom || ""
+      }\nCatégorie: ${produit.familles?.categories?.nom || ""}\n\n`;
+    });
+    message += `\nTotal: ${cartItems.length} article(s)`;
+    window.open(
+      `mailto:support@votreentreprise.com?subject=Commande&body=${encodeURIComponent(
+        message
+      )}`
+    );
   };
 
   return (
@@ -45,7 +70,7 @@ export default function ShoppinCart() {
           variant="outline"
           className="relative border-none p-0 bg-primary-foreground rounded-full aspect-square"
         >
-          <ShoppingCart className="w-5 h-5" />
+          <ShoppingCartIcon className="w-5 h-5" />
           <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-primary text-primary-foreground shadow-sm text-xs flex items-center justify-center">
             {cartItems.length}
           </Badge>
@@ -105,10 +130,21 @@ export default function ShoppinCart() {
               onChange={(e) => setPhoneNumber(e.target.value)}
               className="border p-2 rounded"
             />
-            <Button type="submit" className="w-full rounded-sm">
-              Continuer sur WhatsApp
+            <Button
+              type="submit"
+              className="w-full rounded-sm bg-green-500 text-white"
+            >
+              Contacter via WhatsApp
             </Button>
           </form>
+          <div className="mt-4 flex flex-col gap-2">
+            <Button
+              onClick={handleEmail}
+              className="w-full rounded-sm bg-blue-500 text-white"
+            >
+              Contacter par Email
+            </Button>
+          </div>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
