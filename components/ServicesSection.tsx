@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import InfoCard from "./InfoCard";
-import Loader from "./Loader"; // Assurez-vous d'avoir un composant Loader pour gérer le chargement.
+import Loader from "./Loader";
 import { service as ServiceType } from "@prisma/client";
 
 const fetchServices = async () => {
@@ -23,13 +23,43 @@ const ServicesSection = ({ id }: { id: string }) => {
   });
 
   if (isPending) {
-    return <Loader color="red" />; // Affiche un loader pendant le chargement des données
+    return (
+      <Container>
+        <Loader color="red" size={32} />
+      </Container>
+    );
   }
 
   if (isError) {
     return <p>Erreur lors de la récupération des services</p>; // Gère les erreurs de récupération des données
   }
 
+  return (
+    <Container id={id}>
+      {services?.map((service, index) => (
+        <div
+          key={index}
+          className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 max-w-sm"
+        >
+          <InfoCard
+            title={service.nom}
+            description={service.description as string}
+          />
+        </div>
+      ))}
+    </Container>
+  );
+};
+
+export default ServicesSection;
+
+const Container = ({
+  id,
+  children,
+}: {
+  id?: string;
+  children?: React.ReactNode;
+}) => {
   return (
     <section id={id} className="w-full py-12 md:py-24 lg:py-32">
       <div className="container flex-col px-4 md:px-6 text-center">
@@ -42,21 +72,9 @@ const ServicesSection = ({ id }: { id: string }) => {
           délais.
         </p>
         <div className="flex flex-wrap justify-center gap-6 py-6">
-          {services?.map((service, index) => (
-            <div
-              key={index}
-              className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 max-w-sm"
-            >
-              <InfoCard
-                title={service.nom}
-                description={service.description as string}
-              />
-            </div>
-          ))}
+          {children}
         </div>
       </div>
     </section>
   );
 };
-
-export default ServicesSection;
