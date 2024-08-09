@@ -31,7 +31,7 @@ export type CategoryParams = {
 
 export type InfoCardProps = {
   iconSrc?: string;
-  bgColor: string;
+  bgColor?: string;
   title: string;
   description: string;
 };

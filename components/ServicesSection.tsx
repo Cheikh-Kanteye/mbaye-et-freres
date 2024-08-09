@@ -1,8 +1,35 @@
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import InfoCard from "./InfoCard";
-import { infoCards } from "@/constants/contacts";
+import Loader from "./Loader"; // Assurez-vous d'avoir un composant Loader pour gérer le chargement.
+import { service as ServiceType } from "@prisma/client";
+
+const fetchServices = async () => {
+  const response = await fetch("/api/services");
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération des services");
+  }
+  return response.json();
+};
 
 const ServicesSection = ({ id }: { id: string }) => {
+  const {
+    data: services,
+    isPending,
+    isError,
+  } = useQuery<ServiceType[]>({
+    queryKey: ["services"],
+    queryFn: fetchServices,
+  });
+
+  if (isPending) {
+    return <Loader color="red" />; // Affiche un loader pendant le chargement des données
+  }
+
+  if (isError) {
+    return <p>Erreur lors de la récupération des services</p>; // Gère les erreurs de récupération des données
+  }
+
   return (
     <section id={id} className="w-full py-12 md:py-24 lg:py-32">
       <div className="container flex-col px-4 md:px-6 text-center">
@@ -14,14 +41,17 @@ const ServicesSection = ({ id }: { id: string }) => {
           Remplissez le formulaire et nous vous répondrons dans les plus brefs
           délais.
         </p>
-        <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-6 justify-center">
-          {[...infoCards, ...infoCards.slice(0, 2)].map((card, index) => (
-            <InfoCard
+        <div className="flex flex-wrap justify-center gap-6 py-6">
+          {services?.map((service, index) => (
+            <div
               key={index}
-              bgColor={card.bgColor}
-              title={card.title}
-              description={card.description}
-            />
+              className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 max-w-sm"
+            >
+              <InfoCard
+                title={service.nom}
+                description={service.description as string}
+              />
+            </div>
           ))}
         </div>
       </div>
