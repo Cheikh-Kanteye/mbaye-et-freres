@@ -1,3 +1,4 @@
+import { Video } from "@/components/Video";
 import Image from "next/image";
 import React from "react";
 
@@ -36,13 +37,7 @@ const page = () => {
             vos espaces mais aussi leur valeur et leur fonctionnalité.
           </p>
         </div>
-        <Image
-          src={"/images/company.jpg"}
-          alt="image"
-          width={600}
-          height={600}
-          className="max-w-[720px] w-full aspect-video rounded-sm"
-        />
+        <Video />
       </section>
     </main>
   );

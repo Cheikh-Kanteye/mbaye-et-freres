@@ -5,6 +5,7 @@ import { Produit } from "@/types";
 import { infoCards } from "@/constants/contacts";
 import BannerSection from "@/components/BannerSection";
 import ServicesSection from "@/components/ServicesSection";
+import AboutSection from "@/components/AboutSection";
 
 const InfoCard = dynamic(() => import("@/components/InfoCard"));
 const Testimonials = dynamic(() => import("@/components/Testimonials"));
@@ -58,6 +59,8 @@ const Home = () => {
       />
 
       <ServicesSection id="services" />
+
+      <AboutSection />
 
       <Testimonials id="testimonials" />
 

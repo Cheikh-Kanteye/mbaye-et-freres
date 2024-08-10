@@ -16,34 +16,40 @@ import {
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
 import React, { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import CategorieBtn from "./CategorieBtn";
 import { NavigationMenu, NavigationMenuItem } from "./ui/navigation-menu";
 import { NavigationMenuList } from "@radix-ui/react-navigation-menu";
 import Image from "next/image";
 import ShoppingCart from "./ShoppingCart";
+import useScrollSpy from "@/hooks/useScrollSpy";
+import { useRouter } from "next/navigation";
 
-const menus = [
+interface MenuItem {
+  name: string;
+  href: string;
+}
+
+const menus: MenuItem[] = [
   { name: "Accueil", href: "/" },
-  { name: "À Propos de Nous", href: "/apropos" },
   { name: "Nos services", href: "#services" },
+  { name: "À Propos de Nous", href: "#about" },
   { name: "Temoignages", href: "#testimonials" },
   { name: "Contact", href: "#contact" },
 ];
 
-const Header = () => {
+const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const homeHref = "/";
+  const sectionIds = menus.map((menu) => menu.href.slice(1)); // Get section IDs without #
+  const activeSection = useScrollSpy(sectionIds, homeHref);
   const router = useRouter();
-  const pathname = usePathname();
 
   return (
     <header
       style={{ zIndex: 1000 }}
       className="sticky top-0 shadow-sm bg-background"
     >
-      <div
-        className={`w-full bg-primary p-2 transition-transform duration-300 ease-in-out`}
-      >
+      <div className="w-full bg-primary p-2 transition-transform duration-300 ease-in-out">
         <div className="container-fb">
           <Link
             href="/"
@@ -77,26 +83,26 @@ const Header = () => {
                 <DropdownMenuContent className="bg-background p-3 rounded-sm shadow-xl mr-2 w-56">
                   <DropdownMenuLabel></DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {menus.map((menu, i) => {
-                    return (
-                      <React.Fragment key={i}>
-                        <DropdownMenuItem
-                          className="p-1 hover:bg-slate-50"
-                          asChild
+                  {menus.map((menu, i) => (
+                    <React.Fragment key={i}>
+                      <DropdownMenuItem
+                        className={`p-1 hover:bg-slate-50 ${
+                          activeSection === menu.href ? "bg-slate-200" : ""
+                        }`}
+                        asChild
+                      >
+                        <div
+                          onClick={() => {
+                            setOpen(false);
+                            router.push(menu.href);
+                          }}
                         >
-                          <div
-                            onClick={() => {
-                              setOpen(false);
-                              router.push(menu.href);
-                            }}
-                          >
-                            {menu.name}
-                          </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                      </React.Fragment>
-                    );
-                  })}
+                          {menu.name}
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </React.Fragment>
+                  ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -110,8 +116,8 @@ const Header = () => {
             {menus.map((menu, i) => (
               <NavigationMenuItem key={i}>
                 <Link
-                  className={`hover:text-primary p-1 hover:border-b-2 border-b-primary text-foreground ${
-                    pathname === menu.href ? "border-b-2 text-primary" : ""
+                  className={`p-1 hover:border-b-2 border-b-primary text-foreground ${
+                    activeSection === menu.href ? "border-b-2 text-primary" : ""
                   }`}
                   href={menu.href}
                 >

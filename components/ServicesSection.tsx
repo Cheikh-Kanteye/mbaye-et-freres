@@ -36,17 +36,18 @@ const ServicesSection = ({ id }: { id: string }) => {
 
   return (
     <Container id={id}>
-      {services?.map((service, index) => (
-        <div
-          key={index}
-          className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 max-w-sm"
-        >
-          <InfoCard
-            title={service.nom}
-            description={service.description as string}
-          />
-        </div>
-      ))}
+      {Array.isArray(services) &&
+        services?.map((service, index) => (
+          <div
+            key={index}
+            className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 max-w-sm"
+          >
+            <InfoCard
+              title={service.nom}
+              description={service.description as string}
+            />
+          </div>
+        ))}
     </Container>
   );
 };
