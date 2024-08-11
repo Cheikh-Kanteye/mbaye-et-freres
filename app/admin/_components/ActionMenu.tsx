@@ -13,15 +13,19 @@ import { Button } from "@/components/ui/button";
 import { Row } from "@tanstack/react-table";
 import { Famille, Produit } from "@/types";
 import { useRouter } from "next/navigation";
+import AddEntityBtn from "./AddEntityBtn";
+import React from "react";
 
 const ActionMenu = ({
   row,
   type,
   link,
+  children,
 }: {
   row: Row<Produit | Famille>;
   type: string;
   link?: string;
+  children?: React.ReactNode;
 }) => {
   const produit = row.original;
   const router = useRouter();
@@ -61,8 +65,22 @@ const ActionMenu = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem>Modifier</DropdownMenuItem>
-        <DropdownMenuItem onClick={handleDelete}>Supprimer</DropdownMenuItem>
+        <AddEntityBtn
+          label="Modifier"
+          desc={`Modification ${type}`}
+          variant={"ghost"}
+          withIcon={false}
+          className="w-full text-foreground"
+          childClassName="justify-start p-1 h-[36px]"
+        >
+          {children}
+        </AddEntityBtn>
+        <DropdownMenuItem
+          onClick={handleDelete}
+          className="text-destructive hover:!text-destructive hover:!bg-destructive-foreground"
+        >
+          Supprimer
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => link && router.push(link)}>
           Voir les détails du produit

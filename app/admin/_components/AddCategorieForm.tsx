@@ -1,47 +1,110 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { categories } from "@prisma/client";
+import Loader from "@/components/Loader";
+import AlertMessage from "./AlertMessage";
 
 interface IFormInput {
   nom: string;
   description: string;
 }
 
-const addCategorie = async (data: IFormInput) => {
-  const response = await fetch("/api/categories", {
-    method: "POST",
+const apiEndpoints = {
+  create: "/api/categories",
+  update: (id: number) => `/api/categories/${id}`,
+};
+
+const fetcher = async (url: string, method: string, data?: IFormInput) => {
+  const response = await fetch(url, {
+    method,
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: data ? JSON.stringify(data) : undefined,
   });
 
   if (!response.ok) {
-    throw new Error("Erreur lors de l'ajout de la catégorie");
+    throw new Error(
+      `Erreur lors de la ${
+        method === "POST" ? "création" : "modification"
+      } de la catégorie`
+    );
   }
 
   return response.json();
 };
 
-const AddCategorieForm = () => {
-  const { register, handleSubmit, reset } = useForm<IFormInput>();
+const AddCategorieForm = ({
+  defaultValue,
+  isEdit,
+}: {
+  isEdit?: boolean;
+  defaultValue?: categories;
+}) => {
+  const [alert, setAlert] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { register, handleSubmit, reset, setValue } = useForm<IFormInput>({
+    defaultValues: {
+      nom: defaultValue?.nom || "",
+      description: defaultValue?.description || "",
+    },
+  });
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: addCategorie,
-    onSuccess: () => {
+    mutationFn: (data: { id?: number; input: IFormInput }) =>
+      fetcher(
+        data.id ? apiEndpoints.update(data.id) : apiEndpoints.create,
+        data.id ? "PUT" : "POST",
+        data.input
+      ),
+    onSuccess: (data) => {
+      setAlert({
+        type: "success",
+        message: isEdit
+          ? "Catégorie modifiée avec succès !"
+          : "Catégorie ajoutée avec succès !",
+      });
+      setIsDialogOpen(true);
       queryClient.invalidateQueries({ queryKey: ["categories"] });
+
+      // Mettre à jour defaultValue avec les nouvelles valeurs après succès
+      if (isEdit && data) {
+        setValue("nom", data.nom);
+        setValue("description", data.description as string);
+      }
+    },
+    onError: (error: Error) => {
+      setAlert({ type: "error", message: error.message });
+      setIsDialogOpen(true);
     },
   });
 
   const onSubmit = (data: IFormInput) => {
-    mutation.mutate(data);
+    mutation.mutate({
+      id: isEdit && defaultValue ? defaultValue.id : undefined,
+      input: data,
+    });
     reset();
   };
+
+  useEffect(() => {
+    if (isEdit && defaultValue) {
+      setValue("nom", defaultValue.nom);
+      setValue("description", defaultValue.description as string);
+    }
+  }, [isEdit, defaultValue, setValue]);
 
   return (
     <form className="grid gap-4 py-4" onSubmit={handleSubmit(onSubmit)}>
@@ -61,14 +124,22 @@ const AddCategorieForm = () => {
       </div>
       <DialogFooter>
         <Button type="submit" disabled={mutation.isPending}>
-          {mutation.isPending ? "Ajout..." : "Ajouter"}
+          {mutation.isPending ? (
+            <Loader size={20} color="white" />
+          ) : isEdit ? (
+            "Modifier"
+          ) : (
+            "Ajouter"
+          )}
         </Button>
       </DialogFooter>
-      {mutation.isError && (
-        <p className="text-red-500">Erreur lors de l&apos;ajout.</p>
-      )}
-      {mutation.isSuccess && (
-        <p className="text-green-500">Catégorie ajoutée avec succès !</p>
+      {alert && (
+        <AlertMessage
+          open={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          message={alert.message}
+          type={alert.type}
+        />
       )}
     </form>
   );

@@ -68,9 +68,9 @@ const Container = ({
           Nos Services
         </h2>
         <p className="text-muted-foreground text-base max-w-screen-md mx-auto">
-          Vous avez une question ou souhaitez simplement dire bonjour ?
-          Remplissez le formulaire et nous vous répondrons dans les plus brefs
-          délais.
+          Découvrez nos services spécialisés conçus pour répondre à vos besoins.
+          Nous vous proposons une gamme complète de prestations pour vous aider
+          dans vos projets.
         </p>
         <div className="flex flex-wrap justify-center gap-6 py-6">
           {children}

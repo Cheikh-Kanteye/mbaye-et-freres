@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { RiMenu4Line, RiSearch2Line } from "react-icons/ri";
 import React, { useState } from "react";
 
@@ -48,10 +48,10 @@ const menus = [
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
   const pathname = usePathname();
+
   return (
-    <header className="w-full  border-b sticky top-0 bg-background">
+    <header className="w-full border-b sticky top-0 bg-background">
       <div className="flex p-4 w-full max-w-screen-xl mx-auto justify-between text-foreground items-center">
         <Link
           href="/admin"
@@ -60,22 +60,19 @@ const Header = () => {
           <span className="logo-section-1">Mbaye &</span>
           <span className="p-1">Frères</span>
         </Link>
-        <nav className="hidden lg:block">
-          <ul className="flex gap-2 items-center">
-            {menus.map((menu, i) => (
-              <li key={i}>
-                <Link
-                  href={menu.href}
-                  className={`hover:bg-accent cursor-pointer p-2 rounded-sm hover:text-accent-foreground ${
-                    pathname === menu.href ? "bg-accent" : null
-                  }`}
-                >
-                  {menu.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <div className="hidden lg:flex gap-2 items-center">
+          {menus.map((menu, i) => (
+            <Link
+              key={i}
+              href={menu.href}
+              className={`hover:bg-accent cursor-pointer p-2 rounded-sm hover:text-accent-foreground ${
+                pathname === menu.href ? "bg-accent" : null
+              }`}
+            >
+              {menu.name}
+            </Link>
+          ))}
+        </div>
         <div className="flex gap-2 items-center">
           <SearchInput className="hidden w-fit lg:flex" />
           <div className="block lg:hidden">
@@ -101,26 +98,17 @@ const Header = () => {
               >
                 <DropdownMenuLabel></DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {menus.map((menu, i) => {
-                  return (
-                    <React.Fragment key={i}>
-                      <DropdownMenuItem
-                        className="p-1 bg-background hover:bg-slate-50"
-                        asChild
-                      >
-                        <div
-                          onClick={() => {
-                            setOpen(false);
-                            router.push(menu.href);
-                          }}
-                        >
-                          {menu.name}
-                        </div>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                    </React.Fragment>
-                  );
-                })}
+                {menus.map((menu, i) => (
+                  <React.Fragment key={i}>
+                    <DropdownMenuItem
+                      className="p-1 bg-background hover:bg-slate-50"
+                      asChild
+                    >
+                      <Link href={menu.href}>{menu.name}</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </React.Fragment>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
