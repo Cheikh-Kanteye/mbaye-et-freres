@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import ActionMenu from "./ActionMenu";
 import { service } from "@prisma/client";
+import ServiceActionMenu from "./ServiceActionMenu";
 
 export const service_columns: ColumnDef<service>[] = [
   {
@@ -43,6 +44,6 @@ export const service_columns: ColumnDef<service>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => <ActionMenu row={row as never} type="services" />,
+    cell: ({ row }) => <ServiceActionMenu row={row} />,
   },
 ];

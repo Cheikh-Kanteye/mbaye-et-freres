@@ -28,6 +28,8 @@ type Props = {
     | "ghost"
     | null
     | undefined;
+  open: boolean;
+  onOpenChange: () => void;
 };
 
 const AddEntityBtn = ({
@@ -38,9 +40,11 @@ const AddEntityBtn = ({
   withIcon = true,
   className,
   childClassName,
+  open,
+  onOpenChange,
 }: Props) => {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger
         className={cn(
           "flex border-primary text-primary items-center gap-0.5",

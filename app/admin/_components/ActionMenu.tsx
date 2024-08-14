@@ -21,11 +21,15 @@ const ActionMenu = ({
   type,
   link,
   children,
+  open,
+  onOpenChange,
 }: {
   row: Row<Produit | Famille>;
   type: string;
   link?: string;
   children?: React.ReactNode;
+  open: boolean;
+  onOpenChange: () => void;
 }) => {
   const produit = row.original;
   const router = useRouter();
@@ -66,6 +70,8 @@ const ActionMenu = ({
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <AddEntityBtn
+          open={open}
+          onOpenChange={onOpenChange}
           label="Modifier"
           desc={`Modification ${type}`}
           variant={"ghost"}

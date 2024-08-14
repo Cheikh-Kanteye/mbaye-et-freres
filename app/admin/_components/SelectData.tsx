@@ -29,6 +29,8 @@ interface SelectDataProps {
   className?: string;
   onChange: (value: string | undefined) => void; // Fonction pour gérer la sélection
   value: string | undefined; // ID de la valeur sélectionnée
+  showAll?: boolean;
+  defaultValue?: string; // Ajout de la prop defaultValue
 }
 
 const SelectData = ({
@@ -37,7 +39,9 @@ const SelectData = ({
   label,
   value,
   className,
+  showAll = true,
   onChange,
+  defaultValue,
 }: SelectDataProps) => {
   const { data, error, isPending, refetch } = useQuery<Categorie[] | Famille[]>(
     {
@@ -46,21 +50,26 @@ const SelectData = ({
     }
   );
 
-  if (!data) return;
+  if (!data) return null;
 
-  const options = Array.isArray(data) ? [{ id: -1, nom: "Tout" }, ...data] : [];
+  const options = Array.isArray(data)
+    ? showAll
+      ? [{ id: -1, nom: "Tout" }, ...data]
+      : data
+    : [];
 
-  // Trouver le nom correspondant à l'ID sélectionné
-  const selectedItem = options.find((item) => item.id.toString() === value);
+  // Trouver l'élément sélectionné en fonction de value ou defaultValue
+  const selectedItem = options.find((item) =>
+    value ? item.id.toString() === value : item.id.toString() === defaultValue
+  );
 
   const displayValue = selectedItem?.nom || placeholder;
 
   return (
     <Select
-      value={value}
+      value={value || defaultValue} // Utiliser value ou defaultValue pour le composant Select
       onValueChange={(newValue) => {
         onChange(newValue === "-1" ? undefined : newValue);
-        console.log({ selectedItem });
       }}
     >
       <SelectTrigger className={cn("w-full", className)}>

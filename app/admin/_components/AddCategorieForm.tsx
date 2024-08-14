@@ -1,15 +1,14 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { categories } from "@prisma/client";
 import Loader from "@/components/Loader";
 import AlertMessage from "./AlertMessage";
+import { categories } from "@prisma/client";
 
 interface IFormInput {
   nom: string;
@@ -43,10 +42,12 @@ const fetcher = async (url: string, method: string, data?: IFormInput) => {
 
 const AddCategorieForm = ({
   defaultValue,
-  isEdit,
+  isEdit = false,
+  closeOnSuccess,
 }: {
   isEdit?: boolean;
   defaultValue?: categories;
+  closeOnSuccess?: () => void;
 }) => {
   const [alert, setAlert] = useState<{
     type: "success" | "error";
@@ -79,7 +80,6 @@ const AddCategorieForm = ({
       setIsDialogOpen(true);
       queryClient.invalidateQueries({ queryKey: ["categories"] });
 
-      // Mettre à jour defaultValue avec les nouvelles valeurs après succès
       if (isEdit && data) {
         setValue("nom", data.nom);
         setValue("description", data.description as string);
@@ -123,9 +123,9 @@ const AddCategorieForm = ({
         />
       </div>
       <DialogFooter>
-        <Button type="submit" disabled={mutation.isPending}>
+        <Button type="submit" disabled={mutation.isPending} className="w-28">
           {mutation.isPending ? (
-            <Loader size={20} color="white" />
+            <Loader size={18} color="white" />
           ) : isEdit ? (
             "Modifier"
           ) : (
@@ -136,7 +136,10 @@ const AddCategorieForm = ({
       {alert && (
         <AlertMessage
           open={isDialogOpen}
-          onClose={() => setIsDialogOpen(false)}
+          onClose={() => {
+            setIsDialogOpen(false);
+            closeOnSuccess && closeOnSuccess();
+          }}
           message={alert.message}
           type={alert.type}
         />

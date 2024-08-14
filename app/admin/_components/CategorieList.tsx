@@ -33,6 +33,7 @@ const CategorieList = ({
   pending: Boolean;
 }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [open, setOpen] = React.useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -81,6 +82,8 @@ const CategorieList = ({
           className="w-fit"
         />
         <AddEntityBtn
+          open={open}
+          onOpenChange={() => setOpen(!open)}
           label="Ajouter categorie"
           desc="Ajoute une nouvelle categorie"
         >

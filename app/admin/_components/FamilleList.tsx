@@ -34,6 +34,7 @@ const FamilleList = ({
   pending: Boolean;
 }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [open, setOpen] = React.useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -107,6 +108,8 @@ const FamilleList = ({
           />
         </div>
         <AddEntityBtn
+          open={open}
+          onOpenChange={() => setOpen(!open)}
           label="Ajouter famille"
           desc="Ajoute une nouvelle famille"
         >
@@ -136,7 +139,7 @@ const FamilleList = ({
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} className="items-center">
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell className="text-left" key={cell.id}>
+                    <TableCell className="text-left max-w-sm" key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

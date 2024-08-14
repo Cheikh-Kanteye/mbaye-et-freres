@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import ActionMenu from "./ActionMenu";
+import FamilleActionMenu from "./FamilleActionMenu";
 
 export const famille_columns: ColumnDef<FamilleWCategorie>[] = [
   {
@@ -71,6 +72,6 @@ export const famille_columns: ColumnDef<FamilleWCategorie>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => <ActionMenu row={row as never} type="familles" />,
+    cell: ({ row }) => <FamilleActionMenu row={row} />,
   },
 ];

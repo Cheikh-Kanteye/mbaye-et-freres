@@ -33,6 +33,7 @@ const ProductList = ({
   pending: boolean;
 }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [open, setOpen] = React.useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -108,7 +109,12 @@ const ProductList = ({
             className="w-fit"
           />
         </div>
-        <AddEntityBtn label="Ajouter produit" desc="Ajouter un nouveau produit">
+        <AddEntityBtn
+          open={open}
+          onOpenChange={() => setOpen(!open)}
+          label="Ajouter produit"
+          desc="Ajouter un nouveau produit"
+        >
           <AddProduitForm />
         </AddEntityBtn>
       </div>

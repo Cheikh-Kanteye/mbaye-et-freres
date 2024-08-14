@@ -1,47 +1,110 @@
-import React from "react";
+"use client";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Loader from "@/components/Loader";
+import AlertMessage from "./AlertMessage";
+import { service } from "@prisma/client";
 
 interface IFormInput {
   nom: string;
   description: string;
 }
 
-const addService = async (data: IFormInput) => {
-  const response = await fetch("/api/services", {
-    method: "POST",
+const apiEndpoints = {
+  create: "/api/services",
+  update: (id: number) => `/api/services/${id}`,
+};
+
+const fetcher = async (url: string, method: string, data?: IFormInput) => {
+  const response = await fetch(url, {
+    method,
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: data ? JSON.stringify(data) : undefined,
   });
 
   if (!response.ok) {
-    throw new Error("Erreur lors de l'ajout de la service");
+    throw new Error(
+      `Erreur lors de la ${
+        method === "POST" ? "création" : "modification"
+      } du service`
+    );
   }
 
   return response.json();
 };
 
-const AddServiceForm = () => {
-  const { register, handleSubmit, reset } = useForm<IFormInput>();
+const AddServiceForm = ({
+  defaultValue,
+  isEdit = false,
+  closeOnSuccess,
+}: {
+  isEdit?: boolean;
+  defaultValue?: service;
+  closeOnSuccess?: () => void;
+}) => {
+  const [alert, setAlert] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { register, handleSubmit, reset, setValue } = useForm<IFormInput>({
+    defaultValues: {
+      nom: defaultValue?.nom || "",
+      description: defaultValue?.description || "",
+    },
+  });
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: addService,
+    mutationFn: (data: { id?: number; input: IFormInput }) =>
+      fetcher(
+        data.id ? apiEndpoints.update(data.id) : apiEndpoints.create,
+        data.id ? "PUT" : "POST",
+        data.input
+      ),
     onSuccess: () => {
+      setAlert({
+        type: "success",
+        message: isEdit
+          ? "Service modifié avec succès !"
+          : "Service ajouté avec succès !",
+      });
+      setIsDialogOpen(true);
       queryClient.invalidateQueries({ queryKey: ["services"] });
+
+      if (isEdit && defaultValue) {
+        setValue("nom", defaultValue.nom);
+        setValue("description", defaultValue.description as string);
+      }
+    },
+    onError: (error: Error) => {
+      setAlert({ type: "error", message: error.message });
+      setIsDialogOpen(true);
     },
   });
 
   const onSubmit = (data: IFormInput) => {
-    mutation.mutate(data);
+    mutation.mutate({
+      id: isEdit && defaultValue ? defaultValue.id : undefined,
+      input: data,
+    });
     reset();
   };
+
+  useEffect(() => {
+    if (isEdit && defaultValue) {
+      setValue("nom", defaultValue.nom);
+      setValue("description", defaultValue.description as string);
+    }
+  }, [isEdit, defaultValue, setValue]);
 
   return (
     <form className="grid gap-4 py-4" onSubmit={handleSubmit(onSubmit)}>
@@ -60,15 +123,26 @@ const AddServiceForm = () => {
         />
       </div>
       <DialogFooter>
-        <Button type="submit" disabled={mutation.isPending}>
-          {mutation.isPending ? "Ajout..." : "Ajouter"}
+        <Button type="submit" disabled={mutation.isPending} className="w-28">
+          {mutation.isPending ? (
+            <Loader size={18} color="white" />
+          ) : isEdit ? (
+            "Modifier"
+          ) : (
+            "Ajouter"
+          )}
         </Button>
       </DialogFooter>
-      {mutation.isError && (
-        <p className="text-red-500">Erreur lors de l&apos;ajout.</p>
-      )}
-      {mutation.isSuccess && (
-        <p className="text-green-500">Service ajouté avec succès !</p>
+      {alert && (
+        <AlertMessage
+          open={isDialogOpen}
+          onClose={() => {
+            setIsDialogOpen(false);
+            closeOnSuccess && closeOnSuccess();
+          }}
+          message={alert.message}
+          type={alert.type}
+        />
       )}
     </form>
   );

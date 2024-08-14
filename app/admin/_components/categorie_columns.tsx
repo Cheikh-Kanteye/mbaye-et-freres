@@ -13,6 +13,7 @@ import { MoreHorizontal } from "lucide-react";
 import { CategorieWFamille } from "@/types";
 import ActionMenu from "./ActionMenu";
 import AddCategorieForm from "./AddCategorieForm";
+import CategorieActionMenu from "./CategorieActionMenu";
 
 export const categorie_columns: ColumnDef<CategorieWFamille>[] = [
   {
@@ -77,10 +78,6 @@ export const categorie_columns: ColumnDef<CategorieWFamille>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => (
-      <ActionMenu row={row as never} type="categories">
-        <AddCategorieForm defaultValue={row.original} isEdit />
-      </ActionMenu>
-    ),
+    cell: ({ row }) => <CategorieActionMenu row={row} />,
   },
 ];

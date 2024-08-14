@@ -35,6 +35,7 @@ const ServiceList = ({
   pending: Boolean;
 }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [open, setOpen] = React.useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -101,7 +102,12 @@ const ServiceList = ({
             className="w-auto"
           />
         </div>
-        <AddEntityBtn label="Ajouter Service" desc="Ajoute un nouveau service">
+        <AddEntityBtn
+          open={open}
+          onOpenChange={() => setOpen(!open)}
+          label="Ajouter Service"
+          desc="Ajoute un nouveau service"
+        >
           <AddServiceForm />
         </AddEntityBtn>
       </div>
