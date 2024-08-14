@@ -11,6 +11,7 @@ import SelectData from "./SelectData";
 import AlertMessage from "./AlertMessage";
 import Loader from "@/components/Loader";
 import { useSpecifications } from "@/hooks/useSpecifications";
+import { produit as Produit } from "@prisma/client";
 
 interface IFormInput {
   reference: string;
@@ -20,7 +21,15 @@ interface IFormInput {
   idFamille: number;
 }
 
-const AddProduitForm = () => {
+const AddProduitForm = ({
+  defaultValue,
+  isEdit,
+  closeOnSuccess,
+}: {
+  isEdit?: boolean;
+  defaultValue?: Produit;
+  closeOnSuccess?: () => void;
+}) => {
   const {
     register,
     handleSubmit,

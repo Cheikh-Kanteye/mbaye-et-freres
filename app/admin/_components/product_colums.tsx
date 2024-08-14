@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Produit } from "@/types";
 import ActionMenu from "./ActionMenu";
 import { produit } from "@prisma/client";
+import ProductActionMenu from "./ProductActionMenu";
 
 export const product_colums: ColumnDef<produit>[] = [
   {
@@ -72,12 +73,6 @@ export const product_colums: ColumnDef<produit>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => (
-      <ActionMenu
-        row={row as never}
-        type="produits"
-        link={`/admin/produits/${row.original.id}`}
-      />
-    ),
+    cell: ({ row }) => <ProductActionMenu row={row} />,
   },
 ];
