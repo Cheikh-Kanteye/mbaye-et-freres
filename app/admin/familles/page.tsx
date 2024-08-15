@@ -23,12 +23,14 @@ const Familles = () => {
     queryFn: fetchFamilles,
   });
 
-  if (error)
-    return <p>Erreur lors du chargement des familles: {error.message}</p>;
-
   return (
     <section className="p-4">
       <FamilleList pending={isPending} data={familles || []} />
+      {error && (
+        <p className="text-sm text-destructive text-center">
+          Erreur lors du chargement des produits: {error.message}
+        </p>
+      )}
     </section>
   );
 };

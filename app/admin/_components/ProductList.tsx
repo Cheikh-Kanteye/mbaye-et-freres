@@ -141,7 +141,10 @@ const ProductList = ({
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} className="items-center">
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell className="text-left" key={cell.id}>
+                    <TableCell
+                      className="text-left capitalize-first"
+                      key={cell.id}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

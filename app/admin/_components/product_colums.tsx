@@ -55,6 +55,11 @@ export const product_colums: ColumnDef<produit>[] = [
     cell: ({ row }) => row.getValue("reference"),
   },
   {
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => row.getValue("type"),
+  },
+  {
     accessorKey: "familles",
     header: "Familles",
     cell: ({ row }) => {

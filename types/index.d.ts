@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { UseFormRegister } from "react-hook-form";
 import { IconType } from "react-icons";
 
 declare type SocialIconProps = {
@@ -84,4 +85,30 @@ export type Produit = {
   familles: FamilleWCategorie;
   createdAt?: Date | undefined;
   updatedAt?: Date | undefined;
+};
+
+export type IFormInput = {
+  reference: string;
+  description?: string;
+  specifications: string[];
+  images: File[];
+  idFamille: number;
+  type: "produit" | "accessoire";
+};
+
+export type InputFieldProps = {
+  id: string;
+  label: string;
+  placeholder: string;
+  register: ReturnType<UseFormRegister<IFormInput>>;
+  error?: string;
+};
+
+export type SpecificationSectionProps = {
+  specifications: string;
+  specsList: string[];
+  handleSpecsChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  addSpecification: (spec: string) => void;
+  removeSpec: (index: number) => void;
+  error?: string;
 };

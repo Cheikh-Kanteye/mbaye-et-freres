@@ -56,7 +56,7 @@ export async function postProduits(req: Request) {
     console.log("Fields:", fields);
     console.log("Files:", files);
 
-    const { description, reference, idFamille, specifications } = fields;
+    const { description, reference, type, idFamille, specifications } = fields;
 
     // Vérifier si la référence existe déjà
     const existingProduit = await prisma.produit.findUnique({
@@ -119,7 +119,7 @@ export async function postProduits(req: Request) {
         description,
         reference,
         idFamille: parseInt(idFamille, 10),
-        type: "produit",
+        type,
         specifications: Array.isArray(specifications)
           ? specifications
           : specifications

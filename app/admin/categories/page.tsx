@@ -21,12 +21,14 @@ const Categories = () => {
     queryFn: fetchCategories,
   });
 
-  if (error)
-    return <p>Erreur lors du chargement des categories: {error.message}</p>;
-
   return (
     <section className="p-4">
       <CategorieList pending={isPending} data={categories || []} />
+      {error && (
+        <p className="text-sm text-destructive text-center">
+          Erreur lors du chargement des produits: {error.message}
+        </p>
+      )}
     </section>
   );
 };

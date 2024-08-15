@@ -22,12 +22,14 @@ const Produits = () => {
     queryFn: fetchProduits,
   });
 
-  if (error)
-    return <p>Erreur lors du chargement des produits: {error.message}</p>;
-
   return (
     <section className="p-4">
       <ProductList pending={isPending} data={produits || []} />
+      {error && (
+        <p className="text-sm text-destructive text-center">
+          Erreur lors du chargement des produits: {error.message}
+        </p>
+      )}
     </section>
   );
 };

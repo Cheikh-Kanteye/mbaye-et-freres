@@ -9,7 +9,7 @@ export function useSpecifications(setValue: UseFormSetValue<any>) {
     setSpecifications(e.target.value);
   };
 
-  const addSpecification = () => {
+  const addSpecification = (spec: string) => {
     if (specifications.trim()) {
       const newSpecs = specifications
         .split(",")

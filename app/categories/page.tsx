@@ -30,20 +30,31 @@ const Categories = () => {
 
   useEffect(() => {
     if (produits) {
-      if (selectedCategory === null) {
-        setFilteredProduits(produits);
-      } else {
-        setFilteredProduits(
-          produits.filter(
-            (produit) => produit.familles.idCategorie === selectedCategory
-          )
-        );
-      }
+      setFilteredProduits(
+        produits.filter(
+          (produit) =>
+            selectedCategory === null ||
+            produit.familles.idCategorie === selectedCategory
+        )
+      );
     }
   }, [produits, selectedCategory]);
 
-  const handleCategoryChange = (id: number | null) => {
-    setSelectedCategory(id);
+  const handleCategoryChange = (id: number | null) => setSelectedCategory(id);
+
+  const renderProductsSection = (type: "produit" | "accessoire") => {
+    const productsOfType = filteredProduits.filter((p) => p.type === type);
+
+    if (productsOfType.length === 0) return null;
+
+    return (
+      <section className="my-8">
+        <h2 className="text-2xl font-semibold mb-4">
+          {type === "produit" ? "Nos Produits" : "Nos Accessoires"}
+        </h2>
+        <ProductGridList produits={productsOfType} />
+      </section>
+    );
   };
 
   return (
@@ -51,18 +62,19 @@ const Categories = () => {
       <div className="max-w-[1200px] mx-auto px-4 py-6">
         <CategoryList
           onChange={handleCategoryChange}
-          activeCategory={selectedCategory} // Passer la catégorie active
+          activeCategory={selectedCategory}
         />
-        {!isError && !isPending && filteredProduits.length > 0 ? (
-          <ProductGridList produits={filteredProduits} />
-        ) : null}
-        {(isPending || isError) && (
+        {renderProductsSection("produit")}
+        {renderProductsSection("accessoire")}
+        {isPending && (
           <div className="text-center grid w-full place-items-center">
-            {isError ? (
-              "Une erreur s'est produite lors de la récupération"
-            ) : (
-              <Loader color="red" size={32} />
-            )}
+            <Loader color="red" size={32} />
+          </div>
+        )}
+        {isError && (
+          <div className="text-center text-red-500">
+            Une erreur s&apos;est produite lors de la récupération des produits.
+            Veuillez réessayer plus tard.
           </div>
         )}
       </div>

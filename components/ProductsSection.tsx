@@ -62,9 +62,9 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({
       <div className="flex flex-col items-center">
         <ProductList />
         <Link href="/categories">
-          <a className="mt-4 px-4 py-3 rounded-sm bg-primary text-primary-foreground border border-primary hover:bg-transparent hover:text-primary duration-300 transition-all">
+          <span className="mt-4 px-4 py-3 rounded-sm bg-primary text-primary-foreground border border-primary hover:bg-transparent hover:text-primary duration-300 transition-all">
             Découvrir plus
-          </a>
+          </span>
         </Link>
       </div>
     </Container>

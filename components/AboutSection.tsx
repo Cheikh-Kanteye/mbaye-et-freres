@@ -8,7 +8,9 @@ const AboutSection = () => {
       className="w-full grid md:grid-cols-2 lg:min-h-[75dvh] relative bg-primary"
     >
       <div className="bg-[url('/images/pattern.png')] py-20 px-6 md:px-20 text-primary-foreground relative z-10">
-        <h2 className="text-6xl font-['rubik'] mb-4">Qui somme nous</h2>
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-['rubik'] mb-4">
+          Qui somme nous
+        </h2>
         <p className="text-base text-primary-foreground">
           Ets Mbaye et Frères est une entreprise leader dans le domaine de la
           menuiserie aluminium et de la miroiterie. Depuis notre fondation, nous

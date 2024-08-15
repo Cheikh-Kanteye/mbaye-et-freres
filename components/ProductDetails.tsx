@@ -83,8 +83,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ produit, error }) => {
                   variant={"ghost"}
                   className="flex gap-1 p-0 py-0 hover:bg-transparent hover:text-foreground text-muted-foreground"
                 >
-                  <p>{expanded ? "Voir moins" : "Voir plus"}</p>
-                  {expanded ? <ChevronUp /> : <ChevronDown />}
+                  <p>{expanded ? "Voir plus" : "Voir moins"}</p>
+                  {expanded ? <ChevronDown /> : <ChevronUp />}
                 </Button>
               </>
             )}

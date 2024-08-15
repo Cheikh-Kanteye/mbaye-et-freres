@@ -21,14 +21,14 @@ const Services = () => {
     queryFn: fetchServices,
   });
 
-  console.log({ services });
-
-  if (error)
-    return <p>Erreur lors du chargement des services: {error.message}</p>;
-
   return (
     <section className="p-4">
       <ServiceList pending={isPending} data={services || []} />
+      {error && (
+        <p className="text-sm text-destructive text-center">
+          Erreur lors du chargement des produits: {error.message}
+        </p>
+      )}
     </section>
   );
 };

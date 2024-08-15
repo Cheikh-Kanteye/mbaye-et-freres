@@ -9,6 +9,14 @@ import Link from "next/link";
 export default async function Dashboard() {
   const cards = await getDashboardData();
 
+  if (!cards.length) {
+    return (
+      <main className="py-12">
+        <p className="text-center">Aucune donnes a afficher</p>
+      </main>
+    );
+  }
+
   return (
     <main>
       <section className="max-w-screen-xl gap-4 mx-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-4 py-6">

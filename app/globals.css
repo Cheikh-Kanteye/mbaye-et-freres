@@ -199,3 +199,7 @@ html {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.capitalize-first::first-letter {
+  text-transform: uppercase;
+}
