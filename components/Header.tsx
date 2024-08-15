@@ -33,7 +33,6 @@ const menus: MenuItem[] = [
   { name: "Accueil", href: "/" },
   { name: "Nos services", href: "#services" },
   { name: "À Propos de Nous", href: "#about" },
-  { name: "Temoignages", href: "#testimonials" },
   { name: "Contact", href: "#contact" },
 ];
 
