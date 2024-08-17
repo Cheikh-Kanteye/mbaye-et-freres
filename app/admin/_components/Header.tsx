@@ -51,7 +51,10 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <header className="w-full border-b sticky top-0 bg-background">
+    <header
+      className="w-full border-b sticky top-0 bg-background"
+      style={{ zIndex: 10000 }}
+    >
       <div className="flex p-4 w-full max-w-screen-xl mx-auto justify-between text-foreground items-center">
         <Link
           href="/admin"

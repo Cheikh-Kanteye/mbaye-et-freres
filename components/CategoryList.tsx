@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loader from "./Loader";
 import { Button } from "./ui/button";
 import { categories } from "@prisma/client";
+import { CategorieWFamille } from "@/types";
 
 const fetchCategories = async () => {
   const response = await fetch("/api/categories");
@@ -22,7 +23,7 @@ const CategoryList = ({ onChange, activeCategory }: CategoryListProps) => {
     data: categories,
     isPending,
     isError,
-  } = useQuery<categories[]>({
+  } = useQuery<CategorieWFamille[]>({
     queryKey: ["categories"],
     queryFn: fetchCategories,
   });

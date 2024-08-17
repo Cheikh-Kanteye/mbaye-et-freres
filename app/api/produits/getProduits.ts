@@ -9,6 +9,7 @@ export async function getProduits(req: Request) {
         familles: {
           include: {
             categories: true,
+            _count: true,
           },
         },
       },

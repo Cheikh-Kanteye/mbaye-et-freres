@@ -7,6 +7,7 @@ export async function getCategories() {
     const categories = await prisma.categories.findMany({
       include: {
         familles: true,
+        produits: true,
       },
     });
     return NextResponse.json(categories);

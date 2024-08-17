@@ -1,18 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
 import { CategorieWFamille } from "@/types";
-import ActionMenu from "./ActionMenu";
-import AddCategorieForm from "./AddCategorieForm";
 import CategorieActionMenu from "./CategorieActionMenu";
 
 export const categorie_columns: ColumnDef<CategorieWFamille>[] = [
@@ -57,6 +45,7 @@ export const categorie_columns: ColumnDef<CategorieWFamille>[] = [
     header: "familles",
     cell: ({ row }) => {
       const familles = row.original.familles;
+
       return familles ? familles.length : 0;
     },
   },
@@ -64,15 +53,9 @@ export const categorie_columns: ColumnDef<CategorieWFamille>[] = [
     accessorKey: "nbProduits",
     header: "produits",
     cell: ({ row }) => {
-      const familles = row.original.familles;
-      const nombreProduits = familles
-        ? familles.reduce(
-            (total, famille) =>
-              total + (famille.produits ? famille.produits.length : 0),
-            0
-          )
-        : 0;
-      return nombreProduits;
+      const produits = row.original.produits;
+
+      return produits ? produits.length : 0;
     },
   },
   {

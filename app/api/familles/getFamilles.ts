@@ -8,6 +8,7 @@ export async function getFamilles() {
       include: {
         categories: true,
         produits: true,
+        _count: true,
       },
     });
     return NextResponse.json(familles);

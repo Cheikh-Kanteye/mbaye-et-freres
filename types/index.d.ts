@@ -55,6 +55,7 @@ export type Famille = {
 
 interface CategorieWFamille extends Categorie {
   familles: Famille[];
+  produits: Produit[];
 }
 
 interface FamilleWCategorie extends Famille {
