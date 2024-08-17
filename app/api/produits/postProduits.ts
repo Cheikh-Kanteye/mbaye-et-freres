@@ -125,6 +125,7 @@ export async function postProduits(req: Request) {
           : specifications
           ? specifications.split(",")
           : [],
+        idCategorie: familleExists.idCategorie,
         public_id: imageUrls[0]?.public_id || "", // Assumons que chaque produit a une seule image principale
         image_url: imageUrls[0]?.url || "", // Assumons que chaque produit a une seule image principale
       },
