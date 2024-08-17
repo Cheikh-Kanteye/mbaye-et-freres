@@ -12,13 +12,13 @@ const fetchProduits = async () => {
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
-  return response.json();
+  return await response.json();
 };
 
 const Categories = () => {
   const {
     data: produits,
-    isPending,
+    isLoading,
     isError,
   } = useQuery<Produit[]>({
     queryKey: ["produits"],
@@ -29,7 +29,7 @@ const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
   useEffect(() => {
-    if (produits) {
+    if (produits && Array.isArray(produits)) {
       setFilteredProduits(
         produits.filter(
           (produit) =>
@@ -44,9 +44,7 @@ const Categories = () => {
 
   const renderProductsSection = (type: "produit" | "accessoire") => {
     const productsOfType = filteredProduits.filter((p) => p.type === type);
-
     if (productsOfType.length === 0) return null;
-
     return (
       <section className="my-8">
         <h2 className="text-2xl font-semibold mb-4">
@@ -66,7 +64,7 @@ const Categories = () => {
         />
         {renderProductsSection("produit")}
         {renderProductsSection("accessoire")}
-        {isPending && (
+        {isLoading && (
           <div className="text-center grid w-full place-items-center">
             <Loader color="red" size={32} />
           </div>
