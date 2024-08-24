@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import Loader from "@/components/Loader";
+import GridSkeleton from "@/components/GridSkeleton";
 
 const FamillesPage = ({
   params,
@@ -55,13 +56,7 @@ const FamillesPage = ({
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      {pending ? (
-        <div className="w-full h-[60dvh] grid place-content-center">
-          <Loader color="red" size={32} />
-        </div>
-      ) : (
-        <ProductGridList produits={produits} />
-      )}
+      {pending ? <GridSkeleton /> : <ProductGridList produits={produits} />}
     </main>
   );
 };

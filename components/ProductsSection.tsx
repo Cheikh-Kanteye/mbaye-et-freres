@@ -3,6 +3,7 @@ import { Produit } from "@/types";
 import Loader from "@/components/Loader";
 import ProductGridList from "@/components/ProductGridList";
 import { ProductCarouselCard } from "./ProductCarouselCard";
+import GridSkeleton from "./GridSkeleton";
 
 interface ProductsSectionProps {
   produits: Produit[] | undefined;
@@ -46,7 +47,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({
   if (isPending) {
     return (
       <Container id={id}>
-        <Loader size={28} color="red" />
+        <GridSkeleton />
       </Container>
     );
   }

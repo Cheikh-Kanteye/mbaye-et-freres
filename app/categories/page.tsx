@@ -1,6 +1,7 @@
 "use client";
 
 import CategoryList from "@/components/CategoryList";
+import GridSkeleton from "@/components/GridSkeleton";
 import Loader from "@/components/Loader";
 import ProductGridList from "@/components/ProductGridList";
 import { Produit } from "@/types";
@@ -64,11 +65,7 @@ const Categories = () => {
         />
         {renderProductsSection("produit")}
         {renderProductsSection("accessoire")}
-        {isLoading && (
-          <div className="text-center grid w-full place-items-center">
-            <Loader color="red" size={32} />
-          </div>
-        )}
+        {isLoading && <GridSkeleton />}
         {isError && (
           <div className="text-center text-red-500">
             Une erreur s&apos;est produite lors de la récupération des produits.

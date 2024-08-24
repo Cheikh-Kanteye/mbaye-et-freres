@@ -4,6 +4,7 @@ import Loader from "./Loader";
 import { Button } from "./ui/button";
 import { categories } from "@prisma/client";
 import { CategorieWFamille } from "@/types";
+import { Skeleton } from "./ui/skeleton";
 
 const fetchCategories = async () => {
   const response = await fetch("/api/categories");
@@ -45,7 +46,9 @@ const CategoryList = ({ onChange, activeCategory }: CategoryListProps) => {
           avons tout ce qu&apos;il vous faut !
         </p>
       </div>
-      {!isPending && (
+      {isPending ? (
+        <CategoriesSkeleton />
+      ) : (
         <div className="flex flex-wrap gap-2 items-center justify-center">
           <Button
             variant={"outline"}
@@ -78,3 +81,24 @@ const CategoryList = ({ onChange, activeCategory }: CategoryListProps) => {
 };
 
 export default CategoryList;
+
+const CategoriesSkeleton = ({ count = 12 }: { count?: number }) => {
+  return (
+    <div className="flex gap-2 flex-wrap justify-center">
+      {Array.from({ length: count }).map((_, i) => {
+        // Générer une largeur aléatoire entre 60px et 120px
+        const randomWidth = `${Math.floor(Math.random() * 61) + 60}px`;
+        return (
+          <Button
+            variant={"outline"}
+            className="rounded-full px-4 py-2"
+            disabled
+            key={i}
+          >
+            <Skeleton className="h-5" style={{ width: randomWidth }} />
+          </Button>
+        );
+      })}
+    </div>
+  );
+};

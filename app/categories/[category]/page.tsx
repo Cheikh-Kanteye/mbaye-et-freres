@@ -11,6 +11,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import GridSkeleton from "@/components/GridSkeleton";
 
 const CategoryPage = ({ params }: { params: { category: string } }) => {
   const nomCategory = params.category.replace(/-/g, " ");
@@ -46,7 +47,7 @@ const CategoryPage = ({ params }: { params: { category: string } }) => {
         </Breadcrumb>
       </div>
       {pending ? (
-        <Loader size={28} />
+        <GridSkeleton className="grid grid-cols-4" />
       ) : (
         <div className="grid grid-cols-4">
           <ProductGridList produits={produits} />

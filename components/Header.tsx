@@ -22,7 +22,7 @@ import { NavigationMenuList } from "@radix-ui/react-navigation-menu";
 import Image from "next/image";
 import ShoppingCart from "./ShoppingCart";
 import useScrollSpy from "@/hooks/useScrollSpy";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface MenuItem {
   name: string;
@@ -42,6 +42,7 @@ const Header: React.FC = () => {
   const sectionIds = menus.map((menu) => menu.href.slice(1)); // Get section IDs without #
   const activeSection = useScrollSpy(sectionIds, homeHref);
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <header
@@ -114,14 +115,18 @@ const Header: React.FC = () => {
           <NavigationMenuList className="flex gap-4">
             {menus.map((menu, i) => (
               <NavigationMenuItem key={i}>
-                <Link
-                  className={`p-1 hover:border-b-2 border-b-primary text-foreground ${
-                    activeSection === menu.href ? "border-b-2 text-primary" : ""
-                  }`}
-                  href={menu.href}
-                >
-                  {menu.name}
-                </Link>
+                {(menu.name === "Accueil" || pathname === "/") && (
+                  <Link
+                    className={`p-1 hover:border-b-2 border-b-primary text-foreground ${
+                      activeSection === menu.href
+                        ? "border-b-2 text-primary"
+                        : ""
+                    }`}
+                    href={menu.href}
+                  >
+                    {menu.name}
+                  </Link>
+                )}
               </NavigationMenuItem>
             ))}
           </NavigationMenuList>

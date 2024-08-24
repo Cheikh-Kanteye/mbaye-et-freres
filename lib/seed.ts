@@ -1,5 +1,5 @@
-import bcrypt from "bcrypt";
 import prisma from "./prisma";
+import bcrypt from "bcrypt";
 
 async function createDefaultUsers() {
   const existingUsers = await prisma.user.findMany();
@@ -33,11 +33,4 @@ async function createDefaultUsers() {
   console.log("Utilisateurs par défaut créés avec succès.");
 }
 
-createDefaultUsers()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+createDefaultUsers();
