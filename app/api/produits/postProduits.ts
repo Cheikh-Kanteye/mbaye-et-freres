@@ -1,9 +1,8 @@
 import prisma from "@/lib/prisma";
-import cloudinary from "@/lib/cloudinary";
 import fs from "fs";
 import path from "path";
-import tmp from "tmp";
 import { NextResponse } from "next/server";
+import { saveFileLocally } from "@/lib/saveFileLocally";
 
 export const config = {
   api: {
@@ -11,52 +10,28 @@ export const config = {
   },
 };
 
-async function uploadToCloudinary(
-  filePath: string
-): Promise<{ url: string; public_id: string }> {
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(
-      filePath,
-      {
-        folder: "produit_images",
-        transformation: [
-          { width: 800, height: 800, crop: "limit", quality: "auto" },
-          { fetch_format: "auto" },
-        ],
-      },
-      (error, result) => {
-        if (error) {
-          console.log("Cloudinary error:", error);
-          reject("Cloudinary error: " + error);
-        } else {
-          resolve({
-            url: result?.secure_url as string,
-            public_id: result?.public_id as string,
-          });
-        }
-      }
-    );
-  });
-}
-
 export async function postProduits(req: Request) {
   try {
     const formData = await req.formData();
-    const fields: any = {};
-    const files: any = [];
+    const fields: Record<string, string> = {};
+    const files: File[] = [];
 
     formData.forEach((value, key) => {
       if (value instanceof File) {
         files.push(value);
       } else {
-        fields[key] = value;
+        fields[key] = value as string;
       }
     });
 
-    console.log("Fields:", fields);
-    console.log("Files:", files);
-
-    const { description, reference, type, idFamille, specifications } = fields;
+    const {
+      description,
+      reference,
+      type,
+      idFamille,
+      idCategorie,
+      specifications,
+    } = fields;
 
     // Vérifier si la référence existe déjà
     const existingProduit = await prisma.produit.findUnique({
@@ -84,7 +59,7 @@ export async function postProduits(req: Request) {
       return new Response(
         JSON.stringify({
           message:
-            "La famille spécifiée n'existe pas. Veuillez vérifier de la famille selectionner et réessayer.",
+            "La famille spécifiée n'existe pas. Veuillez vérifier la famille sélectionnée et réessayer.",
         }),
         {
           status: 400,
@@ -92,27 +67,24 @@ export async function postProduits(req: Request) {
       );
     }
 
-    const tempDir = tmp.dirSync().name;
+    const saveDir = path.join(process.cwd(), "public", "produits");
 
-    const fileUploads = files.map(async (file: any) => {
+    // Créer le répertoire si nécessaire
+    if (!fs.existsSync(saveDir)) {
+      fs.mkdirSync(saveDir, { recursive: true });
+    }
+
+    const fileUploads = files.map(async (file) => {
       try {
-        const filePath = path.join(tempDir, file.name);
-        await fs.promises.writeFile(
-          filePath,
-          Buffer.from(await file.arrayBuffer())
-        );
-        const { url, public_id } = await uploadToCloudinary(filePath);
-        await fs.promises.unlink(filePath);
-        return { url, public_id };
+        const { filePath, fileName } = await saveFileLocally(file, saveDir);
+        return { filePath, fileName };
       } catch (error) {
         console.error("File upload error:", error);
         throw error;
       }
     });
 
-    const imageUrls = await Promise.all(fileUploads);
-
-    console.log("Image URLs:", imageUrls);
+    const savedFiles = await Promise.all(fileUploads);
 
     const produit = await prisma.produit.create({
       data: {
@@ -120,18 +92,12 @@ export async function postProduits(req: Request) {
         reference,
         idFamille: parseInt(idFamille, 10),
         type,
-        specifications: Array.isArray(specifications)
-          ? specifications
-          : specifications
-          ? specifications.split(",")
-          : [],
-        idCategorie: familleExists.idCategorie,
-        public_id: imageUrls[0]?.public_id || "", // Assumons que chaque produit a une seule image principale
-        image_url: imageUrls[0]?.url || "", // Assumons que chaque produit a une seule image principale
+        specifications: specifications ? specifications.split(",") : [],
+        idCategorie: familleExists.idCategorie, // Utiliser l'idCategorie fourni
+        public_id: savedFiles[0]?.fileName || "", // Assumons que chaque produit a une seule image principale
+        image_url: `/produits/${savedFiles[0]?.fileName || ""}`, // Chemin de l'image enregistrée
       },
     });
-
-    console.log("Produit créé:", produit);
 
     return NextResponse.json(produit);
   } catch (error: any) {

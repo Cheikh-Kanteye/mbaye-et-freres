@@ -15,7 +15,11 @@ const ProductActionMenu = ({ row }: { row: Row<produit> }) => {
       type="produits"
     >
       <AddProduitForm
-        closeOnSuccess={() => setOpen(false)}
+        closeOnSuccess={() => {
+          setTimeout(() => {
+            setOpen(false);
+          }, 5000); // 5 seconds delay
+        }}
         defaultValue={row.original}
         isEdit
       />

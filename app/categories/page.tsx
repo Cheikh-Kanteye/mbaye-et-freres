@@ -1,8 +1,6 @@
 "use client";
-
 import CategoryList from "@/components/CategoryList";
 import GridSkeleton from "@/components/GridSkeleton";
-import Loader from "@/components/Loader";
 import ProductGridList from "@/components/ProductGridList";
 import { Produit } from "@/types";
 import { useQuery } from "@tanstack/react-query";

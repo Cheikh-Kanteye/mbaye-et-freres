@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { updateProduit } from "./updateProduit";
 
 export async function GET(
   req: Request,
@@ -12,6 +13,7 @@ export async function GET(
   }
 
   const idNumber = Number(id);
+
   if (isNaN(idNumber)) {
     return NextResponse.json({ error: "ID invalide" }, { status: 400 });
   }
@@ -42,4 +44,13 @@ export async function GET(
     console.error("Erreur lors de la récupération du produit :", error);
     return NextResponse.error();
   }
+}
+
+export async function PUT(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  console.log({ params: params });
+
+  return updateProduit(req, params.id);
 }

@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import cloudinary from "@/lib/cloudinary";
+import fs from "fs";
+import path from "path";
 
 export async function deleteProduit(req: Request) {
   try {
@@ -27,10 +28,25 @@ export async function deleteProduit(req: Request) {
       where: { id: idNumber },
     });
 
-    //supprimer l'image sur cloudinary
-    if (produit) await cloudinary.uploader.destroy(produit.public_id);
+    if (!produit) {
+      return NextResponse.json(
+        { error: "Produit non trouvé" },
+        { status: 404 }
+      );
+    }
 
-    // Supprimer le produit
+    // Supprimer l'image du dossier local
+    const imageFilePath = path.join(
+      process.cwd(),
+      "public",
+      "produits",
+      produit.public_id
+    );
+    if (fs.existsSync(imageFilePath)) {
+      fs.unlinkSync(imageFilePath);
+    }
+
+    // Supprimer le produit de la base de données
     await prisma.produit.delete({
       where: { id: idNumber },
     });

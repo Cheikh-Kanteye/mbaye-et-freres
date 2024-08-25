@@ -1,6 +1,7 @@
 import { deleteProduit } from "./deleteProduit";
 import { getProduits } from "./getProduits";
 import { postProduits } from "./postProduits";
+import { updateProduit } from "./[id]/updateProduit";
 
 export async function POST(req: Request) {
   console.log(req.body);
