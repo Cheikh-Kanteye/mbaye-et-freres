@@ -20,18 +20,22 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ produit, error }) => {
   const [expanded, setExpanded] = useState(true);
   const { addToCart } = useCart();
 
-  const cleanedSpecifications = useMemo(
-    () =>
-      specifications
-        .map(
-          (spec) =>
-            spec
-              .replace(/[\[\]"]+/g, "") // Retirer les crochets et les guillemets
-              .trim() // Enlever les espaces inutiles
-        )
-        .filter((spec, index, self) => spec && self.indexOf(spec) === index), // Éviter les doublons
-    [specifications]
-  );
+  const cleanedSpecifications = useMemo(() => {
+    return specifications
+      .flatMap(
+        (spec) =>
+          spec
+            .split(",") // Diviser en éléments individuels
+            .map(
+              (item) =>
+                item
+                  .replace(/[\[\]"\\]+/g, "") // Retirer les crochets et les guillemets
+                  .trim() // Enlever les espaces inutiles
+            )
+            .filter((spec) => spec) // Éviter les éléments vides
+      )
+      .filter((spec, index, self) => self.indexOf(spec) === index); // Éviter les doublons
+  }, [specifications]);
 
   if (error) {
     return (
