@@ -1,14 +1,20 @@
 "use client";
-import dynamic from "next/dynamic";
+
+import React, { Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Produit } from "@/types";
+import Loader from "@/components/Loader";
 
-const InfoCardList = dynamic(() => import("@/components/InfoCardList"));
-const ProductsSection = dynamic(() => import("@/components/ProductsSection"));
-const ContactSection = dynamic(() => import("@/components/ContactSection"));
-const AboutSection = dynamic(() => import("@/components/AboutSection"));
-const ServicesSection = dynamic(() => import("@/components/ServicesSection"));
-const BannerSection = dynamic(() => import("@/components/BannerSection"));
+const InfoCardList = React.lazy(() => import("@/components/InfoCardList"));
+const ProductsSection = React.lazy(
+  () => import("@/components/ProductsSection")
+);
+const ContactSection = React.lazy(() => import("@/components/ContactSection"));
+const AboutSection = React.lazy(() => import("@/components/AboutSection"));
+const ServicesSection = React.lazy(
+  () => import("@/components/ServicesSection")
+);
+const BannerSection = React.lazy(() => import("@/components/BannerSection"));
 
 const fetchProduits = async () => {
   const response = await fetch("/api/produits");
@@ -32,23 +38,26 @@ const Home = () => {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background">
-      <BannerSection />
-
-      <InfoCardList />
-
-      <ProductsSection
-        id="produits"
-        produits={produits || []}
-        isPending={isPending}
-        isError={isError}
-        error={error}
-      />
-
-      <ServicesSection id="services" />
-
-      <AboutSection />
-
-      <ContactSection id="contact" />
+      <Suspense fallback={<Loader />}>
+        <BannerSection />
+        <InfoCardList />
+        {isPending ? (
+          <Loader /> // Afficher le loader pendant le chargement
+        ) : isError ? (
+          <div className="error-message">{error.message}</div> // Afficher le message d'erreur
+        ) : (
+          <ProductsSection
+            isPending={isPending}
+            isError={isError}
+            error={error}
+            id="produits"
+            produits={produits || []}
+          />
+        )}
+        <ServicesSection id="services" />
+        <AboutSection />
+        <ContactSection id="contact" />
+      </Suspense>
     </main>
   );
 };
