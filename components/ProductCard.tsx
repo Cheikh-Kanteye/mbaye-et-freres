@@ -36,7 +36,9 @@ const ProductCard = ({
                 {produit.familles.categories.nom}
                 <br />
               </span>
-              <span className="font-['Rubik'] ">{produit.familles.nom}</span>
+              <span className="font-['Rubik'] truncate max-w-[10ch]">
+                {produit.familles.nom}
+              </span>
             </p>
           )}
           <div className="hover:bg-primary px-4 text-sm md:text-base py-3 hover:text-primary-foreground rounded-full self-center shadow-lg bg-background text-foreground">
