@@ -1,8 +1,12 @@
 import prisma from "@/lib/prisma";
-import fs from "fs";
-import path from "path";
 import { NextResponse } from "next/server";
-import { saveFileLocally } from "@/lib/saveFileLocally";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export const config = {
   api: {
@@ -67,24 +71,25 @@ export async function postProduits(req: Request) {
       );
     }
 
-    const saveDir = path.join(process.cwd(), "public", "produits");
-
-    // Créer le répertoire si nécessaire
-    if (!fs.existsSync(saveDir)) {
-      fs.mkdirSync(saveDir, { recursive: true });
-    }
-
+    // Uploader les fichiers sur Cloudinary
     const fileUploads = files.map(async (file) => {
-      try {
-        const { filePath, fileName } = await saveFileLocally(file, saveDir);
-        return { filePath, fileName };
-      } catch (error) {
-        console.error("File upload error:", error);
-        throw error;
-      }
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      return new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream({ folder: "produits" }, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          })
+          .end(buffer);
+      });
     });
 
-    const savedFiles = await Promise.all(fileUploads);
+    const savedFiles: any[] = await Promise.all(fileUploads);
 
     const produit = await prisma.produit.create({
       data: {
@@ -93,9 +98,9 @@ export async function postProduits(req: Request) {
         idFamille: parseInt(idFamille, 10),
         type,
         specifications: specifications ? specifications.split(",") : [],
-        idCategorie: familleExists.idCategorie, // Utiliser l'idCategorie fourni
-        public_id: savedFiles[0]?.fileName || "", // Assumons que chaque produit a une seule image principale
-        image_url: `/produits/${savedFiles[0]?.fileName || ""}`, // Chemin de l'image enregistrée
+        idCategorie: familleExists.idCategorie,
+        public_id: savedFiles[0]?.public_id || "", // Identifiant public Cloudinary
+        image_url: savedFiles[0]?.secure_url || "", // URL de l'image sur Cloudinary
       },
     });
 
