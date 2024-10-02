@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import App from "./_app";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const redHatDisplay = Red_Hat_Display({ subsets: ["latin"] });
 
@@ -51,10 +53,25 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "BMB Mbaye et Freres",
+    url: "https://mbaye-et-freres.vercel.app",
+    description:
+      "Votre fournisseur de confiance en matériaux de construction avec des services sur mesure : aluminium, verre, sablage, découpage numérique.",
+    image: "https://mbaye-et-freres.vercel.app/logo.png",
+  };
+
   return (
     <html lang="fr">
       <body className={`${redHatDisplay.className}`}>
         <App>{children}</App>
+        <ToastContainer />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </body>
     </html>
   );

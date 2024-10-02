@@ -158,7 +158,7 @@
 @supports (scrollbar-color: var(--first-color) var(--border-color)) {
   * {
     scrollbar-width: thin;
-    scrollbar-color: hsl(0 72.2% 50.6%) hsl(0 85.7% 97.3%);
+    scrollbar-color: #dc2626 hsl(0 85.7% 97.3%);
   }
 }
 

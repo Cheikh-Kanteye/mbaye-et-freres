@@ -2,6 +2,7 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
+import ContactForm from "./ContactForm";
 
 export default function ContactSection({ id }: { id: string }) {
   return (
@@ -17,22 +18,7 @@ export default function ContactSection({ id }: { id: string }) {
             délais.
           </p>
         </div>
-        <form className="mt-8 w-full max-w-md mx-auto space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input id="name" placeholder="Entrez votre nom" />
-            <Input id="email" type="email" placeholder="Entrez votre email" />
-          </div>
-          <div className="space-y-1">
-            <Textarea
-              id="message"
-              placeholder="Écrivez votre message..."
-              className="min-h-[120px]"
-            />
-          </div>
-          <Button type="submit" className="w-full">
-            Envoyer
-          </Button>
-        </form>
+        <ContactForm />
       </div>
     </section>
   );
