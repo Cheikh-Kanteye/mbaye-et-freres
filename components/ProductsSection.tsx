@@ -23,7 +23,11 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({
   // Fonction pour afficher la liste des produits en grille ou en carousel
   const ProductList = () => {
     // Vérifie si produits est un tableau avant d'utiliser slice
-    const produitsToShow = Array.isArray(produits) ? produits.slice(0, 8) : [];
+    const produitsToShow = Array.isArray(produits)
+      ? produits
+          .sort(() => Math.random() - 0.5) // Mélange aléatoirement les produits
+          .slice(0, 10) // Garde les 10 premiers produits après mélange
+      : [];
     return (
       <>
         <ProductGridList className="hidden sm:grid" produits={produitsToShow} />
