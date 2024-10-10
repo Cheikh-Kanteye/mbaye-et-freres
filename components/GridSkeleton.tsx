@@ -6,7 +6,7 @@ const GridSkeleton = ({ className }: { className?: string }) => {
   return (
     <section
       className={cn(
-        "py-6 grid grid-cols-2 md:grid-cols-3 w-full lg:grid-cols-4 xl:grid-cols-5 gap-4",
+        "p-6 grid grid-cols-2 md:grid-cols-3 w-full lg:grid-cols-4 xl:grid-cols-5 gap-4",
         className
       )}
     >

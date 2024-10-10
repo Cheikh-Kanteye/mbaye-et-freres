@@ -54,7 +54,7 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-3 max-w-sm mt-4 w-full"
+      className="flex flex-col gap-3  mt-4 w-full"
     >
       <Input {...register("name")} placeholder="Enter your name" />
       <Input

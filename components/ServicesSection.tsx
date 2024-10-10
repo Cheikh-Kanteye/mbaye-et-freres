@@ -25,9 +25,13 @@ const ServicesSection = ({ id }: { id: string }) => {
   if (isLoading) {
     return (
       <Container id={id}>
-        <Skeleton className="w-24 h-12" />
-        <Skeleton className="w-28 h-12" />
-        <Skeleton className="w-20 h-12" />
+        <Skeleton className="w-60 h-12" />
+        <Skeleton className="w-48 h-12" />
+        <Skeleton className="w-52 h-12" />
+        <Skeleton className="w-56 h-12" />
+        <Skeleton className="w-44 h-12" />
+        <Skeleton className="w-44 h-12" />
+        <Skeleton className="w-44 h-12" />
       </Container>
     );
   }

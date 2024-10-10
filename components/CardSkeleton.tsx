@@ -7,7 +7,7 @@ const ProductCardSkeleton = ({ className }: { className?: string }) => {
   return (
     <Card
       className={cn(
-        "min-w-[170px] w-full h-auto bg-background border-primary-foreground shadow-lg shadow-primary-foreground rounded-lg overflow-hidden",
+        "max-w-[16rem] w-full h-auto bg-background border-primary-foreground shadow-lg shadow-primary-foreground rounded-lg overflow-hidden",
         className
       )}
     >
