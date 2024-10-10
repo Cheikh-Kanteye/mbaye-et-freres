@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { categories } from "@prisma/client";
 import { CategorieWFamille } from "@/types";
 import { Skeleton } from "./ui/skeleton";
+import { motion } from "framer-motion"; // Importer framer-motion
 
 const fetchCategories = async () => {
   const response = await fetch("/api/categories");
@@ -61,18 +62,25 @@ const CategoryList = ({ onChange, activeCategory }: CategoryListProps) => {
           </Button>
           {categories &&
             categories.map((category, i) => (
-              <Button
-                variant={"outline"}
-                onClick={() => onChange(category.id)}
-                className={`hover:text-primary hover:border-primary hover:bg-transparent rounded-full ${
-                  activeCategory === category.id
-                    ? "border-primary text-primary"
-                    : ""
-                }`} // Actif
-                key={i}
+              <motion.div
+                key={category.id}
+                initial={{ opacity: 0, y: 20 }} // État initial
+                animate={{ opacity: 1, y: 0 }} // État final
+                exit={{ opacity: 0, y: 20 }} // État à la sortie
+                transition={{ duration: 0.3 }} // Durée de l'animation
               >
-                <span className="text-sm  capitalize">{category.nom}</span>
-              </Button>
+                <Button
+                  variant={"outline"}
+                  onClick={() => onChange(category.id)}
+                  className={`hover:text-primary hover:border-primary hover:bg-transparent rounded-full ${
+                    activeCategory === category.id
+                      ? "border-primary text-primary"
+                      : ""
+                  }`} // Actif
+                >
+                  <span className="text-sm capitalize">{category.nom}</span>
+                </Button>
+              </motion.div>
             ))}
         </div>
       )}

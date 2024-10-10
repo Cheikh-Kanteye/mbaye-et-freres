@@ -24,6 +24,7 @@ import AddEntityBtn from "./AddEntityBtn";
 import AddProduitForm from "./AddProduitForm";
 import SelectData from "./SelectData";
 import { produit } from "@prisma/client";
+import Pagination from "./Pagination";
 
 const ProductList = ({
   data,
@@ -45,13 +46,12 @@ const ProductList = ({
     string | undefined
   >("");
 
-  // Filtrage des données par catégorie et famille
   const filteredData = React.useMemo(() => {
     let filtered = data;
 
     if (selectedCategorie) {
       filtered = filtered.filter(
-        (item) => item.id === parseInt(selectedCategorie)
+        (item) => item.idCategorie === parseInt(selectedCategorie)
       );
     }
 
@@ -65,7 +65,7 @@ const ProductList = ({
   }, [data, selectedCategorie, selectedFamille]);
 
   const table = useReactTable({
-    data: filteredData, // Utiliser les données filtrées
+    data: filteredData,
     columns: product_colums,
     state: {
       sorting,
@@ -119,52 +119,57 @@ const ProductList = ({
         </AddEntityBtn>
       </div>
       {!pending ? (
-        <Table className="w-full">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="capitalize">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="items-center">
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      className="text-left capitalize-first"
-                      key={cell.id}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
+        <>
+          <Table className="w-full">
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} className="capitalize">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={product_colums.length}
-                  className="h-24 text-center"
-                >
-                  Aucun résultat.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} className="items-center">
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        className="text-left capitalize-first"
+                        key={cell.id}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={product_colums.length}
+                    className="h-24 text-center"
+                  >
+                    Aucun résultat.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+
+          {/* Pagination Controls */}
+          <Pagination table={table} filteredDataLength={filteredData.length} />
+        </>
       ) : (
         <SkeletonTable />
       )}

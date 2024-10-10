@@ -40,7 +40,11 @@ const ProductFormFields: React.FC<ProductFormFieldsProps> = ({
         name="type"
         rules={{ required: "Le type est requis" }}
         render={({ field }) => (
-          <RadioGroup {...field} className="flex gap-8 items-center">
+          <RadioGroup
+            value={field.value} // Ajoutez cette ligne pour lier la valeur
+            onValueChange={field.onChange} // Assurez-vous que ceci est correctement lié
+            className="flex gap-8 items-center"
+          >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="produit" id="r1" />
               <Label htmlFor="r1">Produit</Label>
@@ -52,6 +56,7 @@ const ProductFormFields: React.FC<ProductFormFieldsProps> = ({
           </RadioGroup>
         )}
       />
+
       {errors.type && <p className="text-red-500">{errors.type.message}</p>}
     </div>
 
@@ -89,6 +94,9 @@ const ProductFormFields: React.FC<ProductFormFieldsProps> = ({
       id="description"
       {...register("description")}
       placeholder="Description"
+      className={`border ${
+        errors.description ? "border-red-500" : "border-gray-300"
+      }`}
     />
     {errors.description && (
       <p className="text-red-500">{errors.description.message}</p>

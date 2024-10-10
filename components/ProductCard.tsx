@@ -16,7 +16,7 @@ const ProductCard = ({
     <Link href={`/produit/${produit.id}`}>
       <Card
         className={cn(
-          "w-[16rem] h-auto bg-background border-primary-foreground shadow-lg shadow-primary-foreground hover-animate rounded-lg overflow-hidden",
+          "max-w-[16rem] w-full h-auto bg-background border-primary-foreground shadow-lg shadow-primary-foreground hover-animate rounded-lg overflow-hidden",
           className
         )}
       >

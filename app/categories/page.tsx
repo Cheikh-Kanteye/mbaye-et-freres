@@ -61,8 +61,6 @@ const Categories = () => {
           onChange={handleCategoryChange}
           activeCategory={selectedCategory}
         />
-        {renderProductsSection("produit")}
-        {renderProductsSection("accessoire")}
         {isLoading && <GridSkeleton />}
         {isError && (
           <div className="text-center text-red-500">
@@ -70,6 +68,8 @@ const Categories = () => {
             Veuillez réessayer plus tard.
           </div>
         )}
+        {renderProductsSection("produit")}
+        {renderProductsSection("accessoire")}
       </div>
     </main>
   );

@@ -18,12 +18,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Categorie, CategorieWFamille } from "@/types";
+import { CategorieWFamille } from "@/types";
 import SkeletonTable from "./SkeletonTable";
 import AddEntityBtn from "./AddEntityBtn";
 import { categorie_columns } from "./categorie_columns";
 import AddCategorieForm from "./AddCategorieForm";
 import { Input } from "@/components/ui/input";
+import Pagination from "./Pagination"; // Import the Pagination component
 
 const CategorieList = ({
   data,
@@ -39,6 +40,7 @@ const CategorieList = ({
   );
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
   const [searchTerm, setSearchTerm] = React.useState<string>("");
+
   const filteredData = React.useMemo(() => {
     let filtered = data;
 
@@ -91,53 +93,54 @@ const CategorieList = ({
         </AddEntityBtn>
       </div>
       {!pending ? (
-        <Table className="w-full">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="capitalize">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  // data-state={row.getIsSelected() && "selected"}
-                  className="items-center"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell className="text-left" key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
+        <>
+          <Table className="w-full">
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} className="capitalize">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={categorie_columns.length}
-                  className="h-24 text-center"
-                >
-                  Aucun résultat.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} className="items-center">
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell className="text-left" key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={categorie_columns.length}
+                    className="h-24 text-center"
+                  >
+                    Aucun résultat.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+
+          {/* Add Pagination below the table */}
+          <Pagination table={table} filteredDataLength={filteredData.length} />
+        </>
       ) : (
         <SkeletonTable />
       )}

@@ -25,6 +25,8 @@ import { famille_columns } from "./famille_columns";
 import AddFamilleForm from "./AddFamilleForm";
 import SelectData from "./SelectData";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button"; // Importation du composant Button pour styliser les contrôles de pagination
+import Pagination from "./Pagination";
 
 const FamilleList = ({
   data,
@@ -75,7 +77,7 @@ const FamilleList = ({
     onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: getPaginationRowModel(), // Utilisation de la pagination
     getSortedRowModel: getSortedRowModel(),
   });
 
@@ -117,49 +119,53 @@ const FamilleList = ({
         </AddEntityBtn>
       </div>
       {!pending ? (
-        <Table className="w-full">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="capitalize">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="items-center">
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell className="text-left max-w-sm" key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
+        <>
+          <Table className="w-full">
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} className="capitalize">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={famille_columns.length}
-                  className="h-24 text-center"
-                >
-                  Aucun résultat.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} className="items-center">
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell className="text-left max-w-sm" key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={famille_columns.length}
+                    className="h-24 text-center"
+                  >
+                    Aucun résultat.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          {/* Pagination Controls  */}
+          <Pagination table={table} filteredDataLength={filteredData.length} />
+        </>
       ) : (
         <SkeletonTable />
       )}

@@ -4,6 +4,8 @@ import React, { Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Produit } from "@/types";
 import Loader from "@/components/Loader";
+import { Skeleton } from "@/components/ui/skeleton";
+import GridSkeleton from "@/components/GridSkeleton";
 
 const InfoCardList = React.lazy(() => import("@/components/InfoCardList"));
 const ProductsSection = React.lazy(
@@ -27,7 +29,7 @@ const fetchProduits = async () => {
 const Home = () => {
   const {
     data: produits,
-    isPending,
+    isLoading,
     isError,
     error,
   } = useQuery<Produit[]>({
@@ -41,18 +43,12 @@ const Home = () => {
       <Suspense fallback={<Loader />}>
         <BannerSection />
         <InfoCardList />
-        {isPending ? (
-          <Loader /> // Afficher le loader pendant le chargement
+        {isLoading ? ( // Utiliser isLoading de React Query
+          <GridSkeleton /> // Afficher le loader pendant le chargement
         ) : isError ? (
           <div className="error-message">{error.message}</div> // Afficher le message d'erreur
         ) : (
-          <ProductsSection
-            isPending={isPending}
-            isError={isError}
-            error={error}
-            id="produits"
-            produits={produits || []}
-          />
+          <ProductsSection id="produits" produits={produits || []} />
         )}
         <ServicesSection id="services" />
         <AboutSection />

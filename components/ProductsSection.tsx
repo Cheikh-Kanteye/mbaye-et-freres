@@ -1,25 +1,14 @@
 import Link from "next/link";
 import { Produit } from "@/types";
-import Loader from "@/components/Loader";
 import ProductGridList from "@/components/ProductGridList";
 import { ProductCarouselCard } from "./ProductCarouselCard";
-import GridSkeleton from "./GridSkeleton";
 
 interface ProductsSectionProps {
   produits: Produit[] | undefined;
-  isPending: boolean;
-  isError: boolean;
-  error: Error | null;
   id: string;
 }
 
-const ProductsSection: React.FC<ProductsSectionProps> = ({
-  produits,
-  isPending,
-  isError,
-  error,
-  id,
-}) => {
+const ProductsSection: React.FC<ProductsSectionProps> = ({ produits, id }) => {
   // Fonction pour afficher la liste des produits en grille ou en carousel
   const ProductList = () => {
     // Vérifie si produits est un tableau avant d'utiliser slice
@@ -37,24 +26,6 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({
       </>
     );
   };
-
-  // Gestion des états de chargement et d'erreur
-  if (isError) {
-    return (
-      <div className="text-red-600 py-12 text-center">
-        Erreur de chargement des produits : {error?.message}. Vérifiez votre
-        connexion Internet.
-      </div>
-    );
-  }
-
-  if (isPending) {
-    return (
-      <Container id={id}>
-        <GridSkeleton />
-      </Container>
-    );
-  }
 
   // Retourne null si aucun produit n'est disponible
   if (!Array.isArray(produits) || produits.length === 0) {

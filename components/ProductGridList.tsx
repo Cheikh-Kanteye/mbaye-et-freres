@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { Produit } from "@/types";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface ProductGridListProps {
   produits: Produit[];
@@ -10,9 +11,8 @@ interface ProductGridListProps {
 
 const ProductGridList = ({ produits, className }: ProductGridListProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 20; // Nombre de produits par page
+  const productsPerPage = 15;
 
-  // Calculer l'index des produits à afficher
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = produits.slice(
@@ -20,10 +20,8 @@ const ProductGridList = ({ produits, className }: ProductGridListProps) => {
     indexOfLastProduct
   );
 
-  // Calculer le nombre total de pages
   const totalPages = Math.ceil(produits.length / productsPerPage);
 
-  // Fonction pour changer de page
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -40,35 +38,107 @@ const ProductGridList = ({ produits, className }: ProductGridListProps) => {
     <section className={cn("py-6", className)}>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {currentProducts.map((produit) => (
-          <ProductCard className="w-full" key={produit.id} produit={produit} />
+          <motion.div
+            key={produit.id}
+            className="w-full"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ProductCard produit={produit} />
+          </motion.div>
         ))}
       </div>
 
-      {/* Afficher la pagination seulement si le nombre total de produits est supérieur à 20 */}
+      {/* Amélioration de la pagination */}
       {totalPages > 1 && (
         <div className="mt-4 flex justify-center">
           <nav>
-            <ul className="flex space-x-2">
-              {Array.from({ length: totalPages }, (_, index) => (
-                <li key={index + 1}>
-                  <button
-                    className={cn(
-                      "px-3 py-1 border rounded",
-                      currentPage === index + 1
-                        ? "bg-primary text-white"
-                        : "bg-white text-primary"
-                    )}
-                    onClick={() => handlePageChange(index + 1)}
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-              {totalPages > 5 && (
-                <li>
-                  <span className="px-3 py-1">...</span>
-                </li>
-              )}
+            <ul className="flex items-center space-x-2">
+              {/* Bouton pour aller à la première page */}
+              <li>
+                <button
+                  className={cn(
+                    "px-3 py-1 border rounded",
+                    currentPage === 1
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-white text-primary hover:bg-gray-200"
+                  )}
+                  onClick={() => handlePageChange(1)}
+                  disabled={currentPage === 1}
+                >
+                  &lt;&lt; {/* Flèche gauche double */}
+                </button>
+              </li>
+
+              {/* Bouton pour aller à la page précédente */}
+              <li>
+                <button
+                  className={cn(
+                    "px-3 py-1 border rounded",
+                    currentPage === 1
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-white text-primary hover:bg-gray-200"
+                  )}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  &lt; {/* Flèche gauche */}
+                </button>
+              </li>
+
+              {/* Affichage des numéros de pages */}
+              {Array.from({ length: totalPages }, (_, index) => {
+                const page = index + 1;
+                return (
+                  <li key={page}>
+                    <button
+                      className={cn(
+                        "px-3 py-1 border rounded",
+                        currentPage === page
+                          ? "bg-primary text-white"
+                          : "bg-white text-primary hover:bg-gray-200"
+                      )}
+                      onClick={() => handlePageChange(page)}
+                    >
+                      {page}
+                    </button>
+                  </li>
+                );
+              })}
+
+              {/* Bouton pour aller à la page suivante */}
+              <li>
+                <button
+                  className={cn(
+                    "px-3 py-1 border rounded",
+                    currentPage === totalPages
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-white text-primary hover:bg-gray-200"
+                  )}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  &gt; {/* Flèche droite */}
+                </button>
+              </li>
+
+              {/* Bouton pour aller à la dernière page */}
+              <li>
+                <button
+                  className={cn(
+                    "px-3 py-1 border rounded",
+                    currentPage === totalPages
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-white text-primary hover:bg-gray-200"
+                  )}
+                  onClick={() => handlePageChange(totalPages)}
+                  disabled={currentPage === totalPages}
+                >
+                  &gt;&gt; {/* Flèche droite double */}
+                </button>
+              </li>
             </ul>
           </nav>
         </div>

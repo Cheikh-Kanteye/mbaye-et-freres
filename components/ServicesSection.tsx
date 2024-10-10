@@ -1,8 +1,8 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import InfoCard from "./InfoCard";
-import Loader from "./Loader";
 import { service as ServiceType } from "@prisma/client";
+import { Skeleton } from "./ui/skeleton";
 
 const fetchServices = async () => {
   const response = await fetch("/api/services");
@@ -15,29 +15,31 @@ const fetchServices = async () => {
 const ServicesSection = ({ id }: { id: string }) => {
   const {
     data: services,
-    isPending,
+    isLoading,
     isError,
   } = useQuery<ServiceType[]>({
     queryKey: ["services"],
     queryFn: fetchServices,
   });
 
-  if (isPending) {
+  if (isLoading) {
     return (
-      <Container>
-        <Loader color="red" size={32} />
+      <Container id={id}>
+        <Skeleton className="w-24 h-12" />
+        <Skeleton className="w-28 h-12" />
+        <Skeleton className="w-20 h-12" />
       </Container>
     );
   }
 
   if (isError) {
-    return <p>Erreur lors de la récupération des services</p>; // Gère les erreurs de récupération des données
+    return <p>Erreur lors de la récupération des services</p>;
   }
 
   return (
     <Container id={id}>
       {Array.isArray(services) &&
-        services?.map((service, index) => (
+        services.map((service, index) => (
           <div
             key={index}
             className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 max-w-sm"
