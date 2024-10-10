@@ -1,22 +1,14 @@
 "use client";
-
-import React, { Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Produit } from "@/types";
-import Loader from "@/components/Loader";
-import { Skeleton } from "@/components/ui/skeleton";
 import GridSkeleton from "@/components/GridSkeleton";
 
-const InfoCardList = React.lazy(() => import("@/components/InfoCardList"));
-const ProductsSection = React.lazy(
-  () => import("@/components/ProductsSection")
-);
-const ContactSection = React.lazy(() => import("@/components/ContactSection"));
-const AboutSection = React.lazy(() => import("@/components/AboutSection"));
-const ServicesSection = React.lazy(
-  () => import("@/components/ServicesSection")
-);
-const BannerSection = React.lazy(() => import("@/components/BannerSection"));
+import InfoCardList from "@/components/InfoCardList";
+import ProductsSection from "@/components/ProductsSection";
+import ContactSection from "@/components/ContactSection";
+import AboutSection from "@/components/AboutSection";
+import ServicesSection from "@/components/ServicesSection";
+import BannerSection from "@/components/BannerSection";
 
 const fetchProduits = async () => {
   const response = await fetch("/api/produits");
@@ -40,20 +32,18 @@ const Home = () => {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background">
-      <Suspense fallback={<Loader />}>
-        <BannerSection />
-        <InfoCardList />
-        {isLoading ? ( // Utiliser isLoading de React Query
-          <GridSkeleton /> // Afficher le loader pendant le chargement
-        ) : isError ? (
-          <div className="error-message">{error.message}</div> // Afficher le message d'erreur
-        ) : (
-          <ProductsSection id="produits" produits={produits || []} />
-        )}
-        <ServicesSection id="services" />
-        <AboutSection />
-        <ContactSection id="contact" />
-      </Suspense>
+      <BannerSection />
+      <InfoCardList />
+      {isLoading ? ( // Utiliser isLoading de React Query
+        <GridSkeleton /> // Afficher le loader pendant le chargement
+      ) : isError ? (
+        <div className="error-message">{error.message}</div> // Afficher le message d'erreur
+      ) : (
+        <ProductsSection id="produits" produits={produits || []} />
+      )}
+      <ServicesSection id="services" />
+      <AboutSection />
+      <ContactSection id="contact" />
     </main>
   );
 };
