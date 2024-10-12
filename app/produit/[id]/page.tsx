@@ -8,7 +8,6 @@ import Loader from "@/components/Loader";
 const Produit = ({ params }: { params: { id: number } }) => {
   const { id } = params;
   const { data: produit, error, isLoading } = useProduit(Number(id));
-  console.log(produit?.type);
 
   if (isLoading) {
     return (

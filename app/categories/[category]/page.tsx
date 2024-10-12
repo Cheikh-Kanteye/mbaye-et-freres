@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchProduits } from "../_actions"; // Assurez-vous que ce chemin est correct
 import ProductGridList from "@/components/ProductGridList";
 import { Produit } from "@/types";
 import {
@@ -16,6 +17,17 @@ const CategoryPage = ({ params }: { params: { category: string } }) => {
   const nomCategory = params.category.replace(/-/g, " ");
   const [produits, setProduits] = useState<Produit[]>([]);
   const [pending, setPending] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setPending(true);
+      const result = await fetchProduits(nomCategory, "categorie");
+      setProduits(result as never);
+      setPending(false);
+    };
+
+    fetchData();
+  }, [nomCategory]);
 
   return (
     <main className="min-h-screen max-w-screen-xl mx-auto p-4">
@@ -35,9 +47,7 @@ const CategoryPage = ({ params }: { params: { category: string } }) => {
       {pending ? (
         <GridSkeleton className="grid grid-cols-4" />
       ) : (
-        <div className="grid grid-cols-4">
-          <ProductGridList produits={produits} />
-        </div>
+        <ProductGridList produits={produits} />
       )}
     </main>
   );

@@ -2,35 +2,73 @@
 
 import prisma from "@/lib/prisma";
 
-export const fetchProduits = async (nomFamille: string) => {
+export const fetchProduits = async (
+  id: string,
+  type: "famille" | "categorie"
+) => {
   try {
-    // Trouver la famille correspondant au nom donné
-    const famille = await prisma.familles.findFirst({
-      where: {
-        nom: {
-          equals: nomFamille,
-          mode: "insensitive",
-        },
-      },
-    });
+    let produits;
 
-    if (!famille) {
-      throw new Error("Produits non trouvée");
-    }
-
-    // Trouver les produits associés à cette famille
-    const produits = await prisma.produit.findMany({
-      where: {
-        idFamille: famille.id,
-      },
-      include: {
-        familles: {
-          include: {
-            categories: true,
+    // Assurez-vous que le nom est normalisé (par exemple avec NFD)
+    if (type === "famille") {
+      // Trouver la famille correspondant au nom donné
+      const famille = await prisma.familles.findFirst({
+        where: {
+          // Comparer sans accent
+          id: {
+            equals: Number(id),
           },
         },
-      },
-    });
+      });
+
+      if (!famille) {
+        throw new Error("Famille non trouvée");
+      }
+
+      // Trouver les produits associés à cette famille
+      produits = await prisma.produit.findMany({
+        where: {
+          idFamille: famille.id,
+        },
+        include: {
+          familles: {
+            include: {
+              categories: true,
+            },
+          },
+        },
+      });
+    } else if (type === "categorie") {
+      // Trouver la catégorie correspondant au nom donné
+      const categorie = await prisma.categories.findFirst({
+        where: {
+          nom: {
+            equals: id,
+            mode: "insensitive",
+          },
+        },
+      });
+
+      if (!categorie) {
+        throw new Error("Catégorie non trouvée");
+      }
+
+      // Trouver les produits associés à cette catégorie
+      produits = await prisma.produit.findMany({
+        where: {
+          idCategorie: categorie.id,
+        },
+        include: {
+          familles: {
+            include: {
+              categories: true,
+            },
+          },
+        },
+      });
+    } else {
+      throw new Error("Type de recherche non valide");
+    }
 
     return produits;
   } catch (error) {

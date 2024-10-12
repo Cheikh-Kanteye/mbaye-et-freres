@@ -2,7 +2,7 @@
 export function slugify(text: string): string {
   return text
     .toLowerCase()
-    .replace(/ /g, "-")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, ""); // Supprimer les accents
+    .normalize("NFD") // Décompose les lettres accentuées
+    .replace(/[\u0300-\u036f]/g, "") // Supprime les accents
+    .replace(/ /g, "-"); // Remplace les espaces par des tirets
 }

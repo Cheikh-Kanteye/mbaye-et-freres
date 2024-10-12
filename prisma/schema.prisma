@@ -17,14 +17,15 @@ model categories {
 }
 
 model familles {
-  id          Int        @id @default(autoincrement())
-  nom         String
-  description String?
-  idCategorie Int
-  idGuide     Int?
-  categories  categories @relation(fields: [idCategorie], references: [id])
-  guideUrl    String?
-  produits    produit[]
+  id           Int        @id @default(autoincrement())
+  nom          String
+  nomRecherche String
+  description  String?
+  idCategorie  Int
+  idGuide      Int?
+  categories   categories @relation(fields: [idCategorie], references: [id])
+  guideUrl     String?
+  produits     produit[]
 }
 
 model produit {

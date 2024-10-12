@@ -26,10 +26,8 @@ const FamillesPage = ({
 
   useEffect(() => {
     setPending(true);
-    fetchProduits(nomFamille)
+    fetchProduits(nomFamille, "famille")
       .then((result) => {
-        console.log({ result });
-
         setProduits(result as never);
       })
       .finally(() => {
@@ -51,7 +49,9 @@ const FamillesPage = ({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{nomFamille}</BreadcrumbPage>
+              <BreadcrumbPage>
+                {produits.length > 0 && produits[0].familles.nom}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

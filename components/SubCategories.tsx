@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import {
   Accordion,
@@ -39,11 +37,12 @@ const SubCategories: React.FC = () => {
     return `/categories/${slugify(categoryName)}`;
   };
 
+  // Modifié pour prendre idFamille en argument
   const generateSubCategoryHref = (
     categoryName: string,
-    subCategoryName: string
+    idFamille: string | number
   ) => {
-    return `/categories/${slugify(categoryName)}/${slugify(subCategoryName)}`;
+    return `/categories/${slugify(categoryName)}/${idFamille}`;
   };
 
   if (isError) return <div>Error: {error.message}</div>;
@@ -75,7 +74,7 @@ const SubCategories: React.FC = () => {
                           <Link
                             href={generateSubCategoryHref(
                               category.nom,
-                              sub.nom
+                              sub.id.toString() // Convertir en chaîne si nécessaire
                             )}
                             className="hover:text-primary py-1 capitalize hover:underline"
                           >
