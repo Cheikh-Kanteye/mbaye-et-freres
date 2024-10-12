@@ -39,7 +39,9 @@ const CategoryPage = ({ params }: { params: { category: string } }) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{nomCategory}</BreadcrumbPage>
+              <BreadcrumbPage>
+                {produits.length > 0 && produits[0].familles.categories.nom}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
