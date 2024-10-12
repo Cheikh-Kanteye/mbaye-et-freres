@@ -42,9 +42,8 @@ export const fetchProduits = async (
       // Trouver la catégorie correspondant au nom donné
       const categorie = await prisma.categories.findFirst({
         where: {
-          nom: {
-            equals: id,
-            mode: "insensitive",
+          id: {
+            equals: Number(id),
           },
         },
       });
