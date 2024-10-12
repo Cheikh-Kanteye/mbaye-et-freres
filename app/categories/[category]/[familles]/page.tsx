@@ -45,7 +45,9 @@ const FamillesPage = ({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <Link href={`/categories/${nomCategory}`}>{nomCategory}</Link>
+              <Link className="capitalize" href={`/categories/${nomCategory}`}>
+                {produits.length > 0 && produits[0].familles.categories.nom}
+              </Link>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

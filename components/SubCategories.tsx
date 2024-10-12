@@ -33,16 +33,13 @@ const SubCategories: React.FC = () => {
   });
   const router = useRouter();
 
-  const generateCategoryHref = (categoryName: string) => {
-    return `/categories/${slugify(categoryName)}`;
+  const generateCategoryHref = (idCategory: string) => {
+    return `/categories/${idCategory}`;
   };
 
   // Modifié pour prendre idFamille en argument
-  const generateSubCategoryHref = (
-    categoryName: string,
-    idFamille: string | number
-  ) => {
-    return `/categories/${slugify(categoryName)}/${idFamille}`;
+  const generateSubCategoryHref = (idCategory: string, idFamille: string) => {
+    return `/categories/${idCategory}/${idFamille}`;
   };
 
   if (isError) return <div>Error: {error.message}</div>;
@@ -73,7 +70,7 @@ const SubCategories: React.FC = () => {
                         <DrawerClose asChild>
                           <Link
                             href={generateSubCategoryHref(
-                              category.nom,
+                              category.id.toString(),
                               sub.id.toString() // Convertir en chaîne si nécessaire
                             )}
                             className="hover:text-primary py-1 capitalize hover:underline"
@@ -87,7 +84,7 @@ const SubCategories: React.FC = () => {
                 ) : (
                   <div className="py-2">
                     <a
-                      href={generateCategoryHref(category.nom)}
+                      href={generateCategoryHref(category.id.toString())}
                       className="text-foreground hover:text-primary hover:underline font-medium capitalize"
                     >
                       {category.nom}
