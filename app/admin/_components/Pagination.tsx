@@ -45,12 +45,13 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 
   return (
-    <div className="flex items-center justify-between py-4">
+    <div className="flex flex-col md:flex-row items-center justify-between py-4">
       <div className="flex items-center space-x-2">
         <Button
           variant="outline"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
+          className="hidden sm:block"
         >
           Précédent
         </Button>
@@ -75,11 +76,12 @@ const Pagination: React.FC<PaginationProps> = ({
           variant="outline"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
+          className="hidden sm:block"
         >
           Suivant
         </Button>
       </div>
-      <span>
+      <span className="mt-2 md:mt-0">
         Affichage de {table.getRowModel().rows.length} résultats sur{" "}
         {filteredDataLength} entrées
       </span>

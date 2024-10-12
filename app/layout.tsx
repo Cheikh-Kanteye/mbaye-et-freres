@@ -9,7 +9,7 @@ const redHatDisplay = Red_Hat_Display({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | BMB Matériaux de Construction - Mbaye & Frère",
+    template: "BMB Matériaux de Construction - Mbaye & Frère",
     default: "BMB | Matériaux de Construction - Mbaye & Frère",
   },
   icons: {
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     title: "BMB | Matériaux de Construction - Mbaye & Frère",
     description:
       "Votre fournisseur de confiance en matériaux de construction avec des services sur mesure : aluminium, verre, sablage, découpage numérique.",
-    images: "/images/twitter-card.jpg",
+    images: "/images/bmb.jpg",
   },
 };
 

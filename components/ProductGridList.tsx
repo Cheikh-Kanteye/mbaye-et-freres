@@ -51,11 +51,11 @@ const ProductGridList = ({ produits, className }: ProductGridListProps) => {
         ))}
       </div>
 
-      {/* Amélioration de la pagination */}
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="mt-4 flex justify-center">
           <nav>
-            <ul className="flex items-center space-x-2">
+            <ul className="flex flex-wrap items-center justify-center gap-y-2 space-x-2">
               {/* Bouton pour aller à la première page */}
               <li>
                 <button
