@@ -12,7 +12,7 @@ const SearchInput = ({ className }: { className?: string }) => {
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      router.push(`/search?query=${encodeURIComponent(searchTerm)}`);
+      router.push(`/search/${encodeURIComponent(searchTerm)}`);
     }
   };
 

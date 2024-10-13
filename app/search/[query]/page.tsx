@@ -1,7 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Loader from "@/components/Loader"; // Remplacer par ton composant Loader si nécessaire
-import { useSearchParams } from "next/navigation";
 import ProductGridList from "@/components/ProductGridList";
 import { Produit } from "@/types";
 
@@ -18,14 +18,14 @@ const SearchResults = ({ query }: { query: string | null }) => {
       try {
         const response = await fetch(
           `/api/search/${encodeURIComponent(searchTerm)}`
-        ); // Encoder le searchTerm
+        );
 
         if (!response.ok) {
           throw new Error("Erreur lors de la récupération des produits.");
         }
 
         const data = await response.json();
-        setSearchResults(data); // Assurez-vous que l'API retourne un tableau de produits
+        setSearchResults(data);
       } catch (error: any) {
         setError(error.message);
       } finally {
@@ -58,8 +58,7 @@ const SearchResults = ({ query }: { query: string | null }) => {
 };
 
 const Search = () => {
-  const searchParams = useSearchParams();
-  const query = searchParams.get("query"); // Utiliser get pour extraire le paramètre de l'URL
+  const { query } = useParams<{ query: string }>();
 
   return (
     <Suspense fallback={<Loader size={20} color="red" />}>
