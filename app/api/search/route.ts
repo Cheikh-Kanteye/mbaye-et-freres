@@ -12,9 +12,7 @@ const removeSpecialCharacters = (str: string) => {
 
 export async function GET(req: NextRequest) {
   try {
-    const url = new URL(req.url);
-    const query = url.searchParams.get("query");
-    console.log({ query });
+    const query = req.nextUrl.searchParams.get("query");
 
     if (!query) {
       return NextResponse.json(
