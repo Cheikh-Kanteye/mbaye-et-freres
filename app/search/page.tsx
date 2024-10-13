@@ -62,12 +62,12 @@ const Search = () => {
   const query = searchParams.get("query"); // Utiliser get pour extraire le paramètre de l'URL
 
   return (
-    <div className="min-h-screen max-w-screen-lg mx-auto py-6">
-      <h1>Résultats de recherche pour : {query}</h1>
-      <Suspense fallback={<Loader size={20} color="red" />}>
+    <Suspense fallback={<Loader size={20} color="red" />}>
+      <div className="min-h-screen max-w-screen-lg mx-auto py-6">
+        <h1>Résultats de recherche pour : {query}</h1>
         <SearchResults query={query} />
-      </Suspense>
-    </div>
+      </div>
+    </Suspense>
   );
 };
 
