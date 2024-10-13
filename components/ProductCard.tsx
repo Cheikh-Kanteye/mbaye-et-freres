@@ -31,7 +31,7 @@ const ProductCard = ({
         </div>
         <div className="p-4 h-[40%] flex flex-col gap-3 justify-items-center text-center">
           {produit.familles && (
-            <p className="text-lg leading-none sm:text-xl">
+            <p className="text-lg leading-none sm:text-xl truncate">
               <span className="text-sm text-primary">
                 {produit.familles.categories.nom}
                 <br />
@@ -41,8 +41,8 @@ const ProductCard = ({
               </span>
             </p>
           )}
-          <div className="hover:bg-primary px-4 text-sm md:text-base py-3 hover:text-primary-foreground rounded-full self-center shadow-lg bg-background text-foreground">
-            <p>BMB-{produit.reference}</p>
+          <div className="hover:bg-primary px-4 text-sm md:text-base py-3 hover:text-primary-foreground rounded-full self-center shadow-lg bg-background text-foreground truncate">
+            <p>{produit.reference}</p>
           </div>
         </div>
       </Card>
