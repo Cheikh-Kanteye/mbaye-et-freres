@@ -1,15 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Loader from "@/components/Loader"; // Remplacer par ton composant Loader si nécessaire
 import { useSearchParams } from "next/navigation";
 import ProductGridList from "@/components/ProductGridList";
 import { Produit } from "@/types";
 
-const Search = () => {
-  const router = useSearchParams();
-  const query = router.get("query"); // Utiliser get pour extraire le paramètre de l'URL
+const SearchResults = ({ query }: { query: string | null }) => {
   const [searchResults, setSearchResults] = useState<Produit[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,26 +34,39 @@ const Search = () => {
     };
 
     if (query) {
-      const searchTerm = query as string;
-      fetchSearchResults(searchTerm);
+      fetchSearchResults(query);
     }
   }, [query]);
+
+  if (isLoading) {
+    return (
+      <div className="w-full grid place-content-center">
+        <Loader size={20} color="red" /> {/* Remplacer par ton loader */}
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-red-600">Erreur : {error}</div>;
+  }
+
+  if (searchResults.length > 0) {
+    return <ProductGridList produits={searchResults} />;
+  }
+
+  return <p>Aucun produit trouvé.</p>;
+};
+
+const Search = () => {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query"); // Utiliser get pour extraire le paramètre de l'URL
 
   return (
     <div className="min-h-screen max-w-screen-lg mx-auto py-6">
       <h1>Résultats de recherche pour : {query}</h1>
-
-      {isLoading ? (
-        <div className="w-full grid place-content-center">
-          <Loader size={20} color="red" /> {/* Remplacer par ton loader */}
-        </div>
-      ) : error ? (
-        <div className="text-red-600">Erreur : {error}</div>
-      ) : searchResults.length > 0 ? (
-        <ProductGridList produits={searchResults} />
-      ) : (
-        <p>Aucun produit trouvé.</p>
-      )}
+      <Suspense fallback={<Loader size={20} color="red" />}>
+        <SearchResults query={query} />
+      </Suspense>
     </div>
   );
 };
