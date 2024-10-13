@@ -2,8 +2,9 @@ import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
 import IconButton from "./IconButton";
 import { RiSearch2Line } from "react-icons/ri";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
+import Loader from "./Loader";
 
 const SearchInput = ({ className }: { className?: string }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -22,7 +23,7 @@ const SearchInput = ({ className }: { className?: string }) => {
   };
 
   return (
-    <>
+    <Suspense fallback={<Loader size={24} />}>
       <div className={cn("flex search-input-container pr-1", className)}>
         <Input
           type="search"
@@ -38,7 +39,7 @@ const SearchInput = ({ className }: { className?: string }) => {
           onClick={handleSearch}
         />
       </div>
-    </>
+    </Suspense>
   );
 };
 
