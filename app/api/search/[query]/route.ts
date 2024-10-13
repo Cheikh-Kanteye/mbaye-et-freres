@@ -10,9 +10,12 @@ const removeSpecialCharacters = (str: string) => {
     .replace(/[^a-zA-Z0-9\s]/g, ""); // Retire les caractères spéciaux
 };
 
-export async function GET(req: NextRequest) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { query: string } }
+) {
   try {
-    const query = req.nextUrl.searchParams.get("query");
+    const query = params.query;
 
     if (!query) {
       return NextResponse.json(

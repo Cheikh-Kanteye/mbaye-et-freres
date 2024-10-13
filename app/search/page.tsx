@@ -17,7 +17,7 @@ const SearchResults = ({ query }: { query: string | null }) => {
 
       try {
         const response = await fetch(
-          `/api/search?query=${encodeURIComponent(searchTerm)}`
+          `/api/search/${encodeURIComponent(searchTerm)}`
         ); // Encoder le searchTerm
 
         if (!response.ok) {
